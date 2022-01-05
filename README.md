@@ -27,6 +27,7 @@ KFolds script is available in `kfolds.sh` which creates user-specified number of
 
 The model and parameters will be saved in the specified `--output_dir`. Alongwhich, `all_results.json` will reflect the metrics of the run.
 
+<br>
 
 ### Experiments with External Corpus
 
@@ -51,6 +52,8 @@ sudo CUDA_VISIBLE_DEVICES=1 /home/fiona/anaconda3/envs/torchgeom/bin/python3 run
 `
 sudo CUDA_VISIBLE_DEVICES=1 /home/fiona/anaconda3/envs/torchgeom/bin/python3 run_case.py --task_name cola --train_file data/CTB_forCASE_rsampled.csv --validation_file data/all.csv --model_name_or_path bert-base-cased --output_dir outs/ctb_r --do_train --do_eval --overwrite_output_dir --per_device_train_batch_size 8 --per_device_eval_batch_size 8 --num_train_epochs 5
 `
+
+<br>
 
 ### Cite Us
 If you used this repository or our corpus, please do cite us as follows:
