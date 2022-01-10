@@ -28,8 +28,8 @@ config = {
     'max_features': None,  # how many unique words to use (i.e num rows in embedding vector)
     'num_train_epochs': 20,
 
-    'train_batch_size': 64,
-    'test_batch_size': 64,
+    'train_batch_size': 32,
+    'test_batch_size': 32,
 
     'early_stopping': True,
     'early_stopping_patience': 5,  # 2
@@ -41,10 +41,7 @@ config = {
     'dev_size': None,  # 0.1
 
     'labels_list': [0, 1],
-    'emoji_to_text': True,
-
-    'embedding_details': {'glove': '/content/glove.840B.300d/glove.840B.300d.txt',
-                          'fasttext': '/content/crawl-300d-2M-subword/crawl-300d-2M-subword.vec'},
+    'embedding_details': {'fasttext': '/content/crawl-300d-2M-subword/crawl-300d-2M-subword.vec'},
 }
 
 
@@ -176,6 +173,10 @@ def get_eval_results(actuals, predictions):
 
 
 if __name__ == '__main__':
-    train_file_path = os.path.join(BASE_PATH, 'data/all.csv')
-    k_folds = 5
-    cross_validate(train_file_path, k_folds, config)
+    # train_file_path = os.path.join(BASE_PATH, 'data/all.csv')
+    # k_folds = 5
+    # cross_validate(train_file_path, k_folds, config)
+
+    train_file_path = os.path.join(BASE_PATH, 'data/CTB_forCASE.csv')
+    test_file_path = os.path.join(BASE_PATH, 'data/all.csv')
+    train(train_file_path, config, test_file_path=test_file_path)
