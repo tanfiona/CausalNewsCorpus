@@ -1,0 +1,6 @@
+Recall:0.6666666666666666
+Precision:1.0
+F1:0.8
+Accuracy:0.8
+MCC:0.6666666666666666
+correct:0.8
