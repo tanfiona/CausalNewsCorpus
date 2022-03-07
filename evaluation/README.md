@@ -1,8 +1,7 @@
 # CASE-2022 Event Causality Subtask 1 - Evaluation Script
 
 ## Submission instructions
-The script takes one prediction file as the input. This file must be a JSON file named "submission.json", which is 
-formatted as follows.
+The script takes one prediction file as the input. Your submission file must be a JSON file which is then zipped. We will only take the first file in the zip folder, so do not zip multiple files together.
 
 {"index": 0, "prediction": 1}<br>
 {"index": 1, "prediction": 0}<br>

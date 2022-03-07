@@ -34,12 +34,14 @@ if os.path.isdir(submit_dir) and os.path.isdir(truth_dir):
     output_file = open(output_filename, 'w')
 
     # read ground truth
-    truth_file = os.path.join(truth_dir, "truth.csv")
+    truth_file_name = os.listdir(truth_dir)[0] #"truth.csv"
+    truth_file = os.path.join(truth_dir, truth_file_name)
     truth = pd.read_csv(truth_file, sep=",", encoding="utf-8")
     actuals = truth['label'].tolist()
 
     # read predictions
-    submission_answer_file = os.path.join(submit_dir, "submission.json")
+    submit_file_name = os.listdir(submit_dir)[0] #"submission.json"
+    submission_answer_file = os.path.join(submit_dir, submit_file_name)
     predictions = read_predictions(submission_answer_file)
 
     if len(actuals) != len(predictions):
