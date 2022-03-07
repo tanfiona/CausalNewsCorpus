@@ -435,7 +435,7 @@ def main():
 
         # add custom metrics
         result["accuracy"] = (preds == p.label_ids).astype(np.float32).mean().item()
-        p,r,f,s = precision_recall_fscore_support(np.array(p.label_ids), np.array(preds), average='macro')
+        p,r,f,s = precision_recall_fscore_support(np.array(p.label_ids), np.array(preds), average='binary')
         result["f1"] = f
         result["precision"] = p
         result["recall"] = r
