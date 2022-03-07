@@ -23,10 +23,3 @@ outs/
 # non-public data
 data/pdtb_mixed_resolved_forCASE_final.csv
 data/pdtb_mixed_resolved_forCASE_final_rsampled.csv
-
-
-<<<<<<< HEAD
-data/all_train.csv
-=======
-/output/
->>>>>>> origin/baselines
