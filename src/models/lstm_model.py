@@ -13,8 +13,8 @@ from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.python.keras.callbacks import ModelCheckpoint, ReduceLROnPlateau, EarlyStopping
 from tensorflow.python.keras.models import load_model
-from tensorflow.python.keras.preprocessing.sequence import pad_sequences
-from tensorflow.python.keras.preprocessing.text import Tokenizer
+from tensorflow.keras.preprocessing.sequence import pad_sequences
+from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.python.keras.utils import np_utils
 
 from src.models.lstm_args import LSTMArgs
