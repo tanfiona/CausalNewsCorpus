@@ -16,8 +16,6 @@ logger = logging.getLogger(__name__)
 BASE_PATH = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIRECTORY = os.path.join(BASE_PATH, 'output')
 
-PREDICTION_DIRECTORY = os.path.join(OUTPUT_DIRECTORY, 'predictions')
-
 SEED = 42
 
 config = {
@@ -101,14 +99,14 @@ def cross_validate(train_file_path, k_folds, config):
     logger.info(f"average_mcc: {np.asarray([d['mcc'] for d in dict_results.values()]).mean()}")
 
 
-def train(train_file_path, config, test_file_path=None):
+def train(train_file_path, config, test_file_path=None, evaluate=True):
     data = pd.read_csv(train_file_path, sep=",", encoding="utf-8")
-    data = data[['text', 'label']]
+    data = data[['index', 'text', 'label']]
     data['text'] = data['text'].apply(lambda x: x.lower())
 
     if test_file_path:
         test = pd.read_csv(test_file_path, sep=",", encoding="utf-8")
-        test = test[['text', 'label']]
+        test = test[['index', 'text', 'label']]
         test['text'] = test['text'].apply(lambda x: x.lower())
 
     # delete create folder
@@ -137,14 +135,16 @@ def train(train_file_path, config, test_file_path=None):
     model = NNModel('lstm', data_dir=new_data_dir, args=config)
     model.train()
 
-    # evaluate model
-    if config['dev_size'] is not None:
+    # predictions
+    if test_file_path is not None:
         preds, raw_preds = model.predict(test['text'].tolist())
-    else:
-        preds, raw_preds = model.predict(dev['text'].tolist())
+        test['predictions'] = preds
+        save_predictions(test, os.path.join(OUTPUT_DIRECTORY, "submission.json"))
 
-    eval_results = get_eval_results(test['label'].tolist(), preds)
-    logger.info(f'Test results: {eval_results}')
+        # evaluate
+        if evaluate:
+            eval_results = get_eval_results(test['label'].tolist(), preds)
+            logger.info(f'Test results: {eval_results}')
 
 
 def split_data(df, seed, label_column='label', test_size=0.1):
@@ -170,6 +170,13 @@ def get_eval_results(actuals, predictions):
     mcc = matthews_corrcoef(actuals, predictions)
     results['mcc'] = mcc
     return results
+
+
+def save_predictions(test_data, submission_file_path):
+    with open(submission_file_path, 'w') as f:
+        for index, row in test_data.iterrows():
+            item = {"index": row['index'], "prediction": row['predictions']}
+            f.write("%s\n" % item)
 
 
 if __name__ == '__main__':
