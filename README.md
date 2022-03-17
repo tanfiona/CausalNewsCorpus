@@ -13,10 +13,10 @@ Given a `train.csv` and `val.csv` file with columns `index`,`text`,`label` (`lab
 
 ##### Train and Eval:
 `
-sudo CUDA_VISIBLE_DEVICES=1 /home/fiona/anaconda3/envs/torchgeom/bin/python3 run_case.py --task_name cola --train_file data/train.csv --validation_file data/val.csv --model_name_or_path bert-base-cased --output_dir outs --do_train --overwrite_output_dir --do_eval --num_train_epochs 5
+sudo CUDA_VISIBLE_DEVICES=1 python3 run_case.py --task_name cola --train_file data/train.csv --validation_file data/val.csv --model_name_or_path bert-base-cased --output_dir outs --do_train --overwrite_output_dir --do_eval --num_train_epochs 5
 `
 ##### Eval only:
-`sudo CUDA_VISIBLE_DEVICES=1 /home/fiona/anaconda3/envs/torchgeom/bin/python3 run_case.py --task_name cola --train_file data/train.csv --validation_file data/val2.csv --model_name_or_path outs/ --output_dir outs --overwrite_output_dir --do_eval
+`sudo CUDA_VISIBLE_DEVICES=1 python3 run_case.py --task_name cola --train_file data/train.csv --validation_file data/val2.csv --model_name_or_path outs/ --output_dir outs --overwrite_output_dir --do_eval
 `
 
 KFolds script is available in `kfolds.sh` which creates user-specified number of fold sets and runs the Train and Eval function over each fold.
@@ -37,11 +37,11 @@ We also conducted experiments with external corpus, the commands to run the expe
 Please note that PDTB-3 is a paid corpus and therefore, we are unable to release it publicly.
 
 `
-sudo CUDA_VISIBLE_DEVICES=1 /home/fiona/anaconda3/envs/torchgeom/bin/python3 run_case.py --task_name cola --train_file data/pdtb_mixed_resolved_forCASE_final.csv --validation_file data/all.csv --model_name_or_path bert-base-cased --output_dir outs/pdtb --do_train --do_eval --overwrite_output_dir --per_device_train_batch_size 16 --per_device_eval_batch_size 32 --num_train_epochs 2
+sudo CUDA_VISIBLE_DEVICES=1 python3 run_case.py --task_name cola --train_file data/pdtb_mixed_resolved_forCASE_final.csv --validation_file data/all.csv --model_name_or_path bert-base-cased --output_dir outs/pdtb --do_train --do_eval --overwrite_output_dir --per_device_train_batch_size 16 --per_device_eval_batch_size 32 --num_train_epochs 2
 `
 
 `
-sudo CUDA_VISIBLE_DEVICES=1 /home/fiona/anaconda3/envs/torchgeom/bin/python3 run_case.py --task_name cola --train_file data/pdtb_mixed_resolved_forCASE_final_rsampled.csv --validation_file data/all.csv --model_name_or_path bert-base-cased --output_dir outs/pdtb_r --do_train --do_eval --overwrite_output_dir --per_device_train_batch_size 16 --per_device_eval_batch_size 32 --num_train_epochs 2
+sudo CUDA_VISIBLE_DEVICES=1 python3 run_case.py --task_name cola --train_file data/pdtb_mixed_resolved_forCASE_final_rsampled.csv --validation_file data/all.csv --model_name_or_path bert-base-cased --output_dir outs/pdtb_r --do_train --do_eval --overwrite_output_dir --per_device_train_batch_size 16 --per_device_eval_batch_size 32 --num_train_epochs 2
 `
 
 ##### Experiments with CausalTimeBank
@@ -52,7 +52,7 @@ sudo CUDA_VISIBLE_DEVICES=1 /home/fiona/anaconda3/envs/torchgeom/bin/python3 run
 `
 
 `
-sudo CUDA_VISIBLE_DEVICES=1 /home/fiona/anaconda3/envs/torchgeom/bin/python3 run_case.py --task_name cola --train_file data/CTB_forCASE_rsampled.csv --validation_file data/all.csv --model_name_or_path bert-base-cased --output_dir outs/ctb_r --do_train --do_eval --overwrite_output_dir --per_device_train_batch_size 8 --per_device_eval_batch_size 8 --num_train_epochs 5
+sudo CUDA_VISIBLE_DEVICES=1 python3 run_case.py --task_name cola --train_file data/CTB_forCASE_rsampled.csv --validation_file data/all.csv --model_name_or_path bert-base-cased --output_dir outs/ctb_r --do_train --do_eval --overwrite_output_dir --per_device_train_batch_size 8 --per_device_eval_batch_size 8 --num_train_epochs 5
 `
 
 <br>
