@@ -48,7 +48,7 @@ sudo CUDA_VISIBLE_DEVICES=1 python3 run_case.py --task_name cola --train_file da
 The original data source is [publicly available](https://hlt-nlp.fbk.eu/technologies/causal-timebank).
 
 `
-sudo CUDA_VISIBLE_DEVICES=1 /home/fiona/anaconda3/envs/torchgeom/bin/python3 run_case.py --task_name cola --train_file data/CTB_forCASE.csv --validation_file data/all.csv --model_name_or_path bert-base-cased --output_dir outs/ctb --do_train --do_eval --overwrite_output_dir --per_device_train_batch_size 8 --per_device_eval_batch_size 8 --num_train_epochs 5
+sudo CUDA_VISIBLE_DEVICES=1 python3 run_case.py --task_name cola --train_file data/CTB_forCASE.csv --validation_file data/all.csv --model_name_or_path bert-base-cased --output_dir outs/ctb --do_train --do_eval --overwrite_output_dir --per_device_train_batch_size 8 --per_device_eval_batch_size 8 --num_train_epochs 5
 `
 
 `
