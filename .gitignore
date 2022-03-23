@@ -23,3 +23,4 @@ outs/
 # non-public data
 data/pdtb_mixed_resolved_forCASE_final.csv
 data/pdtb_mixed_resolved_forCASE_final_rsampled.csv
+outs_old/
