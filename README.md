@@ -1,4 +1,4 @@
-### Introduction
+# Introduction
 This repository contains the model and data files for our corpus and paper titled "The Causal News Corpus". 
 
 We invite you to participate in the CASE-2022 Shared Task: Event Causality Identification with Causal News Corpus. The task is being held as part of the [5th Workshop on Challenges and Applications of Automated Extraction of Socio-political Events from Text (CASE 2022)](https://emw.ku.edu.tr/case-2022/). All participating teams will be able to publish their system description paper in the workshop proceedings published by ACL.
@@ -6,6 +6,8 @@ We invite you to participate in the CASE-2022 Shared Task: Event Causality Ident
 Make your submissions at our [Codalab Page](https://codalab.lisn.upsaclay.fr/competitions/2299).
 
 <br>
+
+# Subtask 1
 
 ### Data:
 Within the `data` folder, we provide the datasets:
@@ -40,7 +42,7 @@ sudo python3 run_case.py \
 
 KFolds script is available in `kfolds.sh` which creates user-specified number of fold sets and runs the Train and Eval function over each fold. In our paper, we set K=5.
 
-Further experiments are also available in `run.sh` for reference. Within which, we also conducted experiments with the two external corpus (CTB and PDTB V3.0). More details are described in our paper.
+Further experiments are also available in `run_st1.sh` for reference. Within which, we also conducted experiments with the two external corpus (CTB and PDTB V3.0). More details are described in our paper.
 
 <br>
 
@@ -50,7 +52,23 @@ The model and parameters will be saved in the specified `--output_dir`. Alongwhi
 
 <br>
 
-### Cite Us
+# Subtask 2
+### Data:
+Within the `data` folder, we provide the datasets:
+* `train_subtask2.csv`: Train set (n=XXX) with gold labels.
+* `dev_subtask2_text.csv`: Development set (n=XXX) without gold labels.
+
+The following datasets will be released as we progress along the shared task timeline:
+* `dev_subtask2.csv`: Development set (n=XXX) with gold labels.
+* `test_subtask2_text.csv`: Test set (n=XXX) without gold labels.
+
+<br>
+
+### Running the code:
+We used baseline models from [UniCausal](https://github.com/tanfiona/UniCausal) to perform Cause-Effect Span Detection. See `run_st2,sh` for experiments.
+
+
+# Cite Us
 If you used this repository or our corpus, please do cite us as follows:
 ```
 To be added

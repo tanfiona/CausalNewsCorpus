@@ -1,0 +1,7 @@
+﻿corpus,doc_id,sent_id,eg_id,index,text,text_w_pairs,seq_label,pair_label,context,num_sents
+cnc,train_10_166,0,0,cnc_train_10_166_0_0.0,"Two Maoists were killed when police returned fire , he said .",,1,1,,1
+cnc,train_10_184,0,0,cnc_train_10_184_0_0.0,Two militants had also been killed in the fire fight .,,1,1,,1
+cnc,train_10_196,0,0,cnc_train_10_196_0_0.0,The Sadtu protest was a call for the resignation of Motshekga and her director general Bobby Soobrayan .,,1,1,,1
+cnc,train_10_210,0,0,cnc_train_10_210_0_0.0,The end to hunger strike came as a relief to the jail administration .,,1,1,,1
+cnc,train_10_276,0,0,cnc_train_10_276_0_0.0,"Tuen Mun Court Deputy Magistrate So Kai-cheung said he determined the sentence based on the recommendations of a community service order report , which says 20 - year-old Chiu Kwok-hong showed remorse for the incident .",,1,1,,1
+cnc,train_10_276,0,1,cnc_train_10_276_0_1.0,"Tuen Mun Court Deputy Magistrate So Kai-cheung said he determined the sentence based on the recommendations of a community service order report , which says 20 - year-old Chiu Kwok-hong showed remorse for the incident .",,1,1,,1
