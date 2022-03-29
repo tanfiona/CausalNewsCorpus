@@ -1,5 +1,5 @@
-# Introduction
-This repository contains the model and data files for our corpus and paper titled "The Causal News Corpus". 
+# CausalNewsCorpus (CNC)
+This repository contains the model and data files for our corpus and paper titled "The Causal News Corpus: Annotating Causal Relations in Event Sentences from News". 
 
 We invite you to participate in the CASE-2022 Shared Task: Event Causality Identification with Causal News Corpus. The task is being held as part of the [5th Workshop on Challenges and Applications of Automated Extraction of Socio-political Events from Text (CASE 2022)](https://emw.ku.edu.tr/case-2022/). All participating teams will be able to publish their system description paper in the workshop proceedings published by ACL.
 
@@ -75,7 +75,7 @@ If you used this repository or our corpus, please do cite us as follows:
 ```
 @misc{tan-etal-2022-causalnewscorpus,
   author = {Tan, Fiona Anting and Hürriyetoğlu, Ali and Caselli, Tommaso and Nomoto, Tadashi and Ameer, Iqra and Hettiarachchi, Hansi and Liza, Farhana Ferdousi and Hu, Tiancheng},
-  title = {The Causal News Corpus: Annotating Causal Relations in Event Sentences from News },
+  title = {The Causal News Corpus: Annotating Causal Relations in Event Sentences from News},
   year = {2022},
   publisher = {GitHub},
   journal = {GitHub repository},
