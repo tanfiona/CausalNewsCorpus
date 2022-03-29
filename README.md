@@ -47,7 +47,6 @@ Further experiments are also available in `run_st1.sh` for reference. Within whi
 <br>
 
 ### Expected Output:
-
 The model and parameters will be saved in the specified `--output_dir`. Alongwhich, `all_results.json` will reflect the metrics of the run. The Huggingface trainer will also automatically generate a model and results summary `README.md` file in the specified output folder.
 
 <br>
@@ -65,17 +64,27 @@ The following datasets will be released as we progress along the shared task tim
 <br>
 
 ### Running the code:
-We used baseline models from [UniCausal](https://github.com/tanfiona/UniCausal) to perform Cause-Effect Span Detection. See `run_st2,sh` for experiments.
+We used baseline models from [UniCausal](https://github.com/tanfiona/UniCausal) to perform Cause-Effect Span Detection. See `run_st2.sh` for experiments.
+
+### Expected Output:
+The model and parameters will be saved in the specified `--output_dir`. Alongwhich, a log file will reflect the metrics of the run. If `--do_predict` was opted, `span_predictions.txt` file for the predictions will also appear in this folder.
 
 
 # Cite Us
 If you used this repository or our corpus, please do cite us as follows:
 ```
-To be added
+@misc{tan-etal-2022-causalnewscorpus,
+  author = {Tan, Fiona Anting and Hürriyetoğlu, Ali and Caselli, Tommaso and Nomoto, Tadashi and Ameer, Iqra and Hettiarachchi, Hansi and Liza, Farhana Ferdousi and Hu, Tiancheng},
+  title = {The Causal News Corpus: Annotating Causal Relations in Event Sentences from News },
+  year = {2022},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/tanfiona/CausalNewsCorpus}}
+}
 ```
 
 <br>
 
 ### Contact Us
-* Fiona Tan, tan.f[at]u.nus.edu
+* Fiona Anting Tan, tan.f[at]u.nus.edu
 * Hansi Hettiarachchi, hansi.hettiarachchi[at]mail.bcu.ac.uk
