@@ -1,0 +1,2 @@
+command: /bin/bash $program/evaluate.sh $input $output
+description: Example competition evaluation program.

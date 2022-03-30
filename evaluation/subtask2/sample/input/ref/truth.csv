@@ -1,0 +1,6 @@
+index,text,text_w_pairs
+cnc_train_02_155_0_0.0,"Dissatisfied with the package , workers staged an all-nigh sit-in .","<ARG0>Dissatisfied with the package</ARG0> , <ARG1>workers staged an all-nigh sit-in</ARG1> ."
+cnc_train_02_177_0_0.0,Three people were killed and 69 others injured in the explosion .,<ARG1>Three people were killed and 69 others injured</ARG1> in <ARG0>the explosion</ARG0> .
+cnc_train_02_180_0_0.0,Students and teachers of physical education relaunched their protest against the appointment of general teachers for physical education work in schools .,<ARG1>Students and teachers of physical education relaunched their protest</ARG1> <ARG0><SIG0>against</SIG0> the appointment of general teachers for physical education work in schools</ARG0> .
+cnc_train_02_188_0_0.0,The bombing created panic among villagers .,<ARG0>The bombing</ARG0> <ARG1><SIG0>created</SIG0> panic among villagers</ARG1> .
+cnc_train_02_219_0_0.0,The clashes left at least six students and a security guard injured .,<ARG0>The clashes</ARG0> <ARG1><SIG0>left</SIG0> at least six students and a security guard injured</ARG1> .
