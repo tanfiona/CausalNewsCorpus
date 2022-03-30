@@ -3,8 +3,8 @@
 ## Submission instructions
 The script takes one prediction file as the input. Your submission file must be a JSON file which is then zipped. We will only take the first file in the zip folder, so do not zip multiple files together.
 
-{"index": 0, "prediction": "<ARG0>Dissatisfied with the package</ARG0> , <ARG1>workers staged an all-nigh sit-in</ARG1> ."}<br>
-{"index": 1, "prediction": "<ARG1>Three people were killed</ARG1> <ARG1>and 69 others injured</ARG1> <ARG0>in the explosion</ARG0> ."}<br>
+{"index": 0, "prediction": "`<ARG0>`Dissatisfied with the package`</ARG0>` , `<ARG1>`workers staged an all-nigh sit-in`</ARG1>` ."}<br>
+{"index": 1, "prediction": "`<ARG1>`Three people were killed`</ARG1>` `<ARG1>`and 69 others injured`</ARG1>` `<ARG0>`in the explosion`</ARG0>` ."}<br>
 ...
 
 A sample file is available [here](https://github.com/tanfiona/CausalNewsCorpus). Also, make sure that the index order in the submission file is the same as the 
