@@ -7,7 +7,7 @@ The script takes one prediction file as the input. Your submission file must be 
 {"index": 1, "prediction": 0}<br>
 ...
 
-A sample file is available [here](https://github.com/tanfiona/CausalNewsCorpus/blob/4499ae7492b55cd715eb6b1fbd4e834914e6c3cd/evaluation/sample/input/res/submission.json). Also, make sure that the index order in the submission file is the same as the 
+A sample file is available [here](https://github.com/tanfiona/CausalNewsCorpus/blob/master/evaluation/subtask1/sample/input/res/submission.json). Also, make sure that the index order in the submission file is the same as the 
 order in the original test data. 
 
 ## Testing the Script Offline
@@ -20,8 +20,8 @@ The path to the input directory should be provided as the $input argument, and t
 provided as $output. 
 
 The input and output directories must match the Codalab format, as shown below. The input directory must contain two subdirectories: 
-'ref' with the reference ground truth dataset and 'res' with the results file. The output will be written to
- the 'scorer.txt' in the output directory. 
+'ref' with the reference ground truth dataset and 'res' with the results file. 
+The output will be written to the 'scores.txt' in the output directory. 
 
 ```
 input/
@@ -30,5 +30,5 @@ input/
  |- res/
      |- submission.json
 output/
- |- scorer.txt
+ |- scores.txt
 ```
