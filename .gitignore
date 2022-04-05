@@ -24,3 +24,4 @@ outs/
 data/pdtb_mixed_resolved_forCASE_final.csv
 data/pdtb_mixed_resolved_forCASE_final_rsampled.csv
 outs_old/
+data/dev_subtask2.csv
