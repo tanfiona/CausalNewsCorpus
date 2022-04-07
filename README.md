@@ -25,7 +25,7 @@ The following datasets are used in our experiments, but not released, due to cop
 
 <br>
 
-### Running the code:
+### Running BERT baseline:
 Given a `<train.csv>` and `<val.csv>` file with columns `index`,`text`,`label` (`label` values should be in 0,1 int format), use our `run_case.py` script to train, evaluate and predict using `--do_train`, `--do_eval` and `--do_predict` flags respectively.
 
 ```
@@ -43,6 +43,14 @@ sudo python3 run_case.py \
 KFolds script is available in `kfolds.sh` which creates user-specified number of fold sets and runs the Train and Eval function over each fold. In our paper, we set K=5.
 
 Further experiments are also available in `run_st1.sh` for reference. Within which, we also conducted experiments with the two external corpus (CTB and PDTB V3.0). More details are described in our paper.
+
+This baseline corresponds to [Codalab submission](https://codalab.lisn.upsaclay.fr/competitions/2299#results) by "tanfiona". For LSTM baseline, submissions are by "hansih".
+
+
+| # | User     | Date of Last Entry | Recall     | Precision  | F1         | Accuracy   | MCC        |
+|:-:|----------|--------------------|------------|------------|------------|------------|------------|
+| 1 | tanfiona | 03/23/22           | 0.8652 (1) | 0.8063 (1) | 0.8347 (1) | 0.8111 (1) | 0.6172 (1) |
+| 2 | hansih   | 03/13/22           | 0.7303 (2) | 0.7514 (2) | 0.7407 (2) | 0.7183 (2) | 0.4326 (2) |
 
 <br>
 
@@ -63,12 +71,21 @@ The following datasets will be released as we progress along the shared task tim
 
 <br>
 
-### Running the code:
-We used baseline models from [UniCausal](https://github.com/tanfiona/UniCausal) to perform Cause-Effect Span Detection. See `run_st2.sh` for experiments.
+### Running BERT baseline:
+To perform Cause-Effect Span Detection, we used a token classification baseline model adapted from [Huggingface's `run_ner_no_trainer.py` script](https://github.com/huggingface/transformers/blob/master/examples/pytorch/token-classification/run_ner_no_trainer.py). 
+
+The adapted script is part of the Causal Text Mining Benchmark titled [UniCausal](https://github.com/tanfiona/UniCausal). Due to anonymity requirements, UniCausal is not yet publicly released. However, you may contact Fiona (tan.f[at]u.nus.edu) for a private copy. See `run_st2.sh` for experiments.
+
+We did not implement a Signal Span Detection baseline yet. Instead, we used the random generator within `random_st2.py` to obtain Signal predictions.
+
+This baseline corresponds to [Codalab submission](https://codalab.lisn.upsaclay.fr/competitions/2299#results) by "tanfiona".
+
+| # | User     | Date of Last Entry | Recall  | Precision  | F1  | Accuracy  | MCC  |
+|:-:|----------|--------------------|---------|------------|-----|-----------|------|
+| 1 | tanfiona | x                  | x       | x          | x   | x         | x    |
 
 ### Expected Output:
-The model and parameters will be saved in the specified `--output_dir`. Alongwhich, a log file will reflect the metrics of the run. If `--do_predict` was opted, `span_predictions.txt` file for the predictions will also appear in this folder.
-
+The model and parameters will be saved in the specified `--output_dir`. Alongwhich, a log file will reflect the metrics of the run. If `--do_predict` was opted, `span_predictions.txt` file for the predictions will also appear in this folder. The predictions are in BIO format, so you need to convert them back to a tagged sentence format (`text_w_pairs` column). Use helper functions from `src/format_st2.py` to help you.
 
 # Cite Us
 If you used this repository or our corpus, please do cite us as follows:
