@@ -1,2 +1,2 @@
 command: /bin/bash $program/evaluate.sh $input $output
-description: Example competition evaluation program.
+description: Subtask 2 evaluation program, use "codalab/codalab-legacy:gpu" docker image.

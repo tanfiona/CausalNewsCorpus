@@ -84,15 +84,11 @@ def get_BIO_sig(text_w_pairs):
     return tokens, s_tags
 
 
-def get_BIO_all(text_w_pairs, verbose=False):
+def get_BIO_all(text_w_pairs):
     tokens, ce_tags = get_BIO(text_w_pairs)
     tokens_s, s_tags = get_BIO_sig(text_w_pairs)
     assert(tokens==tokens_s)
     assert(len(ce_tags)==len(s_tags)==len(tokens))
-    if verbose:
-        print(f'Tokens: {tokens}')
-        print(f'CE Tags: {ce_tags}')
-        print(f'Sig Tags: {s_tags}')
     return tokens, ce_tags, s_tags
 
 
@@ -273,5 +269,6 @@ if os.path.isdir(submit_dir) and os.path.isdir(truth_dir):
                     output_file.write("{0}:{1}\n".format(k.title(),v))
                 else:
                     output_file.write("{0}_{1}:{2}\n".format(level,k.title(),v))
-
+    
+    output_file.write("done")
     output_file.close()
