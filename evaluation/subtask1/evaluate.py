@@ -48,11 +48,11 @@ if os.path.isdir(submit_dir) and os.path.isdir(truth_dir):
         raise IndexError("Number of entries in the submission.json do not match with the ground truth entry count!")
     # evaluate
     else:
-        r = recall_score(actuals, predictions, average='macro')
+        r = recall_score(actuals, predictions)
         output_file.write("Recall:{0}\n".format(r))
-        p = precision_score(actuals, predictions, average='macro')
+        p = precision_score(actuals, predictions)
         output_file.write("Precision:{0}\n".format(p))
-        f1 = f1_score(actuals, predictions, average='macro')
+        f1 = f1_score(actuals, predictions)
         output_file.write("F1:{0}\n".format(f1))
         accuracy = accuracy_score(actuals, predictions)
         output_file.write("Accuracy:{0}\n".format(accuracy))
