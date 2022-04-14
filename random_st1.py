@@ -54,7 +54,7 @@ def evaluate_random_predictions(train_file, test_file, iterations=1000):
 
     for i in range(iterations):
         random_label=choices([0,1], [total_zeros,total_ones],k=len(total_label))
-        precision,recall,fscore,_=precision_recall_fscore_support(total_label,random_label,average='macro')
+        precision,recall,fscore,_=precision_recall_fscore_support(total_label,random_label,average='binary')
         matthews=matthews_corrcoef(total_label,random_label)
         accuracy=accuracy_score(total_label,random_label)
         totalprecision.append(precision)
