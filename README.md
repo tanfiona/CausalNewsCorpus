@@ -68,6 +68,7 @@ Within the `data` folder, we provide the datasets:
 The following datasets will be released as we progress along the shared task timeline:
 * `dev_subtask2.csv`: Development set (n=14) with gold labels.
 * `test_subtask2_text.csv`: Test set (n=TBC) without gold labels.
+
 We are in the midst of annotating more examples. During final testing phase, we will release more train and dev examples which can be used to train your model. The data format will be exactly the same, so you can first design your models to train and test on currently available train and dev sets.
 <br>
 
