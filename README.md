@@ -88,15 +88,19 @@ This baseline corresponds to [Codalab submission](https://codalab.lisn.upsaclay.
 The model and parameters will be saved in the specified `--output_dir`. Alongwhich, a log file will reflect the metrics of the run. If `--do_predict` was opted, `span_predictions.txt` file for the predictions will also appear in this folder. The predictions are in BIO format, so you need to convert them back to a tagged sentence format (`text_w_pairs` column). Use helper functions from `src/format_st2.py` to help you.
 
 # Cite Us
+Our paper (on Subtask 1) has been accepted to LREC 2022. 
+
 If you used this repository or our corpus, please do cite us as follows:
 ```
-@misc{tan-etal-2022-causalnewscorpus,
-  author = {Tan, Fiona Anting and Hürriyetoğlu, Ali and Caselli, Tommaso and Nomoto, Tadashi and Ameer, Iqra and Hettiarachchi, Hansi and Liza, Farhana Ferdousi and Hu, Tiancheng},
-  title = {The Causal News Corpus: Annotating Causal Relations in Event Sentences from News},
-  year = {2022},
-  publisher = {GitHub},
-  journal = {GitHub repository},
-  howpublished = {\url{https://github.com/tanfiona/CausalNewsCorpus}}
+@inproceedings{tan-etal-2022-causal,
+    title = "The Causal News Corpus: Annotating Causal Relations in Event Sentences from News",
+    author = "Tan, Fiona Anting and Hürriyetoğlu, Ali and Caselli, Tommaso and Oostdijk, Nelleke and Nomoto, Tadashi and Hettiarachchi, Hansi and Ameer, Iqra and Liza, Farhana Ferdousi and Hu, Tiancheng",
+    booktitle = "Proceedings of the 13th Language Resources and Evaluation Conference",
+    month = June,
+    year = "2021",
+    address = "Marseille, France",
+    publisher = "European Language Resources Association",
+    language = "English"
 }
 ```
 
