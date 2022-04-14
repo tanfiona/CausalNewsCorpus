@@ -88,7 +88,7 @@ This baseline corresponds to [Codalab submission](https://codalab.lisn.upsaclay.
 The model and parameters will be saved in the specified `--output_dir`. Alongwhich, a log file will reflect the metrics of the run. If `--do_predict` was opted, `span_predictions.txt` file for the predictions will also appear in this folder. The predictions are in BIO format, so you need to convert them back to a tagged sentence format (`text_w_pairs` column). Use helper functions from `src/format_st2.py` to help you.
 
 # Cite Us
-Our paper (on Subtask 1) has been accepted to LREC 2022. 
+Our paper (on Subtask 1) has been accepted to LREC 2022. We hope to see you there.
 
 If you used this repository or our corpus, please do cite us as follows:
 ```
@@ -97,7 +97,7 @@ If you used this repository or our corpus, please do cite us as follows:
     author = "Tan, Fiona Anting and Hürriyetoğlu, Ali and Caselli, Tommaso and Oostdijk, Nelleke and Nomoto, Tadashi and Hettiarachchi, Hansi and Ameer, Iqra and Liza, Farhana Ferdousi and Hu, Tiancheng",
     booktitle = "Proceedings of the 13th Language Resources and Evaluation Conference",
     month = June,
-    year = "2021",
+    year = "2022",
     address = "Marseille, France",
     publisher = "European Language Resources Association",
     language = "English"
