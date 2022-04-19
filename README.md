@@ -62,13 +62,14 @@ The model and parameters will be saved in the specified `--output_dir`. Alongwhi
 # Subtask 2
 ### Data:
 Within the `data` folder, we provide the datasets:
-* `train_subtask2.csv`: Train set (n=XXX) with gold labels.
-* `dev_subtask2_text.csv`: Development set (n=XXX) without gold labels.
+* `train_subtask2.csv`: Train set (n=133) with gold labels.
+* `dev_subtask2_text.csv`: Development set (n=14) without gold labels.
 
 The following datasets will be released as we progress along the shared task timeline:
-* `dev_subtask2.csv`: Development set (n=XXX) with gold labels.
-* `test_subtask2_text.csv`: Test set (n=XXX) without gold labels.
+* `dev_subtask2.csv`: Development set (n=14) with gold labels.
+* `test_subtask2_text.csv`: Test set (n=TBC) without gold labels.
 
+We are in the midst of annotating more examples. During final testing phase, we will release more train and dev examples which can be used to train your model. The data format will be exactly the same, so you can first design your models to train and test on currently available train and dev sets.
 <br>
 
 ### Running BERT baseline:
