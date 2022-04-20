@@ -95,7 +95,7 @@ If you used this repository or our corpus, please do cite us as follows:
 ```
 @inproceedings{tan-etal-2022-causal,
     title = "The Causal News Corpus: Annotating Causal Relations in Event Sentences from News",
-    author = "Tan, Fiona Anting and Hürriyetoğlu, Ali and Caselli, Tommaso and Oostdijk, Nelleke and Nomoto, Tadashi and Hettiarachchi, Hansi and Ameer, Iqra and Liza, Farhana Ferdousi and Hu, Tiancheng",
+    author = "Tan, Fiona Anting and Hürriyetoğlu, Ali and Caselli, Tommaso and Oostdijk, Nelleke and Nomoto, Tadashi and Hettiarachchi, Hansi and Ameer, Iqra and Uca, Onur and Liza, Farhana Ferdousi and Hu, Tiancheng",
     booktitle = "Proceedings of the 13th Language Resources and Evaluation Conference",
     month = June,
     year = "2022",
