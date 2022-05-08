@@ -5,6 +5,9 @@ We invite you to participate in the CASE-2022 Shared Task: Event Causality Ident
 
 Make your submissions at our [Codalab Page](https://codalab.lisn.upsaclay.fr/competitions/2299).
 
+<b>Subtask 1: Causal Event Classification</b> -- Does an event sentence contain any cause-effect meaning?<br>
+<b>Subtask 2: Cause-Effect-Signal Span Detection</b> -- Which consecutive spans correspond to cause, effect or signal per causal sentence?
+
 <br>
 
 # Subtask 1
