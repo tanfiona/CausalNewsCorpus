@@ -1,9 +1,12 @@
 # CausalNewsCorpus (CNC)
-This repository contains the model and data files for our corpus and paper titled "The Causal News Corpus: Annotating Causal Relations in Event Sentences from News". 
+This repository contains the model and data files for our corpus and paper titled ["The Causal News Corpus: Annotating Causal Relations in Event Sentences from News"](http://arxiv.org/abs/2204.11714). 
 
 We invite you to participate in the CASE-2022 Shared Task: Event Causality Identification with Causal News Corpus. The task is being held as part of the [5th Workshop on Challenges and Applications of Automated Extraction of Socio-political Events from Text (CASE 2022)](https://emw.ku.edu.tr/case-2022/). All participating teams will be able to publish their system description paper in the workshop proceedings published by ACL.
 
 Make your submissions at our [Codalab Page](https://codalab.lisn.upsaclay.fr/competitions/2299).
+
+<b>Subtask 1: Causal Event Classification</b> -- Does an event sentence contain any cause-effect meaning?<br>
+<b>Subtask 2: Cause-Effect-Signal Span Detection</b> -- Which consecutive spans correspond to cause, effect or signal per causal sentence?
 
 <br>
 
@@ -89,7 +92,7 @@ This baseline corresponds to [Codalab submission](https://codalab.lisn.upsaclay.
 The model and parameters will be saved in the specified `--output_dir`. Alongwhich, a log file will reflect the metrics of the run. If `--do_predict` was opted, `span_predictions.txt` file for the predictions will also appear in this folder. The predictions are in BIO format, so you need to convert them back to a tagged sentence format (`text_w_pairs` column). Use helper functions from `src/format_st2.py` to help you.
 
 # Cite Us
-Our paper (on Subtask 1) has been accepted to LREC 2022. We hope to see you there.
+Our paper (on Subtask 1) has been accepted to LREC 2022. We hope to see you there!
 
 If you used this repository or our corpus, please do cite us as follows:
 ```
