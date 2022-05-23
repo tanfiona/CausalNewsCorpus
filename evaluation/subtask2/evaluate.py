@@ -263,12 +263,20 @@ if os.path.isdir(submit_dir) and os.path.isdir(truth_dir):
         # evaluate
         final_results = main(truth, predictions, calculate_best_combi=True)
         # write to output file
-        for level,ddict in final_results.items():
-            for k,v in ddict.items():
-                if level=='Overall':
-                    output_file.write("{0}:{1}\n".format(k.title(),v))
+        level_order = ['Overall','Cause','Effect','Signal']
+        columns_order = ['Recall', 'Precision', 'F1', 'Accuracy', 'Number']
+
+        for level in level_order:
+            ddict = final_results[level]
+            for k in columns_order:
+                if k.lower() in ddict:
+                    v = ddict[k.lower()]
+                    if level=='Overall':
+                        output_file.write("{0}:{1}\n".format(k.title(),v))
+                    else:
+                        output_file.write("{0}_{1}:{2}\n".format(level,k.title(),v))
                 else:
-                    output_file.write("{0}_{1}:{2}\n".format(level,k.title(),v))
-    
-    output_file.write("done")
+                    continue
+        # output_file.write("{0}:{1}\n".format("MCC",0))
+
     output_file.close()

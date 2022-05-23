@@ -1,2 +1,3 @@
-command: /bin/bash $program/evaluate.sh $input $output
-description: Subtask 2 evaluation program, use "codalab/codalab-legacy:gpu" docker image.
+command: python $program/evaluate.py $input $output
+# command: /bin/bash $program/evaluate.sh $input $output
+description: Subtask 2 evaluation program, use "tanfiona/case2022:latest2" docker image.
