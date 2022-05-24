@@ -7,7 +7,7 @@ The script takes one prediction file as the input. Your submission file must be 
 {"index": 1, "prediction": 0}<br>
 ...
 
-A sample file is available [here](https://github.com/tanfiona/CausalNewsCorpus/blob/master/evaluation/subtask1/sample/input/res/submission.json). Also, make sure that the index order in the submission file is the same as the 
+A sample file is available [here](sample/input/res/submission.json). Also, make sure that the index order in the submission file is the same as the 
 order in the original test data. 
 
 ## Testing the Script Offline
