@@ -5,8 +5,8 @@ This repository contains the datasets and models for the Causal News Corpus (CNC
 
 CNC works on two subtasks:
 
-<b>Subtask 1: Causal Event Classification</b> -- Does an event sentence contain any cause-effect meaning?<br>
-<b>Subtask 2: Cause-Effect-Signal Span Detection</b> -- Which consecutive spans correspond to cause, effect or signal per causal sentence? (Annotation in progress)
+<b>[Subtask 1: Causal Event Classification](#subtask-1-causal-event-classification)</b> -- Does an event sentence contain any cause-effect meaning?<br>
+<b>[Subtask 2: Cause-Effect-Signal Span Detection](#subtask-2-cause-effect-signal-span-detection)</b> -- Which consecutive spans correspond to cause, effect or signal per causal sentence? (Annotation in progress)
 
 <br>
 
@@ -22,7 +22,9 @@ We are currently hosting a shared task, also known as the CASE-2022 Shared Task 
 
 Make your submissions at our [Codalab Page](https://codalab.lisn.upsaclay.fr/competitions/2299).
 
-# Subtask 1
+<br>
+
+# Subtask 1: Causal Event Classification
 
 ### Data:
 Within the `data` folder, we provide the datasets:
@@ -69,7 +71,7 @@ The model and parameters will be saved in the specified `--output_dir`. Alongwhi
 
 <br>
 
-# Subtask 2
+# Subtask 2: Cause-Effect-Signal Span Detection
 ### Data:
 Within the `data` folder, we provide the datasets:
 * `train_subtask2.csv`: Train set (n=133) with gold labels.
@@ -93,8 +95,10 @@ For a better starting model, we reccomend partipants to adapt the token classifi
 ### Expected Output:
 The predicted output will be saved in a JSON file as `outs/submission_random_st2.json`. Alongwhich, the evaluation metrics will be printed in the console.
 
+<br>
+
 # Cite Us
-Our paper (on Subtask 1) has been accepted to LREC 2022. We hope to see you there!
+[Our paper (on Subtask 1)]((http://arxiv.org/abs/2204.11714)) has been accepted to LREC 2022. We hope to see you there!
 
 If you used this repository or our corpus, please do cite us as follows:
 ```
