@@ -253,5 +253,5 @@ def get_random_predictions(reference_file, do_eval=False):
 
 
 if __name__ == "__main__":
-    reference_file = 'data/dev_subtask2.csv'
+    reference_file = 'data/dev_subtask2.csv' # Amend this where needed
     get_random_predictions(reference_file, do_eval=True)
