@@ -125,7 +125,7 @@ def keep_best_combinations_only(row, refs, preds):
     ce_metric = load_metric('seqeval')
     sig_metric = load_metric('seqeval')
     final_results = {}
-    best_metric = 0
+    best_metric = -1
     for points in get_combinations(row.id, row.id):
         for a,b in list(points):
             _, ce_ref, sig_ref = refs[a]
@@ -144,6 +144,7 @@ def keep_best_combinations_only(row, refs, preds):
         if key_metric>best_metric:
             # overwrite if best
             final_results=results
+            best_metric=key_metric
             
     return final_results
 
@@ -195,7 +196,7 @@ def main(ref_df, pred_list, calculate_best_combi=True):
     if calculate_best_combi:
         grouped_df = ref_df.copy()
         grouped_df['id'] = [[i] for i in grouped_df.index]
-        grouped_df = grouped_df.groupby(['corpus','doc_id','sent_id'])['eg_id','id'].agg({'eg_id':'count','id':'sum'}).reset_index()
+        grouped_df = grouped_df.groupby(['corpus','doc_id','sent_id'])[['eg_id','id']].agg({'eg_id':'count','id':'sum'}).reset_index()
         grouped_df = grouped_df[grouped_df['eg_id']>1]
         req_combi_ids = [item for sublist in grouped_df['id'] for item in sublist]
     else:
