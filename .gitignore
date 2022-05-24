@@ -9,8 +9,6 @@
 *.gz
 *.bcf
 *.xml
-*.png
-*.jpeg
 *.jpg
  *.pyc
 
