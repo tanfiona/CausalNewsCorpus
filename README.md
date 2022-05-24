@@ -1,14 +1,26 @@
-# CausalNewsCorpus (CNC)
-This repository contains the model and data files for our corpus and paper titled ["The Causal News Corpus: Annotating Causal Relations in Event Sentences from News"](http://arxiv.org/abs/2204.11714). 
+# Causal News Corpus
+<img align="left" height=200 src="imgs/CNC_Logo.PNG">
 
-We invite you to participate in the CASE-2022 Shared Task: Event Causality Identification with Causal News Corpus. The task is being held as part of the [5th Workshop on Challenges and Applications of Automated Extraction of Socio-political Events from Text (CASE 2022)](https://emw.ku.edu.tr/case-2022/). All participating teams will be able to publish their system description paper in the workshop proceedings published by ACL.
+This repository contains the datasets and models for the Causal News Corpus (CNC). Our dataset is published in the LREC paper titled ["The Causal News Corpus: Annotating Causal Relations in Event Sentences from News"](http://arxiv.org/abs/2204.11714).
 
-Make your submissions at our [Codalab Page](https://codalab.lisn.upsaclay.fr/competitions/2299).
+CNC works on two subtasks:
 
 <b>Subtask 1: Causal Event Classification</b> -- Does an event sentence contain any cause-effect meaning?<br>
-<b>Subtask 2: Cause-Effect-Signal Span Detection</b> -- Which consecutive spans correspond to cause, effect or signal per causal sentence?
+<b>Subtask 2: Cause-Effect-Signal Span Detection</b> -- Which consecutive spans correspond to cause, effect or signal per causal sentence? (Annotation in progress)
 
 <br>
+
+Causality is a core cognitive concept and appears in many natural language processing (NLP) works that aim to tackle inference and understanding. Generally, a causal relation is a semantic relationship between two arguments known as cause and effect, in which the occurrence of one (cause argument) causes the occurrence of the other (effect argument). The Figure below illustrates some sentences that are marked as <em>Causal</em> and <em>Non-causal</em> respectively.
+
+| <img align="center" height=250 src="imgs/EventCausality_Subtask1_Examples3.png"> | 
+|:--:| 
+| *Annotated examples from Causal News Corpus. Causes are in pink, Effects in green and Signals in yellow. Note that both Cause and Effect spans must be present within one and the same sentence for us to mark it as <em>Causal</em>.* |
+
+### Shared Task
+
+We are currently hosting a shared task, also known as the CASE-2022 Shared Task 3: Event Causality Identification with Causal News Corpus. The task is part of the [5th Workshop on Challenges and Applications of Automated Extraction of Socio-political Events from Text (CASE 2022)](https://emw.ku.edu.tr/case-2022/). All participating teams will be able to publish their system description paper in the workshop proceedings published by ACL.
+
+Make your submissions at our [Codalab Page](https://codalab.lisn.upsaclay.fr/competitions/2299).
 
 # Subtask 1
 
