@@ -90,7 +90,7 @@ For Cause-Effect Span Detection, we only implemented a random generator shown un
 |:-:|----------|--------------------|------------|------------|------------|-----------|------------|
 | 1 | tanfiona | 05/24/22           | 0.0278     | 0.0278     | 0.0278     | 0.2221    | -          |
 
-For a better starting model, we reccomend partipants to adapt the token classification baseline model from [Huggingface's `run_ner_no_trainer.py` script](https://github.com/huggingface/transformers/blob/master/examples/pytorch/token-classification/run_ner_no_trainer.py). 
+For a better starting model, we recommend partipants to adapt the token classification baseline model from [Huggingface's `run_ner_no_trainer.py` script](https://github.com/huggingface/transformers/blob/master/examples/pytorch/token-classification/run_ner_no_trainer.py). 
 
 ### Expected Output:
 The predicted output will be saved in a JSON file as `outs/submission_random_st2.json`. Alongwhich, the evaluation metrics will be printed in the console.
