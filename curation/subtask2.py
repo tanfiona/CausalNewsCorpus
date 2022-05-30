@@ -10,6 +10,61 @@ from tqdm import tqdm
 from collections import Counter, defaultdict
 from pandas import ExcelWriter
 
+import itertools
+from itertools import combinations
+from kAlpha import get_result
+
+def get_combinations(list1,list2):
+    return [list(zip(each_permutation, list2)) for each_permutation in itertools.permutations(list1, len(list2))]
+
+def sum_all_scores(metric_dict, loc):
+    return metric_dict['Effect'][loc]+metric_dict['Cause'][loc]+metric_dict['Signal'][loc]+metric_dict['All'][loc]
+
+def flatten(t):
+    return [item for sublist in t for item in sublist]
+
+def del_item_in_list(thelist, locs):
+    for i,l in enumerate(sorted(locs)):
+        thelist.pop(l-i)
+    return thelist
+
+def keep_best_combinations_only(num_rels, to_compare, for_kalpha, exactmatch, onesidebound, tokenoverlap):
+    # sents with mismatched rels
+    for sentid in [i+1 for i,r in enumerate(num_rels) if r==0]:
+
+        # to compare : (8, 0, 0), (8, 0, 1), (8, 1, 0), (8, 1, 1)
+        # choose the best combi
+
+        indexes = [i for i, (s,a,b) in enumerate(to_compare) if s==sentid]
+        if len(indexes)<=1:
+            continue
+        else:
+            ddict = {}
+            for i in indexes:
+                ddict[to_compare[i]]=sum_all_scores(exactmatch,i)+sum_all_scores(onesidebound,i)+sum_all_scores(tokenoverlap,i)
+
+            thelist = range(to_compare[i][-1]+1)
+            combi_list = get_combinations(thelist,thelist)
+            combi_scores = []
+            for combi in combi_list:
+                score = 0
+                for (a,b) in combi:
+                    score+=ddict[(sentid,a,b)]
+                combi_scores.append(score)
+
+            retain_index = max(range(len(combi_scores)), key=combi_scores.__getitem__)
+            remove_items = [(sentid,a,b) for a,b in flatten([c for i,c in enumerate(combi_list) if i!=retain_index])]
+
+            remove_index = [i for i,c in enumerate(to_compare) if c in remove_items]
+            to_compare = del_item_in_list(to_compare, remove_index)
+            for_kalpha = del_item_in_list(for_kalpha, remove_index)
+            for k,v in exactmatch.items():
+                exactmatch[k]=del_item_in_list(v, remove_index)
+            for k,v in onesidebound.items():
+                onesidebound[k]=del_item_in_list(v, remove_index)
+            for k,v in tokenoverlap.items():
+                tokenoverlap[k]=del_item_in_list(v, remove_index)
+
 
 def get_ref_df(save_folder=None):
     # Change per run: Only amend "adds_ref_path"
@@ -39,7 +94,6 @@ def get_ref_df(save_folder=None):
 
     return ref_df
 
-
 def open_json(json_file_path, data_format=list):
     if data_format==dict or data_format=='dict':
         with open(json_file_path) as json_file:
@@ -54,7 +108,6 @@ def open_json(json_file_path, data_format=list):
         raise NotImplementedError
     return data
 
-
 def find_sents_needed(sent2locid, search_min, search_max):
     sents_needed = []
     for k,v in sent2locid.items():
@@ -67,7 +120,6 @@ def find_sents_needed(sent2locid, search_min, search_max):
             break
         sents_needed.append(k+1)
     return sents_needed
-
 
 def remap_index(del_begin, del_end, begin, end, verbose=False):
     if begin>del_end and end>del_end: ### [del_begin---del_end]---(begin---end)
@@ -97,7 +149,6 @@ def remap_index(del_begin, del_end, begin, end, verbose=False):
         print(f'Undefined: {(del_begin,del_end)}, {(begin, end)}')
         
     return (begin, end)
-
 
 def format_report(annotations, global_errors, span2sentid):
     report = []
@@ -151,7 +202,6 @@ def format_report(annotations, global_errors, span2sentid):
 
     return pd.DataFrame(report, columns=cols)
 
-
 def get_s_e_t_list(s_head=[], e_head=[], s_tail=[], e_tail=[], s_sig=[], e_sig=[]):
     locs, tags = [], []
     if isinstance(s_head,(np.ndarray,list)):
@@ -192,14 +242,16 @@ def get_s_e_t_list(s_head=[], e_head=[], s_tail=[], e_tail=[], s_sig=[], e_sig=[
 
 class Subtask2Annotations(object):
     def __init__(self, ref_df, root_ann_folder, folder_name, annotators, add_cleanedtext=True) -> None:
-        
+        # Option to include data cleaning layer or not
         self.add_cleanedtext = add_cleanedtext
 
+        # For file path locations
         self.ref_df = ref_df
         self.ann_folder = os.path.join(root_ann_folder, folder_name)
         self.folder_name = folder_name
         self.annotators = annotators
 
+        # For general annotations
         self.annotations={}
         self.stored_relations={}
         self.spanids_w_rel = []
@@ -213,7 +265,153 @@ class Subtask2Annotations(object):
         }
         self.span2sentid = {}
 
+        # For agreement scores
+        self.metrics = {}
+        self.reset_metrics()
     
+
+    def reset_metrics(self):
+        self.metrics = {
+            'compareAnns': [],
+            'NumRels': [],
+            'ExactMatch':{'Effect':[],'Cause':[],'Signal':[],'All':[]},
+            'OneSideBound':{'Effect':[],'Cause':[],'Signal':[],'All':[]},
+            'TokenOverlap':{'Effect':[],'Cause':[],'Signal':[],'All':[]},
+            'KAlpha':{'Effect':[],'Cause':[],'Signal':[],'All':[]}
+        }
+
+    def calculate_pico(self):
+
+        dummy_dict = {
+            'Signal': '',
+            'Signal_loc': (-1, -1),
+            'Effect': '',
+            'Effect_loc': (-1, -1),
+            'Cause': '',
+            'Cause_loc': (-1, -1)
+        }
+
+        for (annotator1, annotator2) in list(combinations(self.annotators,2)):
+
+            to_compare = []
+            for_kalpha = []
+            num_rels = []
+            exactmatch = {'Effect':[],'Cause':[],'Signal':[],'All':[]}
+            onesidebound = {'Effect':[],'Cause':[],'Signal':[],'All':[]}
+            tokenoverlap = {'Effect':[],'Cause':[],'Signal':[],'All':[]}
+
+            for sentid in set(self.span2sentid.values())-set([0]): # EXCLUDE FIRST EXAMPLE IS A DEMO 
+                anns1, anns2 = [], []
+                for k,v in self.stored_relations.items():
+                    if self.span2sentid[k]==sentid:
+                        if v['Annotator']==annotator1:
+                            anns1.append(v)
+                        elif v['Annotator']==annotator2:
+                            anns2.append(v)
+
+                if len(anns1)==len(anns2):
+                    num_rels.append(1)
+                else:
+                    num_rels.append(0)
+                    if len(anns1)<len(anns2):
+                        dummy_dict['Annotator']=annotator1
+                        anns1.extend([dummy_dict]*(len(anns2)-len(anns1)))
+                    else:
+                        dummy_dict['Annotator']=annotator2
+                        anns2.extend([dummy_dict]*(len(anns1)-len(anns2)))
+                
+                for a1, ann1 in enumerate(anns1):
+                    for a2, ann2 in enumerate(anns2):
+                        
+                        fka = []
+                        for k in ['Effect','Cause','Signal']:
+                            
+                            if k in ann1.keys():
+                                begin, end = ann1[f'{k}_loc']
+                                if begin==end==-1:
+                                    fka.append([k,begin,end,ann1['Annotator']])
+                                else:
+                                    text = self.annotations[sentid]['retrieve_info']['text']
+                                    buffer = self.annotations[sentid]['retrieve_info']['begin']
+                                    start = len(text[:begin-buffer].split(' '))-1
+                                    stop = start+len(text[begin-buffer:end-buffer].split(' '))
+                                    fka.append([k,start,stop,ann1['Annotator']])
+                            if k in ann2.keys():
+                                begin, end = ann2[f'{k}_loc']
+                                if begin==end==-1:
+                                    fka.append([k,begin,end,ann1['Annotator']])
+                                else:
+                                    text = self.annotations[sentid]['retrieve_info']['text']
+                                    buffer = self.annotations[sentid]['retrieve_info']['begin']
+                                    start = len(text[:begin-buffer].split(' '))-1
+                                    stop = start+len(text[begin-buffer:end-buffer].split(' '))
+                                    fka.append([k,start,stop,ann2['Annotator']])
+                            
+                            if k in ann1.keys() and k in ann2.keys():
+                                if ann1[f'{k}_loc']==ann2[f'{k}_loc']:
+                                    exactmatch[k].append(1)
+                                else:
+                                    exactmatch[k].append(0)
+
+                                if ann1[f'{k}_loc'][0]==ann2[f'{k}_loc'][0] or ann1[f'{k}_loc'][1]==ann2[f'{k}_loc'][1]:
+                                    onesidebound[k].append(1)
+                                else:
+                                    onesidebound[k].append(0)
+
+                                if any(i in range(ann1[f'{k}_loc'][0],ann1[f'{k}_loc'][1]) for i in range(ann2[f'{k}_loc'][0],ann2[f'{k}_loc'][1])):
+                                    tokenoverlap[k].append(1)
+                                else:
+                                    tokenoverlap[k].append(0)
+
+                            elif k in ann1.keys() or k in ann2.keys():
+                                exactmatch[k].append(0)
+                                onesidebound[k].append(0)
+                                tokenoverlap[k].append(0)
+                                
+                            else: # Both missing, E.g. Signal
+                                exactmatch[k].append(1)
+                                onesidebound[k].append(1)
+                                tokenoverlap[k].append(1)
+                        
+                        to_compare.append((sentid,a1,a2))
+                        for_kalpha.append(fka)
+                        exactmatch['All'].append(int(all([True if exactmatch[k][-1]==1 else False for k in ['Effect','Cause','Signal']])))
+                        onesidebound['All'].append(int(all([True if onesidebound[k][-1]==1 else False for k in ['Effect','Cause','Signal']])))
+                        tokenoverlap['All'].append(int(all([True if tokenoverlap[k][-1]==1 else False for k in ['Effect','Cause','Signal']])))
+
+            keep_best_combinations_only(num_rels, to_compare, for_kalpha, exactmatch, onesidebound, tokenoverlap)
+
+            self.metrics['compareAnns'].append((annotator1,annotator2))
+            self.metrics['NumRels'].append(np.mean(num_rels))
+            for k,v in exactmatch.items():
+                self.metrics['ExactMatch'][k].append(np.mean(v))
+            for k,v in onesidebound.items():
+                self.metrics['OneSideBound'][k].append(np.mean(v))
+            for k,v in tokenoverlap.items():
+                self.metrics['TokenOverlap'][k].append(np.mean(v))
+            
+            overall = {'Effect':[],'Cause':[],'Signal':[],'All':[]}
+            for i,anns in enumerate(for_kalpha):
+                sentid=to_compare[i][0]
+                text = self.annotations[sentid]['retrieve_info']['text']
+                splitted = text.rstrip().split(' ')
+                doc_length = len(splitted)
+                all_df = pd.DataFrame(anns,columns=['tag', 'start', 'end', 'annotator'])
+                all_df = all_df[all_df['end']>=0]
+                all_df['end'] = all_df['end']-1 # Need to be inclusive
+                all_df["focus"] = "result" # This is just a placeholder
+                all_df['entity'] = all_df[['start', 'end', 'tag']].apply(
+                    lambda row: (row.start, row.end, row.tag), axis=1)
+                result = get_result(all_df, doc_length, overlap=True, empty_tag="empty")
+            #     print(f"{sentid} -> Krippendorff's Alpha is : " + str(result))
+                for k,(value,counts) in result['result'].items():
+                    overall[k].extend([value]*counts)
+                    overall['All'].extend([value]*counts)
+
+            for k,v in overall.items():
+                self.metrics['KAlpha'][k].append(np.mean(v))
+
+
     def parse(self):
 
         ##### Obtain annotations #####
@@ -600,7 +798,6 @@ def join_all_ces(ref_df, root_ann_folder, samples):
         os.path.join(root_ann_folder, "reviewed_all_s{:02d}_s{:02d}.csv".format(min(samples),sub)), 
         index=False, encoding='utf-8-sig'
         )
-
 
 def join_all(root_ann_folder, samples):
     output_df = pd.DataFrame()

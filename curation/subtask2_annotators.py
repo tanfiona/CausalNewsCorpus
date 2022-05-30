@@ -2,6 +2,7 @@ import os
 import pandas as pd
 from tqdm import tqdm
 from subtask2 import Subtask2Annotations, get_ref_df
+from itertools import combinations
 
 
 if __name__ == "__main__":
@@ -15,6 +16,8 @@ if __name__ == "__main__":
     ref_df = get_ref_df()
     passed = 0
     for sub in tqdm(samples):
+
+        # Parse annotations to CSV
         st2a = Subtask2Annotations(
             ref_df = ref_df,
             root_ann_folder = root_ann_folder, 
@@ -24,5 +27,14 @@ if __name__ == "__main__":
             )
         st2a.parse()
         passed+=st2a.prepare_report(sub, split_by_annotator=True)
+        
+        # Agreement scores
+        st2a.calculate_pico()
+        print(st2a.metrics)
+        st2a.reset_metrics()
+
     print(f'Proportion of passed subsamples: {passed/len(samples)}')
+
+
+    
 
