@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 from collections import Counter, defaultdict
+from pandas import ExcelWriter
 
 
 def get_ref_df(save_folder=None):
@@ -190,8 +191,10 @@ def get_s_e_t_list(s_head=[], e_head=[], s_tail=[], e_tail=[], s_sig=[], e_sig=[
 
 
 class Subtask2Annotations(object):
-    def __init__(self, ref_df, root_ann_folder, folder_name, annotators) -> None:
+    def __init__(self, ref_df, root_ann_folder, folder_name, annotators, add_cleanedtext=True) -> None:
         
+        self.add_cleanedtext = add_cleanedtext
+
         self.ref_df = ref_df
         self.ann_folder = os.path.join(root_ann_folder, folder_name)
         self.folder_name = folder_name
@@ -243,7 +246,10 @@ class Subtask2Annotations(object):
 
     def get_ces_output(self):
         output = []
-        output_cols = ['Index', 'CleanedText', 'Cause', 'Effect', 'Signal', 'Annotator']
+        if self.add_cleanedtext:
+            output_cols = ['Index', 'CleanedText', 'Cause', 'Effect', 'Signal', 'Annotator']
+        else:
+            output_cols = ['Index', 'Cause', 'Effect', 'Signal', 'Annotator']
         for k,v in self.stored_relations.items():
             row = [self.span2sentid[k]+1]
 
@@ -328,24 +334,33 @@ class Subtask2Annotations(object):
         return data
 
 
-    def prepare_report(self):
+    def prepare_report(self, sub, split_by_annotator=False):
         
         ##### Reporting #####
         report = format_report(self.annotations, self.global_errors, self.span2sentid)
         report['Index']+=1
+
+        ces_output = self.get_ces_output()
+        ces_output['source']=self.folder_name
+        ces_output.to_csv(os.path.join(self.ann_folder, "reviewed_all_s{:02d}.csv".format(sub)), index=False, encoding='utf-8-sig')
+        
+        output = self.get_output(os.path.splitext(self.folder_name)[0])
+        output.to_csv(os.path.join(self.ann_folder, f"reviewed_all.csv"), index=False, encoding='utf-8-sig')
+
+        if split_by_annotator:
+            # Annotator Split
+            fn = os.path.splitext(os.path.basename(self.ann_folder))[0]
+            for a in ces_output['Annotator'].unique():
+                xls_path = os.path.join(self.ann_folder, f"{fn}_{a}.xlsx")
+                with ExcelWriter(xls_path) as writer:
+                    report[report['Annotator']==a].to_excel(writer,'errors',index=False)
+                    ces_output[ces_output['Annotator']==a].to_excel(writer,'success',index=False)
 
         if len(report)>0:
             report.to_csv(os.path.join(self.ann_folder, "error_report_s{:02d}.csv".format(sub)), index=False, encoding='utf-8-sig')
             print(f'failed: {self.folder_name}')
             return 0 # failed
         else:
-            ces_output = self.get_ces_output()
-            ces_output['source']=self.folder_name
-            ces_output.to_csv(os.path.join(self.ann_folder, "reviewed_all_s{:02d}.csv".format(sub)), index=False, encoding='utf-8-sig')
-            
-            output = self.get_output(os.path.splitext(self.folder_name)[0])
-            output.to_csv(os.path.join(self.ann_folder, f"reviewed_all.csv"), index=False, encoding='utf-8-sig')
-
             return 1 # pass
 
 
@@ -429,9 +444,10 @@ class Subtask2Annotations(object):
                     'Effect':effect_text, 
                     'Relation':rel_label, 
                     'Annotator': ann_name,
-                    'Effect_loc': (effect['begin'],effect['end']),
-                    'CleanedText': text.strip()
+                    'Effect_loc': (effect['begin'],effect['end'])
                     }
+                if self.add_cleanedtext:
+                    self.stored_relations[e_spanid]['CleanedText'] = text.strip()
 
             if cs_label not in self.stored_relations[e_spanid].keys():
                 self.stored_relations[e_spanid][cs_label]=cause_or_sig_text
@@ -519,55 +535,56 @@ class Subtask2Annotations(object):
                     }
                 }
 
-        ##### Clean Text & Annotations #####
-        layer = 'DataCleaning'
-        if layer in ann_file['_views']['_InitialView'].keys():
-            list_of_dc_actions = ann_file['_views']['_InitialView'][layer]
-            list_of_dc_actions = [i for i in list_of_dc_actions if i[layer]=='Delete']
-        else:
-            list_of_dc_actions = []
-        
-        for dc_infos in list_of_dc_actions:
-
-            sents_needed = []
-            if 'begin' in dc_infos.keys():
-                del_begin = dc_infos['begin']
-                sents_needed.extend(find_sents_needed(sent2locid, del_begin, del_begin))
+        if self.add_cleanedtext:
+            ##### Clean Text & Annotations #####
+            layer = 'DataCleaning'
+            if layer in ann_file['_views']['_InitialView'].keys():
+                list_of_dc_actions = ann_file['_views']['_InitialView'][layer]
+                list_of_dc_actions = [i for i in list_of_dc_actions if i[layer]=='Delete']
             else:
-                del_begin = None
-
-            if 'end' in dc_infos.keys():
-                del_end = dc_infos['end']
-                sents_needed.extend(find_sents_needed(sent2locid, del_end, del_end))
-            else:
-                del_end = None
-
-            sents_needed = list(set(sents_needed))
-            if len(sents_needed)>1:
-                raise ValueError('We should be annotating dc layer within sentences only!')
-            else:
-                sentid = sents_needed[0]
-
-            begin = self.annotations[sentid]['retrieve_info']['begin']
-            end = self.annotations[sentid]['retrieve_info']['end']
-            text = self.annotations[sentid]['retrieve_info']['text']
-            if del_begin is None:
-                del_begin = begin
-            if del_end is None:
-                del_end = end
-                
-            # reindex sentence
-            begin, end = remap_index(del_begin, del_end, begin, end)
-            text = text[:del_begin-begin]+text[del_end-begin:]
-            self.annotations[sentid]['retrieve_info']['begin'] = begin
-            self.annotations[sentid]['retrieve_info']['end'] = end
-            self.annotations[sentid]['retrieve_info']['text'] = text
+                list_of_dc_actions = []
             
-            # reindex spans
-            for k,v in self.annotations[sentid]['spans_info'].items():
-                begin, end = remap_index(del_begin, del_end, v['begin'], v['end'])
-                self.annotations[sentid]['spans_info'][k]['begin'] = begin
-                self.annotations[sentid]['spans_info'][k]['end'] = end
+            for dc_infos in list_of_dc_actions:
+
+                sents_needed = []
+                if 'begin' in dc_infos.keys():
+                    del_begin = dc_infos['begin']
+                    sents_needed.extend(find_sents_needed(sent2locid, del_begin, del_begin))
+                else:
+                    del_begin = None
+
+                if 'end' in dc_infos.keys():
+                    del_end = dc_infos['end']
+                    sents_needed.extend(find_sents_needed(sent2locid, del_end, del_end))
+                else:
+                    del_end = None
+
+                sents_needed = list(set(sents_needed))
+                if len(sents_needed)>1:
+                    raise ValueError('We should be annotating dc layer within sentences only!')
+                else:
+                    sentid = sents_needed[0]
+
+                begin = self.annotations[sentid]['retrieve_info']['begin']
+                end = self.annotations[sentid]['retrieve_info']['end']
+                text = self.annotations[sentid]['retrieve_info']['text']
+                if del_begin is None:
+                    del_begin = begin
+                if del_end is None:
+                    del_end = end
+                    
+                # reindex sentence
+                begin, end = remap_index(del_begin, del_end, begin, end)
+                text = text[:del_begin-begin]+text[del_end-begin:]
+                self.annotations[sentid]['retrieve_info']['begin'] = begin
+                self.annotations[sentid]['retrieve_info']['end'] = end
+                self.annotations[sentid]['retrieve_info']['text'] = text
+                
+                # reindex spans
+                for k,v in self.annotations[sentid]['spans_info'].items():
+                    begin, end = remap_index(del_begin, del_end, v['begin'], v['end'])
+                    self.annotations[sentid]['spans_info'][k]['begin'] = begin
+                    self.annotations[sentid]['spans_info'][k]['end'] = end
 
 
 def join_all_ces(ref_df, root_ann_folder, samples):
@@ -619,10 +636,11 @@ if __name__ == "__main__":
             ref_df = ref_df,
             root_ann_folder = root_ann_folder, 
             folder_name = "subtask2_s{:02d}.txt".format(sub),
-            annotators = ['CURATION_USER']
+            annotators = ['CURATION_USER'],
+            add_cleanedtext = True
             )
         st2a.parse()
-        passed+=st2a.prepare_report()
+        passed+=st2a.prepare_report(sub)
     print(f'Proportion of passed subsamples: {passed/len(samples)}')
 
     join_all_ces(ref_df, root_ann_folder, samples)
