@@ -1,8 +1,5 @@
-import os
-import pandas as pd
 from tqdm import tqdm
 from subtask2 import Subtask2Annotations, get_ref_df
-from itertools import combinations
 
 
 if __name__ == "__main__":
