@@ -13,6 +13,9 @@ from pandas import ExcelWriter
 import itertools
 from itertools import combinations
 from kAlpha import get_result
+# midfix = "s" 
+midfix = "test_s"
+
 
 def get_combinations(list1,list2):
     return [list(zip(each_permutation, list2)) for each_permutation in itertools.permutations(list1, len(list2))]
@@ -474,7 +477,7 @@ class Subtask2Annotations(object):
 
             sentid = self.span2sentid[k] # 0 (Note we add 1 to all sentid later)
             text = self.annotations[sentid]['retrieve_info']['text'] # TRS condemns arrests March 11 ...
-
+            
             slice_df = self.ref_df[(self.ref_df['source']==source) & (self.ref_df['Index']==sentid+1)]
             
             ref_text = str(slice_df['text'].iloc[0]) # ADILABAD : TRS condemns arrests March 11 ...
@@ -540,11 +543,8 @@ class Subtask2Annotations(object):
 
         ces_output = self.get_ces_output()
         ces_output['source']=self.folder_name
-        ces_output.to_csv(os.path.join(self.ann_folder, "reviewed_all_s{:02d}.csv".format(sub)), index=False, encoding='utf-8-sig')
+        ces_output.to_csv(os.path.join(self.ann_folder, "reviewed_all_{0}{1:02d}.csv".format(midfix, sub)), index=False, encoding='utf-8-sig')
         
-        output = self.get_output(os.path.splitext(self.folder_name)[0])
-        output.to_csv(os.path.join(self.ann_folder, f"reviewed_all.csv"), index=False, encoding='utf-8-sig')
-
         if split_by_annotator:
             # Annotator Split
             fn = os.path.splitext(os.path.basename(self.ann_folder))[0]
@@ -555,10 +555,12 @@ class Subtask2Annotations(object):
                     ces_output[ces_output['Annotator']==a].to_excel(writer,'success',index=False)
 
         if len(report)>0:
-            report.to_csv(os.path.join(self.ann_folder, "error_report_s{:02d}.csv".format(sub)), index=False, encoding='utf-8-sig')
+            report.to_csv(os.path.join(self.ann_folder, "error_report_{0}{1:02d}.csv".format(midfix, sub)), index=False, encoding='utf-8-sig')
             print(f'failed: {self.folder_name}')
             return 0 # failed
         else:
+            output = self.get_output(os.path.splitext(self.folder_name)[0])
+            output.to_csv(os.path.join(self.ann_folder, f"reviewed_all.csv"), index=False, encoding='utf-8-sig')
             return 1 # pass
 
 
@@ -669,11 +671,20 @@ class Subtask2Annotations(object):
         text=self.clean(ann_file['_referenced_fss'][sofa]['sofaString'])
         
         sent2locid = {-1:-2}
-        counter = 0
-        for sent in text.split('\r\n'):
+        for counter, sent in enumerate(text.split('\r\n')):
             sent2locid[counter]=sent2locid[counter-1]+len(sent)+2
-            counter+=1
-        
+            # Initialise
+            sent_begin, sent_end = max(0,sent2locid[counter-1]), min(sent2locid[counter]+2,len(text))
+            self.annotations[counter]={
+                'spans_info': {},
+                'retrieve_info': {
+                    'sofa': sofa,
+                    'begin': sent_begin,
+                    'end': sent_end,
+                    'text': text[sent_begin:sent_end]
+                }
+            }
+
         ##### Get Marked Spans #####
         layer = 'CauseEffectSignal'
         list_of_span_ids = ann_file['_views']['_InitialView'][layer]
@@ -723,15 +734,7 @@ class Subtask2Annotations(object):
                 self.annotations[sentid]['spans_info'][span_id]=span_dict
             else:
                 # initialise
-                self.annotations[sentid]={
-                    'spans_info': {span_id: span_dict},
-                    'retrieve_info': {
-                        'sofa': sofa,
-                        'begin': sent_begin,
-                        'end': sent_end,
-                        'text': text[sent_begin:sent_end]
-                    }
-                }
+                raise ValueError('All sentences should be initialised at sent2locid creation step.')
 
         if self.add_cleanedtext:
             ##### Clean Text & Annotations #####
@@ -788,21 +791,22 @@ class Subtask2Annotations(object):
 def join_all_ces(ref_df, root_ann_folder, samples):
     output_df = pd.DataFrame()
     for sub in samples:
-        folder_name = "subtask2_s{:02d}.txt".format(sub)
+        folder_name = "subtask2_{0}{1:02d}.txt".format(midfix, sub)
         ann_folder = os.path.join(root_ann_folder, folder_name)
-        output = pd.read_csv(os.path.join(ann_folder, "reviewed_all_s{:02d}.csv".format(sub)))
+        output = pd.read_csv(os.path.join(ann_folder, "reviewed_all_{0}{1:02d}.csv".format(midfix, sub)))
         output_df = pd.concat([output_df, output], axis=0)
     output_df = output_df.reset_index(drop=True)
+    output_df['source'] = output_df['source'].apply(lambda x: os.path.splitext(x)[0])
     final_df = ref_df.merge(output_df, how='right', on=['source','Index'])
     final_df.to_csv(
-        os.path.join(root_ann_folder, "reviewed_all_s{:02d}_s{:02d}.csv".format(min(samples),sub)), 
+        os.path.join(root_ann_folder, "reviewed_all_{0}{1:02d}_s{2:02d}.csv".format(midfix, min(samples), sub)), 
         index=False, encoding='utf-8-sig'
         )
 
 def join_all(root_ann_folder, samples):
     output_df = pd.DataFrame()
     for sub in samples:
-        folder_name = "subtask2_s{:02d}.txt".format(sub)
+        folder_name = "subtask2_{0}{1:02d}.txt".format(midfix, sub)
         ann_folder = os.path.join(root_ann_folder, folder_name)
         output = pd.read_csv(os.path.join(ann_folder, f"reviewed_all.csv"))
         output_df = pd.concat([output_df, output], axis=0)
@@ -822,8 +826,8 @@ if __name__ == "__main__":
         python subtask2.py
     """
     # Change per run: 
-    samples = list(range(1,8+1))
-    root_ann_folder = r"D:\61 Challenges\2022_CASE_\WebAnno\reviewing_annotations\Subtask2\06. Round4\curation"
+    samples = [1] #list(range(1,8+1))
+    root_ann_folder = r"D:\61 Challenges\2022_CASE_\WebAnno\reviewing_annotations\Subtask2\07. Round5\curation"
     
     # Do not touch the remaining:
     ref_df = get_ref_df(root_ann_folder)
@@ -832,7 +836,7 @@ if __name__ == "__main__":
         st2a = Subtask2Annotations(
             ref_df = ref_df,
             root_ann_folder = root_ann_folder, 
-            folder_name = "subtask2_s{:02d}.txt".format(sub),
+            folder_name = "subtask2_{0}{1:02d}.txt".format(midfix, sub),
             annotators = ['CURATION_USER'],
             add_cleanedtext = True
             )
