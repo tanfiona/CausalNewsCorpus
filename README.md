@@ -96,7 +96,7 @@ For Cause-Effect Span Detection, we only implemented a random generator shown un
 
 | # | User     | Date of Last Entry | Recall     | Precision  | F1         | Accuracy  | MCC        |
 |:-:|----------|--------------------|------------|------------|------------|-----------|------------|
-| 1 | tanfiona | 05/24/22           | 0.0278     | 0.0278     | 0.0278     | 0.2221    | -          |
+| 1 | tanfiona | 06/08/22           | 0.0217     | 0.0217     | 0.0217     | 0.2084    | -          |
 
 For a better starting model, we recommend partipants to adapt the token classification baseline model from [Huggingface's `run_ner_no_trainer.py` script](https://github.com/huggingface/transformers/blob/master/examples/pytorch/token-classification/run_ner_no_trainer.py). 
 

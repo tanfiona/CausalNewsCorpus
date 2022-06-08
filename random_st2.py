@@ -178,7 +178,7 @@ def combine_dicts(d1,d2):
     return d0
 
 
-def get_random_predictions(reference_file, do_eval=False):
+def get_random_predictions(reference_file, preds_per_sent=3, do_eval=False):
 
     # open file
     ref_df = pd.read_csv(reference_file)
@@ -194,9 +194,12 @@ def get_random_predictions(reference_file, do_eval=False):
     pred_list = []
     for i, ref in enumerate(refs):
         tokens, ce_ref, sig_ref = ref
-        ce_pred = get_random_ce_pred(ce_ref, verbose=False)
-        sig_pred = get_random_sig_pred(sig_ref, verbose=False)
-        pred_list.append({'index':i,'prediction':get_text_w_pairs(tokens, ce_pred, sig_pred)})
+        p = []
+        for _ in range(preds_per_sent):
+            ce_pred = get_random_ce_pred(ce_ref, verbose=False)
+            sig_pred = get_random_sig_pred(sig_ref, verbose=False)
+            p.append(get_text_w_pairs(tokens, ce_pred, sig_pred))
+        pred_list.append({'index':i,'prediction':p})
 
         if do_eval:
             ce_metric.add(
@@ -253,5 +256,5 @@ def get_random_predictions(reference_file, do_eval=False):
 
 
 if __name__ == "__main__":
-    reference_file = 'data/dev_subtask2.csv' # Amend this where needed
-    get_random_predictions(reference_file, do_eval=True)
+    reference_file = 'data/dev_subtask2_text.csv' # Amend this where needed
+    get_random_predictions(reference_file, preds_per_sent=1, do_eval=False)
