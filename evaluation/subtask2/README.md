@@ -3,11 +3,25 @@
 ## Submission instructions
 The script takes one prediction file as the input. Your submission file must be a JSON file which is then zipped. We will only take the first file in the zip folder, so do not zip multiple files together.
 
-{"index": 0, "prediction": "`<ARG0>`Dissatisfied with the package`</ARG0>` , `<ARG1>`workers staged an all-nigh sit-in`</ARG1>` ."}<br>
-{"index": 1, "prediction": "`<ARG1>`Three people were killed`</ARG1>` `<ARG1>`and 69 others injured`</ARG1>` `<ARG0>`in the explosion`</ARG0>` ."}<br>
-...
+```
+{"index": 0, "prediction": ["<ARG0>Chale was allegedly chased</ARG0> <SIG0>by</SIG0> <ARG1>a group of about 30 people</ARG1> and was hacked to death with pangas , axes and spears ."]}
+{"index": 1, "prediction": ["His attackers allegedly drank his blood ."]}
+{"index": 2, "prediction": ["<ARG0>Dissatisfied with the package</ARG0> , <ARG1>workers staged an all-nigh sit-in</ARG1> ."]}
+```
 
-A sample file is available [here](sample/input/res/submission.json). Also, make sure that the index order in the submission file is the same as the order in the original test data. The only exception is for examples with multiple relations (E.g. Multiple 'eg_id' per unique 'corpus'x'doc_id'x'sent_id'). Our code will automatically extract the combination that results in the best F1 score, so you do not need to worry about how to order the predictions of such multi-relation examples.
+<br>
+
+
+A sample file is available [here](sample/input/res/submission.json). Also, make sure that the index order in the submission file is the same as the order in the original test data. The target label corresponds to the `causal_text_w_pairs` column in the reference file [here](sample/input/ref/trtuh.csv). You do not need to worry about the order of your predictions within this column. Our code will automatically extract the combination that results in the best F1 score. 
+
+However, we will only compare with the number of examples that the true label has.  You do need to take into account the number of relations in your predictions, keeping in mind there are multi-relation examples.
+
+E.g. 
+
+* #predictions>#actual: If a sentence has 1 annotation, but you predicted 3 relations, we will only keep the first prediction.
+* #predictions<#actual: If a sentence has 3 annotated relations, but you predicted 2 relations, we will assume all tokens are not-Cause/not-Effect/not-Signal for the last one.
+
+<br>
 
 ## Testing the Script Offline
 The evaluation script can run offline using the following command.

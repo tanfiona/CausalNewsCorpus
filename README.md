@@ -43,7 +43,7 @@ The following datasets are used in our experiments, but not released, due to cop
 <b>Target column: `label`</b>
 
 ### Running BERT baseline:
-Given a `<train.csv>` and `<val.csv>` file with columns `index`,`text`,`label` (`label` values should be in 0,1 int format), use our `run_case.py` script to train, evaluate and predict using `--do_train`, `--do_eval` and `--do_predict` flags respectively.
+Given a `<train.csv>` and `<val.csv>` file with columns `index`,`text`,`label` (`label` values should be in 0,1 int format), use our [`run_case.py`](run_case.py) script to train, evaluate and predict using `--do_train`, `--do_eval` and `--do_predict` flags respectively.
 
 ```
 sudo python3 run_case.py \
@@ -85,18 +85,18 @@ The following datasets will be released as we progress into the Test Phase accor
 * `dev_subtask2_grouped.csv`: Development set (n=323) with partial gold labels.
 * `test_subtask2_text.csv`: Test set (n=311) without gold labels.
 
-To avoid revealing causal annotations for Subtask 1, we will be receiving span predictions on ALL sentences that tallies with the `_grouped` format. However, in evaluation, we only evaluate against the available annotated CAUSAL sentences.
+To avoid revealing causal annotations for Subtask 1, we will be receiving span predictions on ALL sentences that tallies with the `_grouped` format. However, in evaluation, we only evaluate against the available annotated CAUSAL sentences. See [Subtask 2's evaluation folder](evaluation/subtask2) for more information.
 
 <b>Target column: `causal_text_w_pairs`</b>
 
 During final testing phase, both train and dev examples can be used to train your model. The data format will be exactly the same, so you can first design your models to train and test on currently available train and dev sets.
 
 ### Running Random baseline:
-For Cause-Effect Span Detection, we only implemented a random generator shown under `random_st2.py` to obtain predictions. This baseline corresponds to [Codalab submission](https://codalab.lisn.upsaclay.fr/competitions/2299#results) by "tanfiona".
+For Cause-Effect Span Detection, we only implemented a random generator shown under [`random_st2.py`](random_st2.py) to obtain predictions. This baseline corresponds to [Codalab submission](https://codalab.lisn.upsaclay.fr/competitions/2299#results) by "tanfiona".
 
 | # | User     | Date of Last Entry | Recall     | Precision  | F1         | Accuracy  | MCC        |
 |:-:|----------|--------------------|------------|------------|------------|-----------|------------|
-| 1 | tanfiona | 05/24/22           | 0.0278     | 0.0278     | 0.0278     | 0.2221    | -          |
+| 1 | tanfiona | 06/08/22           | 0.0217     | 0.0217     | 0.0217     | 0.2084    | -          |
 
 For a better starting model, we recommend partipants to adapt the token classification baseline model from [Huggingface's `run_ner_no_trainer.py` script](https://github.com/huggingface/transformers/blob/master/examples/pytorch/token-classification/run_ner_no_trainer.py). 
 
