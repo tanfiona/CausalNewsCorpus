@@ -3,6 +3,7 @@ import re
 import json
 import os
 import sys
+from ast import literal_eval
 from datasets import load_metric
 import pandas as pd
 import itertools
@@ -189,6 +190,8 @@ def combine_dicts(d1,d2):
 
 def main(ref_df, pred_list, calculate_best_combi=True):
     # Convert
+    ref_df, pred_list = keep_relevant_rows_and_unstack(ref_df, pred_list)
+    assert(len(pred_list)==len(ref_df))
     refs = [get_BIO_all(i) for i in ref_df['text_w_pairs']]
     preds = [get_BIO_all(i) for i in pred_list]
     
@@ -230,6 +233,34 @@ def main(ref_df, pred_list, calculate_best_combi=True):
 
     return final_result
     
+
+def keep_relevant_rows_and_unstack(ref_df, predictions):
+    
+    # Keep only causal examples
+    predictions_w_true_labels = []
+    eg_id_counter = []
+    for i, row in ref_df.iterrows():
+        if row.num_rs>0:
+            p = predictions[i]
+            if len(p)>row.num_rs:
+                # Note if you predict more than the number of relations we have, we only keep the first few.
+                # We completely ignore the subsequent predictions.
+                p = p[:row.num_rs]
+            elif len(p)<row.num_rs:
+                # Incorporate dummy predictions if there are insufficient predictions
+                p.extend([row.text]*(row.num_rs-len(p)))
+            predictions_w_true_labels.extend(p)
+            eg_id_counter.extend(list(range(row.num_rs)))
+    ref_df = ref_df[ref_df['num_rs']>0].reset_index(drop=True)
+    
+    # Expand into single rows
+    ref_df['causal_text_w_pairs'] = ref_df['causal_text_w_pairs'].apply(lambda x: literal_eval(x))
+    ref_df = ref_df.explode('causal_text_w_pairs')
+    ref_df = ref_df.rename(columns={'causal_text_w_pairs':'text_w_pairs'})
+    ref_df['eg_id'] = eg_id_counter
+    
+    return ref_df.reset_index(drop=True), predictions_w_true_labels
+
 
 # Codalab Run
 input_dir = sys.argv[1]
