@@ -12,7 +12,7 @@ The script takes one prediction file as the input. Your submission file must be 
 <br>
 
 
-A sample file is available [here](sample/input/res/submission.json). Also, make sure that the index order in the submission file is the same as the order in the original test data. The target label corresponds to the `causal_text_w_pairs` column in the reference file [here](sample/input/ref/trtuh.csv). You do not need to worry about the order of your predictions within this column. Our code will automatically extract the combination that results in the best F1 score. 
+A sample file is available [here](sample/input/res/submission.json). Also, make sure that the index order in the submission file is the same as the order in the original test data. The target label corresponds to the `causal_text_w_pairs` column in the reference file [here](sample/input/ref/truth.csv). You do not need to worry about the order of your predictions within this column. Our code will automatically extract the combination that results in the best F1 score. 
 
 However, we will only compare with the number of examples that the true label has.  You do need to take into account the number of relations in your predictions, keeping in mind there are multi-relation examples.
 
