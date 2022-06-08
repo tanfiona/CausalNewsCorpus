@@ -74,14 +74,18 @@ The model and parameters will be saved in the specified `--output_dir`. Alongwhi
 # Subtask 2: Cause-Effect-Signal Span Detection
 ### Data:
 Within the `data` folder, we provide the datasets:
-* `train_subtask2.csv`: Train set (n=133) with gold labels.
-* `dev_subtask2_text.csv`: Development set (n=14) without gold labels.
+* `train_subtask2.csv`: Train set (160 sentences, 183 relations) with gold labels.
+* `train_subtask2_grouped.csv`: Train set (n=2925) with partial gold labels.
+* `dev_subtask2_text.csv`: Development set (n=323) without gold labels.
 
-The following datasets will be released as we progress along the shared task timeline:
-* `dev_subtask2.csv`: Development set (n=14) with gold labels.
-* `test_subtask2_text.csv`: Test set (n=TBC) without gold labels.
+The following datasets will be released as we progress into the Test Phase according to the shared task timeline:
+* `dev_subtask2.csv`: Development set (15 sentences, 18 relations) with gold labels.
+* `dev_subtask2_grouped.csv`: Development set (n=323) with partial gold labels.
+* `test_subtask2_text.csv`: Test set (n=311) without gold labels.
 
-We are in the midst of annotating more examples. During final testing phase, we will release more train and dev examples which can be used to train your model. The data format will be exactly the same, so you can first design your models to train and test on currently available train and dev sets.
+To avoid revealing causal annotations for Subtask 1, we will be receiving span predictions on ALL sentences that tallies with the `_grouped` format. However, in evaluation, we only evaluate against the available annotated CAUSAL sentences.
+
+During final testing phase, both train and dev examples can be used to train your model. The data format will be exactly the same, so you can first design your models to train and test on currently available train and dev sets.
 
 ### Running Random baseline:
 For Cause-Effect Span Detection, we only implemented a random generator shown under `random_st2.py` to obtain predictions. This baseline corresponds to [Codalab submission](https://codalab.lisn.upsaclay.fr/competitions/2299#results) by "tanfiona".
