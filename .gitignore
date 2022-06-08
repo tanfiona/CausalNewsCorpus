@@ -24,6 +24,7 @@ data/pdtb_mixed_resolved_forCASE_final.csv
 data/pdtb_mixed_resolved_forCASE_final_rsampled.csv
 data/dev_subtask1.csv
 data/dev_subtask2.csv
+data/dev_subtask2_grouped.csv
 data/test_subtask1.csv
 data/test_subtask2.csv
 data/test_subtask2_text.csv
