@@ -1,0 +1,17 @@
+Recall:0.7777777777777778
+Precision:0.7824074074074073
+F1:0.7760942760942761
+Accuracy:0.5699838622915546
+Number:11
+Cause_Recall:0.7142857142857143
+Cause_Precision:0.8214285714285714
+Cause_F1:0.7619047619047618
+Cause_Number:7
+Effect_Recall:0.8571428571428571
+Effect_Precision:0.7619047619047619
+Effect_F1:0.8051948051948051
+Effect_Number:7
+Signal_Recall:0.75
+Signal_Precision:0.75
+Signal_F1:0.75
+Signal_Number:4

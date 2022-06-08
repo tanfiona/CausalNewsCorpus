@@ -28,7 +28,7 @@ from typing import Optional
 
 import datasets
 import numpy as np
-from datasets import load_dataset, load_metric
+from datasets import load_dataset, load_metric, Features, Value
 
 import transformers
 from transformers import (
@@ -58,6 +58,12 @@ task_to_keys = {
     # "sst2": ("sentence", None),
     # "stsb": ("sentence1", "sentence2"),
     # "wnli": ("sentence1", "sentence2"),
+}
+
+ft = {
+    'index': Value('string'),
+    'text': Value('string'), 
+    'label': Value('int64')
 }
 
 logger = logging.getLogger(__name__)
@@ -269,10 +275,10 @@ def main():
     
     if data_args.train_file.endswith(".csv"):
         # Loading a dataset from local csv files
-        raw_datasets = load_dataset("csv", data_files=data_files, cache_dir=model_args.cache_dir)
+        raw_datasets = load_dataset("csv", data_files=data_files, cache_dir=model_args.cache_dir, features=Features(ft))
     else:
         # Loading a dataset from local json files
-        raw_datasets = load_dataset("json", data_files=data_files, cache_dir=model_args.cache_dir)
+        raw_datasets = load_dataset("json", data_files=data_files, cache_dir=model_args.cache_dir, features=Features(ft))
     
     # See more about loading any type of standard or custom dataset at
     # https://huggingface.co/docs/datasets/loading_datasets.html.
@@ -435,7 +441,7 @@ def main():
 
         # add custom metrics
         result["accuracy"] = (preds == p.label_ids).astype(np.float32).mean().item()
-        p,r,f,s = precision_recall_fscore_support(np.array(p.label_ids), np.array(preds), average='macro')
+        p,r,f,s = precision_recall_fscore_support(np.array(p.label_ids), np.array(preds), average='binary')
         result["f1"] = f
         result["precision"] = p
         result["recall"] = r
