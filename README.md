@@ -40,6 +40,8 @@ The following datasets will be released as we progress along the shared task tim
 The following datasets are used in our experiments, but not released, due to copyright issues:
 * `pdtb_mixed_resolved_forCASE_final`: Processed [PDTB V3.0](https://catalog.ldc.upenn.edu/LDC2019T05) dataset.
 
+<b>Target column: `label`</b>
+
 ### Running BERT baseline:
 Given a `<train.csv>` and `<val.csv>` file with columns `index`,`text`,`label` (`label` values should be in 0,1 int format), use our `run_case.py` script to train, evaluate and predict using `--do_train`, `--do_eval` and `--do_predict` flags respectively.
 
@@ -84,6 +86,8 @@ The following datasets will be released as we progress into the Test Phase accor
 * `test_subtask2_text.csv`: Test set (n=311) without gold labels.
 
 To avoid revealing causal annotations for Subtask 1, we will be receiving span predictions on ALL sentences that tallies with the `_grouped` format. However, in evaluation, we only evaluate against the available annotated CAUSAL sentences.
+
+<b>Target column: `causal_text_w_pairs`</b>
 
 During final testing phase, both train and dev examples can be used to train your model. The data format will be exactly the same, so you can first design your models to train and test on currently available train and dev sets.
 
