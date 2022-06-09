@@ -251,6 +251,7 @@ class Subtask2Annotations(object):
         # For file path locations
         self.ref_df = ref_df
         self.ann_folder = os.path.join(root_ann_folder, folder_name)
+        self.root_ann_folder = root_ann_folder
         self.folder_name = folder_name
         self.annotators = annotators
 
@@ -282,6 +283,30 @@ class Subtask2Annotations(object):
             'TokenOverlap':{'Effect':[],'Cause':[],'Signal':[],'All':[]},
             'KAlpha':{'Effect':[],'Cause':[],'Signal':[],'All':[]}
         }
+
+
+    def format_metrics(self):
+        subset = os.path.splitext(self.folder_name)[0]
+        metrics_df = []
+        annotators = []
+        for k,v in self.metrics.items():
+            if type(v)==list:
+                if k!='compareAnns':
+                    metrics_df.append([subset, k, 'All', np.mean(v)])
+                else:
+                    annotators = list(set(sum(v, ())))
+            else:
+                for kk,vv in v.items():
+                    metrics_df.append([subset, k, kk, np.mean(vv)])
+        metrics_df = pd.DataFrame(
+            metrics_df, 
+            columns=['Subsample','Metric','Span Type','Agreement']
+            )
+        metrics_df['Annotators'] = ','.join(annotators)
+        xx_roundxx = os.path.basename(os.path.dirname(self.root_ann_folder)) # E.g. "07. Round5" 
+        metrics_df['Round'] = re.search(r'(?<=Round)[^.]*',xx_roundxx)[0] # E.g. "5"
+        return metrics_df
+
 
     def calculate_pico(self):
 

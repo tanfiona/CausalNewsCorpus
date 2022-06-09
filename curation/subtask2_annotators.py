@@ -1,6 +1,9 @@
+import os
+import pandas as pd
 from tqdm import tqdm
 from subtask2 import Subtask2Annotations, get_ref_df
-
+# midfix = "s" 
+midfix = "test_s"
 
 if __name__ == "__main__":
     # Change per run: 
@@ -11,6 +14,7 @@ if __name__ == "__main__":
     
     # Do not touch the remaining:
     ref_df = get_ref_df()
+    metrics_df = pd.DataFrame()
     passed = 0
     for sub in tqdm(samples):
 
@@ -18,7 +22,7 @@ if __name__ == "__main__":
         st2a = Subtask2Annotations(
             ref_df = ref_df,
             root_ann_folder = root_ann_folder, 
-            folder_name = "subtask2_test_s{:02d}.txt".format(sub),
+            folder_name = "subtask2_{0}{1:02d}.txt".format(midfix, sub),
             annotators = A_odd if sub%2!=0 else B_even,
             add_cleanedtext = False
             )
@@ -27,9 +31,15 @@ if __name__ == "__main__":
         
         # Agreement scores
         st2a.calculate_pico()
+        df = st2a.format_metrics()
+        metrics_df = pd.concat([metrics_df,df],axis=0)
         print(st2a.metrics)
         st2a.reset_metrics()
 
+    metrics_df.to_csv(
+        os.path.join(root_ann_folder, "agreement_all_{0}{1:02d}_s{2:02d}.csv".format(midfix, min(samples), sub)), 
+        index=False, encoding='utf-8-sig'
+        )
     print(f'Proportion of passed subsamples: {passed/len(samples)}')
 
 
