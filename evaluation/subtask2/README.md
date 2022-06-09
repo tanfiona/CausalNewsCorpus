@@ -13,9 +13,9 @@ A sample file is available [here](sample/input/res/submission.json). The predict
 
 ❗Note1❗ Please ensure that the index order in the submission file is the same as the order in the original test data. You do not need to worry about the order of your predictions within this column. Our code will automatically extract the combination that results in the best F1 score, see illustration below.
 
-❗Note2❗ We will only compare with the number of examples that the true label has. You do need to take into account the number of relations in your predictions, keeping in mind there are multi-relation examples. E.g:
-* #predictions>#actual: If a sentence has 1 annotation, but you predicted 3 relations, we will only keep the first prediction.
-* #predictions<#actual: If a sentence has 3 annotated relations, but you predicted 2 relations, we will assume all tokens are not-Cause/not-Effect/not-Signal for the last one.
+❗Note2❗ We will only compare with the number of examples that the true label has. You need to sort and take into account the number of relations in your predictions, keeping in mind there are multi-relation examples. E.g:
+* #predictions>#actual: If a sentence has 1 annotated relations, but you predicted 3 relations, we will only keep the first prediction.
+* #predictions<#actual: If a sentence has 3 annotated relations, but you predicted 2 relations, we will assume all tokens are not-Cause/not-Effect/not-Signal for the missing prediction.
 
 
 | <img align="center" height=600 src="../../imgs/Subtask2_Illustrations_Evaluation.png"> | 
