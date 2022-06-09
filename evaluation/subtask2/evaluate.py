@@ -123,11 +123,16 @@ def format_results(ce_metric, sig_metric):
 
 
 def keep_best_combinations_only(row, refs, preds):
-    ce_metric = load_metric('seqeval')
-    sig_metric = load_metric('seqeval')
     final_results = {}
     best_metric = -1
+
     for points in get_combinations(row.id, row.id):
+        
+        # initialise
+        ce_metric = load_metric('seqeval')
+        sig_metric = load_metric('seqeval')
+
+        # add rounds
         for a,b in list(points):
             _, ce_ref, sig_ref = refs[a]
             _, ce_pred, sig_pred = preds[b]
@@ -140,6 +145,7 @@ def keep_best_combinations_only(row, refs, preds):
                 reference=sig_ref 
             )
     
+        # compute
         results = format_results(ce_metric, sig_metric)
         key_metric = float(results['Overall']['f1'])
         if key_metric>best_metric:

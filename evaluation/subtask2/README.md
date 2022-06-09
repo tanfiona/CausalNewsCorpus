@@ -9,17 +9,24 @@ The script takes one prediction file as the input. Your submission file must be 
 {"index": 2, "prediction": ["<ARG0>Dissatisfied with the package</ARG0> , <ARG1>workers staged an all-nigh sit-in</ARG1> ."]}
 ```
 
-<br>
+A sample file is available [here](sample/input/res/submission.json). 
 
+Please ensure that the index order in the submission file is the same as the order in the original test data. The target label corresponds to the `causal_text_w_pairs` column in the reference file [here](sample/input/ref/truth.csv). You do not need to worry about the order of your predictions within this column. Our code will automatically extract the combination that results in the best F1 score. 
 
-A sample file is available [here](sample/input/res/submission.json). Also, make sure that the index order in the submission file is the same as the order in the original test data. The target label corresponds to the `causal_text_w_pairs` column in the reference file [here](sample/input/ref/truth.csv). You do not need to worry about the order of your predictions within this column. Our code will automatically extract the combination that results in the best F1 score. 
-
-However, we will only compare with the number of examples that the true label has.  You do need to take into account the number of relations in your predictions, keeping in mind there are multi-relation examples.
+We will only compare with the number of examples that the true label has. You do need to take into account the number of relations in your predictions, keeping in mind there are multi-relation examples.
 
 E.g. 
 
 * #predictions>#actual: If a sentence has 1 annotation, but you predicted 3 relations, we will only keep the first prediction.
 * #predictions<#actual: If a sentence has 3 annotated relations, but you predicted 2 relations, we will assume all tokens are not-Cause/not-Effect/not-Signal for the last one.
+
+
+| <img align="center" height=250 src="../../imgs/Subtask2_Illustrations_Evaluation.png"> | 
+|:--:| 
+| *Infographic illustrating how we prcoess multi-relation examples for sequence evaluation.* |
+
+
+We use [`seqeval`](https://huggingface.co/metrics/seqeval) evaluation metrics, corresponding to CoNLL NER tasks. For more information, refer to [seqeval GitHub page](https://github.com/chakki-works/seqeval).
 
 <br>
 
