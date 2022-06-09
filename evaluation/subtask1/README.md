@@ -8,8 +8,9 @@ The script takes one prediction file as the input. Your submission file must be 
 {"index": 1, "prediction": 0}
 ```
 
-A sample file is available [here](sample/input/res/submission.json). Also, make sure that the index order in the submission file is the same as the 
-order in the reference data, available [here](sample/input/ref/truth.csv). 
+A sample file is available [here](sample/input/res/submission.json).
+
+❗Note1❗ Please ensure that the index order in the submission file is the same as the order in the reference data, available [here](sample/input/ref/truth.csv). 
 
 ## Testing the Script Offline
 The evaluation script can run offline using the following command.
