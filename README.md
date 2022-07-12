@@ -110,15 +110,17 @@ The predicted output will be saved in a JSON file as `outs/submission_random_st2
 
 If you used this repository or our corpus, please do cite us as follows:
 ```
-@inproceedings{tan-etal-2022-causal,
-    title = "The Causal News Corpus: Annotating Causal Relations in Event Sentences from News",
-    author = "Tan, Fiona Anting and Hürriyetoğlu, Ali and Caselli, Tommaso and Oostdijk, Nelleke and Nomoto, Tadashi and Hettiarachchi, Hansi and Ameer, Iqra and Uca, Onur and Liza, Farhana Ferdousi and Hu, Tiancheng",
-    booktitle = "Proceedings of the 13th Language Resources and Evaluation Conference",
-    month = June,
-    year = "2022",
-    address = "Marseille, France",
-    publisher = "European Language Resources Association",
-    language = "English"
+@InProceedings{tan-EtAl:2022:LREC,
+  author    = {Tan, Fiona Anting  and  HÃ¼rriyetoÄŸlu, Ali  and  Caselli, Tommaso  and  Oostdijk, Nelleke  and  Nomoto, Tadashi  and  Hettiarachchi, Hansi  and  Ameer, Iqra  and  Uca, Onur  and  Liza, Farhana Ferdousi  and  Hu, Tiancheng},
+  title     = {The Causal News Corpus: Annotating Causal Relations in Event Sentences from News},
+  booktitle      = {Proceedings of the Language Resources and Evaluation Conference},
+  month          = {June},
+  year           = {2022},
+  address        = {Marseille, France},
+  publisher      = {European Language Resources Association},
+  pages     = {2298--2310},
+  abstract  = {Despite the importance of understanding causality, corpora addressing causal relations are limited. There is a discrepancy between existing annotation guidelines of event causality and conventional causality corpora that focus more on linguistics. Many guidelines restrict themselves to include only explicit relations or clause-based arguments. Therefore, we propose an annotation schema for event causality that addresses these concerns. We annotated 3,559 event sentences from protest event news with labels on whether it contains causal relations or not. Our corpus is known as the Causal News Corpus (CNC). A neural network built upon a state-of-the-art pre-trained language model performed well with 81.20\% F1 score on test set, and 83.46\% in 5-folds cross-validation. CNC is transferable across two external corpora: CausalTimeBank (CTB) and Penn Discourse Treebank (PDTB). Leveraging each of these external datasets for training, we achieved up to approximately 64\% F1 on the CNC test set without additional fine-tuning. CNC also served as an effective training and pre-training dataset for the two external corpora. Lastly, we demonstrate the difficulty of our task to the layman in a crowd-sourced annotation exercise. Our annotated corpus is publicly available, providing a valuable resource for causal text mining researchers.},
+  url       = {https://aclanthology.org/2022.lrec-1.246}
 }
 ```
 
