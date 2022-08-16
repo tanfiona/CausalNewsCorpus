@@ -33,11 +33,11 @@ Within the `data` folder, we provide the datasets:
 * `CTB_forCASE.csv`: Processed [CausalTimeBank](https://hlt-nlp.fbk.eu/technologies/causal-timebank) dataset.
 * `CTB_forCASE_rsampled.csv`: Processed CausalTimeBank dataset and sampled for balanced class labels.
 
-The following datasets will be released as we progress along the shared task timeline:
+The following datasets have been released for the Test Phase according to the shared task timeline:
 * `dev_subtask1.csv`: Development set (n=323) with gold labels.
 * `test_subtask1_text.csv`: Test set (n=311) without gold labels.
 
-The following datasets are used in our experiments, but not released, due to copyright issues:
+The following datasets were used in our experiments, but not released, due to copyright issues:
 * `pdtb_mixed_resolved_forCASE_final`: Processed [PDTB V3.0](https://catalog.ldc.upenn.edu/LDC2019T05) dataset.
 
 <b>Target column: `label`</b>
@@ -80,7 +80,7 @@ Within the `data` folder, we provide the datasets:
 * `train_subtask2_grouped.csv`: Train set (n=2925) with partial gold labels.
 * `dev_subtask2_text.csv`: Development set (n=323) without gold labels.
 
-The following datasets will be released as we progress into the Test Phase according to the shared task timeline:
+The following datasets have been released for the Test Phase according to the shared task timeline:
 * `dev_subtask2.csv`: Development set (15 sentences, 18 relations) with gold labels.
 * `dev_subtask2_grouped.csv`: Development set (n=323) with partial gold labels.
 * `test_subtask2_text.csv`: Test set (n=311) without gold labels.
