@@ -2,15 +2,15 @@ import os
 import pandas as pd
 from tqdm import tqdm
 from subtask2 import Subtask2Annotations, get_ref_df
-# midfix = "s" 
-midfix = "test_s"
+midfix = "s" 
+# midfix = "test_s"
 
 if __name__ == "__main__":
     # Change per run: 
-    samples = [1,2] #list(range(1,8+1))
+    samples = [9,10,11,12,14,16,18,20] #list(range(1,8+1))
     A_odd = ['ali','farhana']
     B_even = ['tommaso','onur','tadashi']
-    root_ann_folder = r"D:\61 Challenges\2022_CASE_\WebAnno\reviewing_annotations\Subtask2\07. Round5\annotation"
+    root_ann_folder = r"D:\61 Challenges\2022_CASE_\WebAnno\reviewing_annotations\Subtask2\10. Round8\annotation"
     
     # Do not touch the remaining:
     ref_df = get_ref_df()

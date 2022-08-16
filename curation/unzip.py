@@ -23,7 +23,7 @@ if __name__ == "__main__":
     Unzip latest files
     """
     # Change per run: 
-    root_ann_folder = r"D:\61 Challenges\2022_CASE_\WebAnno\reviewing_annotations\Subtask2\07. Round5"
+    root_ann_folder = r"D:\61 Challenges\2022_CASE_\WebAnno\reviewing_annotations\Subtask2\10. Round8"
     
     # Do not touch the remaining:
     folder_names = ["annotation","curation"]

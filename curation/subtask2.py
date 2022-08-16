@@ -13,8 +13,8 @@ from pandas import ExcelWriter
 import itertools
 from itertools import combinations
 from kAlpha import get_result
-# midfix = "s" 
-midfix = "test_s"
+midfix = "s" 
+# midfix = "test_s"
 
 
 def get_combinations(list1,list2):
@@ -80,7 +80,17 @@ def get_ref_df(save_folder=None):
         r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s09.csv",
         r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s10.csv",
         r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s11.csv",
-        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s12.csv"
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s12.csv",
+        # round 7
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s13.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s14.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s15.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s16.csv",
+        # round 8
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s17.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s18.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s19.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s20.csv",
     ]
 
     ref_df = pd.read_csv(base_ref_path)
@@ -627,7 +637,8 @@ class Subtask2Annotations(object):
                     v_out['sentid'] = sentid
                     self.global_errors['no_label'].append(v_out)
                 if effect['label'] == 'Missing' == 'Missing':
-                    v_out['spanid'] = effect
+                    v_out = effect.copy()
+                    v_out['spanid'] = e_spanid
                     v_out['sentid'] = sentid
                     self.global_errors['no_label'].append(v_out)
                 continue # go next iter
@@ -851,8 +862,8 @@ if __name__ == "__main__":
         python subtask2.py
     """
     # Change per run: 
-    samples = [1,2] #list(range(1,8+1))
-    root_ann_folder = r"D:\61 Challenges\2022_CASE_\WebAnno\reviewing_annotations\Subtask2\07. Round5\curation"
+    samples = list(range(1,12+1))+[14,16,18,20] #list(range(1,8+1))
+    root_ann_folder = r"D:\61 Challenges\2022_CASE_\WebAnno\reviewing_annotations\Subtask2\10. Round8\curation"
     
     # Do not touch the remaining:
     ref_df = get_ref_df(root_ann_folder)
