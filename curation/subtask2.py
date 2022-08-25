@@ -862,7 +862,7 @@ if __name__ == "__main__":
         python subtask2.py
     """
     # Change per run: 
-    samples = list(range(1,12+1))+[14,16,18,20] #list(range(1,8+1))
+    samples = list(range(1,20+1)) #list(range(1,8+1))
     root_ann_folder = r"D:\61 Challenges\2022_CASE_\WebAnno\reviewing_annotations\Subtask2\10. Round8\curation"
     
     # Do not touch the remaining:

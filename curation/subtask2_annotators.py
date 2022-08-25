@@ -7,7 +7,7 @@ midfix = "s"
 
 if __name__ == "__main__":
     # Change per run: 
-    samples = [9,10,11,12,14,16,18,20] #list(range(1,8+1))
+    samples = [17,19] #list(range(1,8+1))
     A_odd = ['ali','farhana']
     B_even = ['tommaso','onur','tadashi']
     root_ann_folder = r"D:\61 Challenges\2022_CASE_\WebAnno\reviewing_annotations\Subtask2\10. Round8\annotation"
