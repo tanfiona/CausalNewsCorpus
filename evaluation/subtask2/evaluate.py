@@ -99,9 +99,13 @@ def format_results(ce_metric, sig_metric):
     final_results['Overall'] = {i:0 for i in metrics}
 
     results = sig_metric.compute()
-    final_results['Signal'] = results['S']
-    final_results['Overall']['accuracy'] += results['overall_accuracy']*results['S']['number']
-    accuracy_weight = results['S']['number']
+    if 'S' in results.keys():
+        s_results = results['S']
+    else:
+        s_results = {'precision': 0.0, 'recall': 0.0, 'f1': 0.0, 'number': 0}
+    final_results['Signal'] = s_results
+    final_results['Overall']['accuracy'] += results['overall_accuracy']*s_results['number']
+    accuracy_weight = s_results['number']
 
     results = ce_metric.compute()
     final_results['Cause'] = results['C']
