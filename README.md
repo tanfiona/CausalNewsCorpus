@@ -111,7 +111,7 @@ The predicted output will be saved in a JSON file as `outs/submission_random_st2
 If you used this repository or our corpus, please do cite us as follows:
 ```
 @InProceedings{tan-EtAl:2022:LREC,
-  author    = {Tan, Fiona Anting  and  HÃ¼rriyetoÄŸlu, Ali  and  Caselli, Tommaso  and  Oostdijk, Nelleke  and  Nomoto, Tadashi  and  Hettiarachchi, Hansi  and  Ameer, Iqra  and  Uca, Onur  and  Liza, Farhana Ferdousi  and  Hu, Tiancheng},
+  author    = {Tan, Fiona Anting  and  Hürriyetoğlu, Ali  and  Caselli, Tommaso  and  Oostdijk, Nelleke  and  Nomoto, Tadashi  and  Hettiarachchi, Hansi  and  Ameer, Iqra  and  Uca, Onur  and  Liza, Farhana Ferdousi  and  Hu, Tiancheng},
   title     = {The Causal News Corpus: Annotating Causal Relations in Event Sentences from News},
   booktitle      = {Proceedings of the Language Resources and Evaluation Conference},
   month          = {June},
