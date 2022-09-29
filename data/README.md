@@ -42,7 +42,7 @@ The following files are relevant for the on-going shared task on Codalab.
 * Train: train_subtask2.csv
 * Test: dev_subtask2_text.csv
 
-#### Testing Phase (Aug 01, 2022 -- Aug 15, 2022)
+#### Testing Phase (Aug 01, 2022 -- Aug 31, 2022)
 
 ###### Subtask 1
 * Train: train_subtask1.csv & dev_subtask1.csv
@@ -51,3 +51,5 @@ The following files are relevant for the on-going shared task on Codalab.
 ###### Subtask 2
 * Train: train_subtask2.csv & dev_subtask2.csv
 * Test: test_subtask2_text.csv
+
+Note: We will not release the test labels this year as we intend to rerun this Shared Task next year.
