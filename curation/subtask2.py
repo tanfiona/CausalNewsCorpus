@@ -260,6 +260,7 @@ class Subtask2Annotations(object):
 
         # For file path locations
         self.ref_df = ref_df
+        self.suffix = folder_name.split('_')[1][:-4]
         self.ann_folder = os.path.join(root_ann_folder, folder_name)
         self.root_ann_folder = root_ann_folder
         self.folder_name = folder_name
@@ -291,7 +292,9 @@ class Subtask2Annotations(object):
             'ExactMatch':{'Effect':[],'Cause':[],'Signal':[],'All':[]},
             'OneSideBound':{'Effect':[],'Cause':[],'Signal':[],'All':[]},
             'TokenOverlap':{'Effect':[],'Cause':[],'Signal':[],'All':[]},
-            'KAlpha':{'Effect':[],'Cause':[],'Signal':[],'All':[]}
+            'Count':{'Effect':[],'Cause':[],'Signal':[],'All':[]},
+            'KAlpha':{'Effect':[],'Cause':[],'Signal':[],'All':[]},
+            'KCount':{'Effect':[],'Cause':[],'Signal':[],'All':[]}
         }
 
 
@@ -338,7 +341,10 @@ class Subtask2Annotations(object):
             onesidebound = {'Effect':[],'Cause':[],'Signal':[],'All':[]}
             tokenoverlap = {'Effect':[],'Cause':[],'Signal':[],'All':[]}
 
-            for sentid in set(self.span2sentid.values())-set([0]): # EXCLUDE FIRST EXAMPLE IS A DEMO 
+            for sentid in set(self.span2sentid.values()): #-set([0]): 
+                if self.suffix in ['s01','s02'] and sentid==0:
+                    # EXCLUDE FIRST EXAMPLE IS A DEMO 
+                    continue
                 anns1, anns2 = [], []
                 for k,v in self.stored_relations.items():
                     if self.span2sentid[k]==sentid:
@@ -423,6 +429,7 @@ class Subtask2Annotations(object):
             self.metrics['NumRels'].append(np.mean(num_rels))
             for k,v in exactmatch.items():
                 self.metrics['ExactMatch'][k].append(np.mean(v))
+                self.metrics['Count'][k].append(len(v))
             for k,v in onesidebound.items():
                 self.metrics['OneSideBound'][k].append(np.mean(v))
             for k,v in tokenoverlap.items():
@@ -448,6 +455,7 @@ class Subtask2Annotations(object):
 
             for k,v in overall.items():
                 self.metrics['KAlpha'][k].append(np.mean(v))
+                self.metrics['KCount'][k].append(len(v))
 
 
     def parse(self):

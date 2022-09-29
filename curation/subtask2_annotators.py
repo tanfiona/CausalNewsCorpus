@@ -2,18 +2,19 @@ import os
 import pandas as pd
 from tqdm import tqdm
 from subtask2 import Subtask2Annotations, get_ref_df
-midfix = "s" 
-# midfix = "test_s"
+# midfix = "s" 
+midfix = "test_s"
 
 if __name__ == "__main__":
     # Change per run: 
-    samples = [17,19] #list(range(1,8+1))
+    samples = [1,2] #list(range(1,8+1))
     A_odd = ['ali','farhana']
     B_even = ['tommaso','onur','tadashi']
-    root_ann_folder = r"D:\61 Challenges\2022_CASE_\WebAnno\reviewing_annotations\Subtask2\10. Round8\annotation"
+    root_ann_folder = r"D:\61 Challenges\2022_CASE_\WebAnno\reviewing_annotations\Subtask2\07. Round5\annotation"
     
     # Do not touch the remaining:
     ref_df = get_ref_df()
+    dmetrics_dict = {}
     metrics_df = pd.DataFrame()
     passed = 0
     for sub in tqdm(samples):
@@ -27,7 +28,7 @@ if __name__ == "__main__":
             add_cleanedtext = False
             )
         st2a.parse()
-        passed+=st2a.prepare_report(sub, split_by_annotator=True)
+        # passed+=st2a.prepare_report(sub, split_by_annotator=True)
         
         # Agreement scores
         st2a.calculate_pico()
