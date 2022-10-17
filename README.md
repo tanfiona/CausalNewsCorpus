@@ -137,7 +137,7 @@ If you used this repository or our corpus, please do cite us as follows:
 ```
 @inproceedings{tan-etal-2022-event,
     title = "Event Causality Identification with Causal News Corpus - Shared Task 3, {CASE} 2022",
-    author = {Tan, Fiona Anting  and  Hürriyetoğlu, Ali  and  Caselli, Tommaso  and  Oostdijk, Nelleke  and  Hettiarachchi, Hansi  and  Nomoto, Tadashi  and  Uca, Onur  and  Liza, Farhana Ferdousi},
+    author = {Tan, Fiona Anting  and  Hettiarachchi, Hansi  and  Hürriyetoğlu, Ali  and  Caselli, Tommaso  and  Uca, Onur  and  Liza, Farhana Ferdousi  and  Oostdijk, Nelleke},
     booktitle = "Proceedings of the 5th Workshop on Challenges and Applications of Automated Extraction of Socio-political Events from Text (CASE 2022)",
     month = dec,
     year = "2022",
