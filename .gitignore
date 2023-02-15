@@ -20,10 +20,10 @@ outs/
 outs_old/
 
 # non-public data
-data/pdtb_mixed_resolved_forCASE_final.csv
-data/pdtb_mixed_resolved_forCASE_final_rsampled.csv
+pdtb_mixed_resolved_forCASE_final.csv
+pdtb_mixed_resolved_forCASE_final_rsampled.csv
 
 # test sets
-data/test_subtask1.csv
-data/test_subtask2.csv
-data/test_subtask2_grouped.csv
+test_subtask1.csv
+test_subtask2.csv
+test_subtask2_grouped.csv
