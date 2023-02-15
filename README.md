@@ -20,8 +20,8 @@ Causality is a core cognitive concept and appears in many natural language proce
 
 We have hosted a shared task, also known as the CASE-2022 Shared Task 3: Event Causality Identification with Causal News Corpus. The task is part of the [5th Workshop on Challenges and Applications of Automated Extraction of Socio-political Events from Text (CASE 2022)](https://emw.ku.edu.tr/case-2022/). 
 
-* [Proceedings on ACL](https://aclanthology.org/volumes/2022.case-1/).
-* [Codalab Competition Page](https://codalab.lisn.upsaclay.fr/competitions/2299). 
+* [Proceedings on ACL](https://aclanthology.org/volumes/2022.case-1/)
+* [Codalab Competition Page](https://codalab.lisn.upsaclay.fr/competitions/2299)
 * [Final Leaderboard](https://codalab.lisn.upsaclay.fr/competitions/2299#results)
 
 Keep a look out for our Shared Task in 2023!
