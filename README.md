@@ -137,12 +137,21 @@ If you used this repository or our corpus, please do cite us as follows:
 ```
 @inproceedings{tan-etal-2022-event,
     title = "Event Causality Identification with Causal News Corpus - Shared Task 3, {CASE} 2022",
-    author = {Tan, Fiona Anting  and  Hürriyetoğlu, Ali  and  Caselli, Tommaso  and  Oostdijk, Nelleke  and  Hettiarachchi, Hansi  and  Nomoto, Tadashi  and  Uca, Onur  and  Liza, Farhana Ferdousi},
-    booktitle = "Proceedings of the 5th Workshop on Challenges and Applications of Automated Extraction of Socio-political Events from Text (CASE 2022)",
+    author = {Tan, Fiona Anting  and
+      Hettiarachchi, Hansi  and
+      H{\"u}rriyeto{\u{g}}lu, Ali  and
+      Caselli, Tommaso  and
+      Uca, Onur  and
+      Liza, Farhana Ferdousi  and
+      Oostdijk, Nelleke},
+    booktitle = "Proceedings of the 5th Workshop on Challenges and Applications of Automated Extraction of Socio-political Events from Text (CASE)",
     month = dec,
     year = "2022",
-    address = "Online",
-    publisher = "Association for Computational Linguistics"
+    address = "Abu Dhabi, United Arab Emirates (Hybrid)",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2022.case-1.28",
+    pages = "195--208",
+    abstract = "The Event Causality Identification Shared Task of CASE 2022 involved two subtasks working on the Causal News Corpus. Subtask 1 required participants to predict if a sentence contains a causal relation or not. This is a supervised binary classification task. Subtask 2 required participants to identify the Cause, Effect and Signal spans per causal sentence. This could be seen as a supervised sequence labeling task. For both subtasks, participants uploaded their predictions for a held-out test set, and ranking was done based on binary F1 and macro F1 scores for Subtask 1 and 2, respectively. This paper summarizes the work of the 17 teams that submitted their results to our competition and 12 system description papers that were received. The best F1 scores achieved for Subtask 1 and 2 were 86.19{\%} and 54.15{\%}, respectively. All the top-performing approaches involved pre-trained language models fine-tuned to the targeted task. We further discuss these approaches and analyze errors across participants{'} systems in this paper.",
 }
 ```
 
