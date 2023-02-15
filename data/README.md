@@ -3,7 +3,7 @@
 
 #### V1
 
-Version 1 of CNC [June 2022]
+Version 1 of CNC [June 2022]<br>
 Contains datasets corresponding to these papers:
 
 * The Causal News Corpus: Annotating Causal Relations in Event Sentences from News"
@@ -12,7 +12,7 @@ Contains datasets corresponding to these papers:
 
 #### V2
 
-Version 2 of CNC [Jan 2023]
+Version 2 of CNC [Jan 2023]<br>
 We added span annotations for Cause, Effect, and Signals. This dataset will be used in CASE 2023 Shared Task (Details to be announced).
 
 
