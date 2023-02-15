@@ -1,7 +1,7 @@
 # Causal News Corpus
 <img align="left" height=200 src="imgs/CNC_Logo.PNG">
 
-This repository contains the datasets and models for the Causal News Corpus (CNC). Our dataset is published in the LREC paper titled ["The Causal News Corpus: Annotating Causal Relations in Event Sentences from News"](https://aclanthology.org/2022.lrec-1.246/).
+This repository contains the datasets and models for the Causal News Corpus (CNC). Our dataset is published in the LREC paper titled ["The Causal News Corpus: Annotating Causal Relations in Event Sentences from News"](https://aclanthology.org/2022.lrec-1.246/) and featured in the ["Event Causality Identification with Causal News Corpus - Shared Task 3, CASE 2022"](https://aclanthology.org/2022.case-1.28/).
 
 CNC works on two subtasks:
 
