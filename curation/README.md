@@ -12,3 +12,13 @@
 5. [`unzip.py`](unzip.py) : Unzip latest annotations (from curation folder)
 
 6. [`subtask2.py`](subtask2.py) : Check curators' work for basic errors, like missing spans, links, etc. If all okay, final annotations are extracted and consolidated.
+
+### Generating competition datasets
+
+7. http://localhost:8888/notebooks/61%20Challenges/2022_CASE_/Documentation/Subtask2/Get%20CNC_Version2.ipynb
+
+8. http://localhost:8888/notebooks/61%20Challenges/2022_CASE_/Documentation/Subtask2/Load%20Dataset.ipynb
+
+9. http://localhost:8888/notebooks/61%20Challenges/2022_CASE_/Documentation/Subtask2/cleaned/cnc_v2/GroupData.ipynb
+
+10. http://localhost:8888/notebooks/61%20Challenges/2022_CASE_/Documentation/Subtask2/Get%20Competition%20Datasets.ipynb

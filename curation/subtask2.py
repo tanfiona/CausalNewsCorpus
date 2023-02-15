@@ -13,8 +13,8 @@ from pandas import ExcelWriter
 import itertools
 from itertools import combinations
 from kAlpha import get_result
-midfix = "s" 
-# midfix = "test_s"
+# midfix = "s" 
+midfix = "test_s"
 
 
 def get_combinations(list1,list2):
@@ -91,6 +91,16 @@ def get_ref_df(save_folder=None):
         r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s18.csv",
         r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s19.csv",
         r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s20.csv",
+        # round 9
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s21.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s22.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s23.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s24.csv",
+        # round 10
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s25.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s26.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s27.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s28.csv",
     ]
 
     ref_df = pd.read_csv(base_ref_path)
@@ -265,6 +275,7 @@ class Subtask2Annotations(object):
         self.root_ann_folder = root_ann_folder
         self.folder_name = folder_name
         self.annotators = annotators
+        self.check_annotators()
 
         # For general annotations
         self.annotations={}
@@ -284,6 +295,13 @@ class Subtask2Annotations(object):
         self.metrics = {}
         self.reset_metrics()
     
+
+    def check_annotators(self):
+        # remove annotators if they don't have a JSON file
+        for i,ann_name in enumerate(self.annotators):
+            if not os.path.exists(os.path.join(self.ann_folder, f"{ann_name}.json")):
+                self.annotators.remove(ann_name)
+
 
     def reset_metrics(self):
         self.metrics = {
@@ -870,8 +888,8 @@ if __name__ == "__main__":
         python subtask2.py
     """
     # Change per run: 
-    samples = list(range(1,20+1)) #list(range(1,8+1))
-    root_ann_folder = r"D:\61 Challenges\2022_CASE_\WebAnno\reviewing_annotations\Subtask2\10. Round8\curation"
+    samples = [1,2] #list(range(1,21+1))+[23,24] #list(range(1,8+1)) 
+    root_ann_folder = r"D:\61 Challenges\2022_CASE_\WebAnno\reviewing_annotations\Subtask2\12. Round10\curation"
     
     # Do not touch the remaining:
     ref_df = get_ref_df(root_ann_folder)
