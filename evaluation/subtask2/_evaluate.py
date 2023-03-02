@@ -4,7 +4,7 @@ import json
 import os
 import sys
 from ast import literal_eval
-from datasets import load_metric
+import evaluate
 import pandas as pd
 import itertools
 
@@ -93,71 +93,57 @@ def get_BIO_all(text_w_pairs):
     return tokens, ce_tags, s_tags
 
 
-def format_results(ce_metric, sig_metric):
+def format_results(metric):
+    
+    results = metric.compute()
+    
     final_results = {}
-    metrics = ['precision','recall','f1','accuracy']
-    final_results['Overall'] = {i:0 for i in metrics}
-
-    results = sig_metric.compute()
-    if 'S' in results.keys():
-        s_results = results['S']
-    else:
-        s_results = {'precision': 0.0, 'recall': 0.0, 'f1': 0.0, 'number': 0}
-    final_results['Signal'] = s_results
-    final_results['Overall']['accuracy'] += results['overall_accuracy']*s_results['number']
-    accuracy_weight = s_results['number']
-
-    results = ce_metric.compute()
-    final_results['Cause'] = results['C']
-    final_results['Effect'] = results['E']
-    total_weight = 0
     for key in ['Cause','Effect','Signal']:
-        ddict = final_results[key]
-        for i in metrics[:-1]:
-            final_results['Overall'][i]+=ddict[i]*ddict['number']
-        total_weight+=ddict['number']
-    for k,v in final_results['Overall'].items():
-        final_results['Overall'][k]=v/total_weight
-    final_results['Overall']['accuracy'] += results['overall_accuracy']*results['C']['number']
-    accuracy_weight += results['C']['number']
-    final_results['Overall']['accuracy'] /= accuracy_weight
-    final_results['Overall']['number'] = accuracy_weight
-
+        final_results[key]=results[key[0]]
+    
+    count_metrics = ['TP','FP','FN','BE','LE','LBE']
+    final_results['Overall'] = {}
+    for c in count_metrics:
+        final_results['Overall'][c]=results[c]
+    for k in results.keys():
+        if 'overall_' in k:
+            new_k = '_'.join(k.split('_')[1:])
+            final_results['Overall'][new_k]=results[k]
+    
     return final_results
 
 
 def keep_best_combinations_only(row, refs, preds):
-    final_results = {}
     best_metric = -1
+    best_pair = None
 
     for points in get_combinations(row.id, row.id):
         
         # initialise
-        ce_metric = load_metric('seqeval')
-        sig_metric = load_metric('seqeval')
+        metric = evaluate.load("hpi-dhc/FairEval")
 
         # add rounds
         for a,b in list(points):
             _, ce_ref, sig_ref = refs[a]
             _, ce_pred, sig_pred = preds[b]
-            ce_metric.add(
+            metric.add(
                 prediction=ce_pred,
                 reference=ce_ref 
             )
-            sig_metric.add(
+            metric.add(
                 prediction=sig_pred,
                 reference=sig_ref 
             )
     
         # compute
-        results = format_results(ce_metric, sig_metric)
-        key_metric = float(results['Overall']['f1'])
+        results = metric.compute()
+        key_metric = float(results['overall_f1'])
         if key_metric>best_metric:
             # overwrite if best
-            final_results=results
             best_metric=key_metric
+            best_pair = points
             
-    return final_results
+    return best_pair
 
 
 def combine_dicts(d1,d2):
@@ -219,29 +205,49 @@ def main(ref_df, pred_list, calculate_best_combi=True):
     # For examples that DO NOT require combination search
     regular_ids = list(set(range(len(preds)))-set(req_combi_ids))
 
-    ce_metric = load_metric('seqeval')
-    sig_metric = load_metric('seqeval')
+    metric = evaluate.load("hpi-dhc/FairEval")
 
     for i in regular_ids:
         _, ce_ref, sig_ref = refs[i]
         _, ce_pred, sig_pred = preds[i]
-        ce_metric.add(
+        metric.add(
             prediction=ce_pred,
             reference=ce_ref 
         )
-        sig_metric.add(
+        metric.add(
             prediction=sig_pred,
             reference=sig_ref 
         )
-    final_result = format_results(ce_metric, sig_metric)
 
+    multi_metric = evaluate.load("hpi-dhc/FairEval")
     if grouped_df is not None:
         # For examples that require combination search
         for _, row in grouped_df.iterrows():
-            best_results = keep_best_combinations_only(row, refs, preds)
-            final_result = combine_dicts(final_result,best_results)
+            best_pair = keep_best_combinations_only(row, refs, preds)
+            for a,b in list(best_pair):
+                _, ce_ref, sig_ref = refs[a]
+                _, ce_pred, sig_pred = preds[b]
+                metric.add(
+                    prediction=ce_pred,
+                    reference=ce_ref 
+                )
+                metric.add(
+                    prediction=sig_pred,
+                    reference=sig_ref 
+                )
+                multi_metric.add(
+                    prediction=ce_pred,
+                    reference=ce_ref 
+                )
+                multi_metric.add(
+                    prediction=sig_pred,
+                    reference=sig_ref 
+                )
 
-    return final_result
+    result = format_results(metric)
+    multi_result = format_results(multi_metric)
+
+    return result, multi_result
     
 
 def keep_relevant_rows_and_unstack(ref_df, predictions):
@@ -303,13 +309,27 @@ if os.path.isdir(submit_dir) and os.path.isdir(truth_dir):
         raise IndexError("Number of entries in the submission.json do not match with the ground truth entry count!")
     else:
         # evaluate
-        final_results = main(truth, predictions, calculate_best_combi=True)
+        result, multi_result = main(truth, predictions, calculate_best_combi=True)
         # write to output file
         level_order = ['Overall','Cause','Effect','Signal']
-        columns_order = ['Recall', 'Precision', 'F1', 'Accuracy', 'Number']
+        columns_order = ['Recall', 'Precision', 'F1']
 
+        output_file.write("### All Examples\n")
         for level in level_order:
-            ddict = final_results[level]
+            ddict = result[level]
+            for k in columns_order:
+                if k.lower() in ddict:
+                    v = ddict[k.lower()]
+                    if level=='Overall':
+                        output_file.write("{0}:{1}\n".format(k.title(),v))
+                    else:
+                        output_file.write("{0}_{1}:{2}\n".format(level,k.title(),v))
+                else:
+                    continue
+        
+        output_file.write("\n### Examples with Multiple Relations\n")
+        for level in level_order:
+            ddict = multi_result[level]
             for k in columns_order:
                 if k.lower() in ddict:
                     v = ddict[k.lower()]
