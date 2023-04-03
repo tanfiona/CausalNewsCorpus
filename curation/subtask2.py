@@ -13,7 +13,7 @@ from pandas import ExcelWriter
 import itertools
 from itertools import combinations
 from kAlpha import get_result
-# midfix = "s" 
+midfix = "s" 
 midfix = "test_s"
 
 
@@ -101,6 +101,22 @@ def get_ref_df(save_folder=None):
         r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s26.csv",
         r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s27.csv",
         r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s28.csv",
+        # round 11,12
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s29.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s30.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s31.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s32.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s33.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s34.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s35.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s36.csv",
+        # round 13 (final)
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s37.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s38.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s39.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s40.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_test_s03.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_test_s04.csv",
     ]
 
     ref_df = pd.read_csv(base_ref_path)
@@ -153,11 +169,12 @@ def remap_index(del_begin, del_end, begin, end, verbose=False):
     elif begin<del_begin and end<del_begin: ### (begin---end)---[del_begin---del_end]
         if verbose: print('Setting 2')
         pass
-    elif begin>=del_end and end>=del_end: ### [del_begin---(begin---del_end]---end)
+    elif begin>=del_begin and end>=del_end: ### [del_begin---(begin---del_end]---end)
         if verbose: print('Setting 3')
+        del_counts = del_end-del_begin
         begin=del_begin
         end-=del_counts
-    elif begin>=del_end and end<=del_end: ### [del_begin---(begin---end)---del_end]
+    elif begin>=del_begin and end<=del_end: ### [del_begin---(begin---end)---del_end]
         if verbose: print('Setting 4')
         del_counts = begin-del_begin
         begin-=del_counts
@@ -888,8 +905,8 @@ if __name__ == "__main__":
         python subtask2.py
     """
     # Change per run: 
-    samples = [1,2] #list(range(1,21+1))+[23,24] #list(range(1,8+1)) 
-    root_ann_folder = r"D:\61 Challenges\2022_CASE_\WebAnno\reviewing_annotations\Subtask2\12. Round10\curation"
+    samples = [1,2] #list(range(1,39+1))
+    root_ann_folder = r"D:\61 Challenges\2022_CASE_\WebAnno\reviewing_annotations\Subtask2\15. Round13\curation"
     
     # Do not touch the remaining:
     ref_df = get_ref_df(root_ann_folder)
