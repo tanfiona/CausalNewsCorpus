@@ -13,7 +13,7 @@ from pandas import ExcelWriter
 import itertools
 from itertools import combinations
 from kAlpha import get_result
-midfix = "s" 
+# midfix = "s" 
 midfix = "test_s"
 
 
@@ -331,6 +331,7 @@ class Subtask2Annotations(object):
         }
         self.span2sentid = {}
         self.list_of_dc_actions = []
+        self.sentid2sentences = {}
 
         # For agreement scores
         self.metrics = {}
@@ -614,6 +615,24 @@ class Subtask2Annotations(object):
         data['sent_id'] = data['sent_id'].astype(str)
         data['seq_label'] = data.groupby(['corpus','doc_id','sent_id'])['seq_label'].transform('max')
 
+        # Add substrings (sentences) without annotations as "Not Causal"
+        ref_df2 =  []
+        for sentid, sentences in self.sentid2sentences.items():
+            slice_df = self.ref_df[(self.ref_df['source']==source) & (self.ref_df['Index']==sentid+1)]
+            sentid_global = str(slice_df['index'].iloc[0]) # train_05_299 _0
+            for sent in sentences:
+                ref_df2.append([sentid_global, str(sentid+1), sent.strip()])
+        ref_df2 = pd.DataFrame(ref_df2, columns=['doc_id','sent_id','text'])
+        ref_df2 = ref_df2.merge(data[['doc_id','text','seq_label']].drop_duplicates(), how='left', on=['doc_id','text'])
+        not_causal_df = ref_df2[ref_df2['seq_label'].fillna(0)==0]
+        if len(not_causal_df)>0:
+            for i, row in not_causal_df.iterrows():
+                identifiers = [corpus,row['doc_id'],str(row['sent_id']),str(0)]
+                unique_index = '_'.join(identifiers)
+                data.loc[len(data)] = identifiers+[
+                    unique_index,
+                    row['text'].strip(),
+                    '',0,0]
         # Add unannotated examples as "Not Causal"
         not_causal_df = self.ref_df[(self.ref_df['source']==source) & (~self.ref_df['index'].isin(data['doc_id'].unique()))]
         if len(not_causal_df)>0:
@@ -622,7 +641,7 @@ class Subtask2Annotations(object):
                 unique_index = '_'.join(identifiers)
                 data.loc[len(data)] = identifiers+[
                     unique_index,
-                    row.text.strip(),
+                    row['text'].strip(),
                     '',0,0]
         
         return data
@@ -709,8 +728,9 @@ class Subtask2Annotations(object):
                 s_del, e_del, e_split = [], [], []
                 for dcid in sent2dcid[sentid]:
                     if self.list_of_dc_actions[dcid]['DataCleaning']=='Delete':
-                        s_del.append(self.list_of_dc_actions[dcid]['begin'] if 'begin' in self.list_of_dc_actions[dcid] else 0)
-                        e_del.append(self.list_of_dc_actions[dcid]['end'])
+                        pass
+                        # s_del.append(self.list_of_dc_actions[dcid]['begin'] if 'begin' in self.list_of_dc_actions[dcid] else 0)
+                        # e_del.append(self.list_of_dc_actions[dcid]['end'])
                     else: #['DataCleaning']===='Split'
                         e_split.append(self.list_of_dc_actions[dcid]['end'])
                 sorted_del_spl_list = get_del_spl_list(s_del, e_del, e_split)
@@ -724,6 +744,11 @@ class Subtask2Annotations(object):
                 added_t+=len(tag)
 
             text_w_pairs = re.sub("<DELETE>.*?</DELETE>","",text_w_pairs.strip())
+            
+            # Store texts so that substrings (sentences) can be retrieved
+            if sentid not in self.sentid2sentences:
+                self.sentid2sentences[sentid] = [re.sub("</?.*?>","",s).strip() for s in text_w_pairs.split('</SPLIT>')]
+            
             text_w_pairs = [substring.strip() for substring in text_w_pairs.split('</SPLIT>') if ('<ARG0>' in substring) and ('<ARG1>' in substring)]
             assert(len(text_w_pairs)==1)
             text_w_pairs = text_w_pairs[0]
@@ -939,7 +964,7 @@ if __name__ == "__main__":
         python subtask2.py
     """
     # Change per run: 
-    samples = [1,2] #list(range(1,40+1))
+    samples = [1,2] # list(range(1,40+1))
     root_ann_folder = r"D:\61 Challenges\2022_CASE_\WebAnno\reviewing_annotations\Subtask2\15. Round13\curation"
     
     # Do not touch the remaining:
