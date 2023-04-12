@@ -22,3 +22,4 @@
 9. http://localhost:8888/notebooks/61%20Challenges/2022_CASE_/Documentation/Subtask2/cleaned/cnc_v2/GroupData.ipynb
 
 10. http://localhost:8888/notebooks/61%20Challenges/2022_CASE_/Documentation/Subtask2/Get%20Competition%20Datasets.ipynb
+Copy from "D:\61 Challenges\2022_CASE_\Documentation\Subtask2\data_v2" to "data" here
