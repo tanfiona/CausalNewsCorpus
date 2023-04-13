@@ -47,10 +47,10 @@ The following datasets were used in our experiments, but not released, due to co
 <b>Target column: `label`</b>
 
 ### Running BERT baseline:
-Given a `<train.csv>` and `<val.csv>` file with columns `index`,`text`,`label` (`label` values should be in 0,1 int format), use our [`run_case.py`](run_case.py) script to train, evaluate and predict using `--do_train`, `--do_eval` and `--do_predict` flags respectively.
+Given a `<train.csv>` and `<val.csv>` file with columns `index`,`text`,`label` (`label` values should be in 0,1 int format), use our [`run_st1.py`](run_st1.py) script to train, evaluate and predict using `--do_train`, `--do_eval` and `--do_predict` flags respectively.
 
 ```
-sudo python3 run_case.py \
+sudo python3 run_st1.py \
 --task_name cola --train_file <train.csv> --do_train \
 --validation_file <val.csv> --do_eval \
 --test_file <val.csv> --do_predict \
