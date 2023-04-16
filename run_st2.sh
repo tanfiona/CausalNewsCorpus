@@ -1,7 +1,47 @@
+### Cause-Effect-Signal Span Detection
+# We replicate the work by winners of the CNC 2022 Subtask 2 @ CASE, Team 1Cademy.
+# Original Repository: https://github.com/Gzhang-umich/1CademyTeamOfCASE
+
+# Baseline (Train & Test)
+sudo CUDA_VISIBLE_DEVICES=0 \
+/home/fiona/anaconda3/envs/py310/bin/python3 run_st2.py \
+  --dropout 0.3 \
+  --learning_rate 2e-05 \
+  --model_name_or_path albert-xxlarge-v2 \
+  --num_train_epochs 20 \
+  --num_warmup_steps 200 \
+  --output_dir "outs/baseline" \
+  --per_device_train_batch_size 8 \
+  --per_device_eval_batch_size 8 \
+  --per_device_train_batch_size 8 \
+  --report_to wandb \
+  --task_name ner \
+  --do_train --do_test \
+  --train_file "data/V2/train_subtask2_grouped.csv" \
+  --validation_file "data/V2/dev_subtask2_grouped.csv" \
+  --test_file "data/V2/test_subtask2_grouped.csv" \
+  --weight_decay 0.005 \
+  --use_best_model
+
+# Baseline (Test ONLY given a trained model)
+sudo CUDA_VISIBLE_DEVICES=0 \
+/home/fiona/anaconda3/envs/py310/bin/python3 run_st2.py \
+  --model_name_or_path albert-xxlarge-v2 \
+  --load_checkpoint_for_test "/home/fiona/CausalNewsCorpus/outs/baseline/epoch_1/pytorch_model.bin" \
+  --output_dir "outs/baseline" \
+  --per_device_train_batch_size 8 \
+  --per_device_eval_batch_size 8 \
+  --per_device_train_batch_size 8 \
+  --report_to wandb \
+  --task_name ner \
+  --do_test \
+  --test_file "data/V2/test_subtask2_grouped.csv" \
+  --weight_decay 0.005
+  
+
 ### Cause-Effect Span Detection
 
 ## We used the UniCausal (https://github.com/tanfiona/UniCausal) repository to run the baselines
-## The repository is currently in private mode due to anonymity requirements for submission
 # Train and Test CNC using Individual Token Baseline Model
 # cnc_train.csv // cnc_test.csv files must exist in data/splits folder
 sudo CUDA_VISIBLE_DEVICES=2 /home/fiona/anaconda3/envs/torchgeom/bin/python3 run_tokbase.py \
