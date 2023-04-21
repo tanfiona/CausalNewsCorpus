@@ -5,6 +5,16 @@ import pandas as pd
 from utils_eval_st2 import main, read_predictions
 
 
+"""
+Test locally using:
+
+    D:\61 Challenges\2022_CASE_\CausalNewsCorpus\CausalNewsCorpus>
+    python evaluation/subtask2/_evaluate.py \
+        evaluation/subtask2/sample/input \
+            evaluation/subtask2/sample/output
+
+"""
+
 # Codalab Run
 input_dir = sys.argv[1]
 output_dir = sys.argv[2]
@@ -41,7 +51,7 @@ if os.path.isdir(submit_dir) and os.path.isdir(truth_dir):
         level_order = ['Overall','Cause','Effect','Signal']
         columns_order = ['Recall', 'Precision', 'F1']
 
-        output_file.write("### All Examples\n")
+        # output_file.write("### All Examples\n")
         for level in level_order:
             ddict = result[level]
             for k in columns_order:
@@ -54,18 +64,19 @@ if os.path.isdir(submit_dir) and os.path.isdir(truth_dir):
                 else:
                     continue
         
-        output_file.write("\n### Examples with Multiple Relations\n")
+        # output_file.write("\n### Examples with Multiple Relations\n")
         for level in level_order:
             ddict = multi_result[level]
             for k in columns_order:
                 if k.lower() in ddict:
                     v = ddict[k.lower()]
                     if level=='Overall':
-                        output_file.write("{0}:{1}\n".format(k.title(),v))
+                        output_file.write("MultiEgs_{0}:{1}\n".format(k.title(),v))
                     else:
-                        output_file.write("{0}_{1}:{2}\n".format(level,k.title(),v))
+                        output_file.write("MultiEgs_{0}_{1}:{2}\n".format(level,k.title(),v))
                 else:
                     continue
-        # output_file.write("{0}:{1}\n".format("MCC",0))
 
     output_file.close()
+
+
