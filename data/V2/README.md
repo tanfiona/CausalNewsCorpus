@@ -1,5 +1,15 @@
 ## Dataset Description
 
+#### Subtask 1 
+
+Columns:
+* index [str] : example unique id
+* text [str] : example input text
+* label [int] : target causal label (1 for Causal, 0 for Not Causal)
+* agreement [float] : proportion of annotators supporting the vote
+* num_votes [int] : number of expert labels considered 
+* sample_set [str] : subset name
+
 #### Subtask 2
 Columns:
 * corpus [str] : corpus name
