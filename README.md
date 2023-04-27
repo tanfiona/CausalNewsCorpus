@@ -16,15 +16,20 @@ Causality is a core cognitive concept and appears in many natural language proce
 |:--:| 
 | *Annotated examples from Causal News Corpus. Causes are in pink, Effects in green and Signals in yellow. Note that both Cause and Effect spans must be present within one and the same sentence for us to mark it as <em>Causal</em>.* |
 
-### Shared Task
+# Shared Task
 
-We have hosted a shared task, also known as the CASE-2022 Shared Task 3: Event Causality Identification with Causal News Corpus. The task is part of the [5th Workshop on Challenges and Applications of Automated Extraction of Socio-political Events from Text (CASE 2022)](https://emw.ku.edu.tr/case-2022/). 
+We are hosting a shared task, known as "Event Causality Identification with Causal News Corpus". The task is part of the [6th Workshop on Challenges and Applications of Automated Extraction of Socio-political Events from Text (CASE 2023) @ RANLP](https://emw.ku.edu.tr/case-2023/). 
 
-* [Proceedings on ACL](https://aclanthology.org/volumes/2022.case-1/)
-* [Codalab Competition Page](https://codalab.lisn.upsaclay.fr/competitions/2299)
-* [Final Leaderboard](https://codalab.lisn.upsaclay.fr/competitions/2299#results)
+<b> Participate here!!!</b>
+* [2023 Codalab Competition Page](https://codalab.lisn.upsaclay.fr/competitions/11784)
 
-Keep a look out for our Shared Task in 2023!
+<br>
+
+This is the second iteration of this shared task, links to last year's documentation and competition page are as follows:
+* [Proceedings on ACL (@ EMNLP 2022)](https://aclanthology.org/volumes/2022.case-1/)
+* [2022 Codalab Competition Page](https://codalab.lisn.upsaclay.fr/competitions/2299)
+* [2022 Final Leaderboard](https://codalab.lisn.upsaclay.fr/competitions/2299#results)
+
 
 <br>
 

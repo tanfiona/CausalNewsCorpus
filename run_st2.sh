@@ -13,7 +13,7 @@ sudo CUDA_VISIBLE_DEVICES=0 \
   --output_dir "outs/baseline" \
   --per_device_train_batch_size 8 \
   --per_device_eval_batch_size 8 \
-  --per_device_train_batch_size 8 \
+  --per_device_test_batch_size 8 \
   --report_to wandb \
   --task_name ner \
   --do_train --do_test \
@@ -24,19 +24,16 @@ sudo CUDA_VISIBLE_DEVICES=0 \
   --use_best_model
 
 # Baseline (Test ONLY given a trained model)
-sudo CUDA_VISIBLE_DEVICES=0 \
+sudo CUDA_VISIBLE_DEVICES=3 \
 /home/fiona/anaconda3/envs/py310/bin/python3 run_st2.py \
   --model_name_or_path albert-xxlarge-v2 \
-  --load_checkpoint_for_test "/home/fiona/CausalNewsCorpus/outs/baseline/epoch_1/pytorch_model.bin" \
+  --load_checkpoint_for_test "/home/fiona/CausalNewsCorpus/outs/baseline/epoch_3/pytorch_model.bin" \
   --output_dir "outs/baseline" \
-  --per_device_train_batch_size 8 \
-  --per_device_eval_batch_size 8 \
-  --per_device_train_batch_size 8 \
+  --per_device_test_batch_size 32 \
   --report_to wandb \
   --task_name ner \
   --do_test \
-  --test_file "data/V2/test_subtask2_grouped.csv" \
-  --weight_decay 0.005
+  --test_file "data/V2/test_subtask2_grouped.csv"
   
 
 ### Cause-Effect Span Detection
