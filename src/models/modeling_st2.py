@@ -10,7 +10,7 @@ from transformers import (
 
 
 class SignalDetector(nn.Module):
-    def __init__(self, model_and_tokenizer_path="outs_test/signal_cls") -> None:
+    def __init__(self, model_and_tokenizer_path) -> None:
         super().__init__()
         self.tokenizer = AutoTokenizer.from_pretrained(model_and_tokenizer_path) 
         self.signal_detector = AutoModelForSequenceClassification.from_pretrained(model_and_tokenizer_path)
@@ -30,9 +30,9 @@ class ST2ModelV2(nn.Module):
         super(ST2ModelV2, self).__init__()
         self.args = args
 
-        self.config = AutoConfig.from_pretrained(args.model_name_or_path, cache_dir='/data/cache/huggingface/models')
-        self.model = AutoModel.from_pretrained(args.model_name_or_path, cache_dir='/data/cache/huggingface/models')
-        self.tokenizer = AutoTokenizer.from_pretrained(args.model_name_or_path, cache_dir='/data/cache/huggingface/models')
+        self.config = AutoConfig.from_pretrained(args.model_name_or_path)
+        self.model = AutoModel.from_pretrained(args.model_name_or_path)
+        self.tokenizer = AutoTokenizer.from_pretrained(args.model_name_or_path)
 
         classifier_dropout = self.args.dropout
         self.dropout = nn.Dropout(classifier_dropout)
