@@ -31,7 +31,7 @@ For Subtask 2, we recommend participants focus on the datasets with the extensio
 ## Shared Task
 The following files are relevant for the on-going shared task on Codalab.
 
-#### Evaluation Phase (2023 - To be announced)
+#### Evaluation Phase (01 May - 15 Jun 2023)
 
 ###### Subtask 1
 * Train: train_subtask1.csv
@@ -41,7 +41,7 @@ The following files are relevant for the on-going shared task on Codalab.
 * Train: train_subtask2.csv
 * Test: dev_subtask2_text.csv
 
-#### Testing Phase (2023 - To be announced)
+#### Testing Phase (15 Jun - 30 Jun, 2023)
 
 ###### Subtask 1
 * Train: train_subtask1.csv & dev_subtask1.csv
