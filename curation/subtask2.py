@@ -13,8 +13,8 @@ from pandas import ExcelWriter
 import itertools
 from itertools import combinations
 from kAlpha import get_result
-# midfix = "s" 
-midfix = "test_s"
+midfix = "s" 
+# midfix = "test_s"
 
 
 def get_combinations(list1,list2):
@@ -965,7 +965,7 @@ if __name__ == "__main__":
         python subtask2.py
     """
     # Change per run: 
-    samples = list(range(1,4+1)) # list(range(1,40+1))
+    samples = list(range(1,40+1)) #list(range(1,4+1))
     root_ann_folder = r"D:\61 Challenges\2022_CASE_\WebAnno\reviewing_annotations\Subtask2\15. Round13\curation"
     
     # Do not touch the remaining:
