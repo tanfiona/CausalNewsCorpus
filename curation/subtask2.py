@@ -526,7 +526,8 @@ class Subtask2Annotations(object):
             self.format_causality_annotation(ann_file, ann_name, constant=10000*i)
             self.span2sentid = self.get_span2sentid()
             self.format_into_relations(ann_file, constant=10000*i)
-            self.clean_text()
+            if self.add_cleanedtext:
+                self.clean_text()
         self.span2sentid = self.get_span2sentid()
         
         ##### Final Checks #####
