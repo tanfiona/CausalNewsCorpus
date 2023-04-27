@@ -13,8 +13,8 @@ Contains datasets corresponding to these papers:
 #### V2
 
 Version 2 of CNC [Apr 2023]<br>
-We added span annotations for Cause, Effect, and Signals (Subtask 2). As compared to the previous version (160 sentences, 183 relations), the current version contains 1771 sentences, 2498 causal relations. 
-This dataset will be used in CASE 2023 Shared Task.
+We added span annotations for Cause, Effect, and Signals (Subtask 2). As compared to the previous version (160 sentences, 183 relations), the current version contains 1981 sentences, 2754 causal relations in total. We also revised annotations for both Subtasks.
+This dataset is currently used in CASE 2023 Shared Task.
 
 
 #### Others
