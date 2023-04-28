@@ -4,7 +4,7 @@ import pandas as pd
 from copy import copy
 import re
 
-NUM_RETURN_SEQ = 3
+NUM_RETURN_SEQ = 1
 
 
 class PhraseGenerator(object):
