@@ -1267,12 +1267,14 @@ def main():
         if args.do_train: # continuing from above
             if args.use_best_model: # either use best model, or use last model
                 load_checkpoint_for_test = os.path.join(args.output_dir, f"epoch_{best_epoch}/pytorch_model.bin")
+                accelerator.print(f"Load best model: {load_checkpoint_for_test}")
                 model.load_state_dict(torch.load(load_checkpoint_for_test))
             else:
                 # the last model is already loaded
                 pass
         else: # need to load from checkpoint
             assert args.load_checkpoint_for_test is not None
+            accelerator.print(f"Load best model: {args.load_checkpoint_for_test}")
             model.load_state_dict(torch.load(args.load_checkpoint_for_test))
 
         model.eval()
