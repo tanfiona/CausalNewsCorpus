@@ -2,21 +2,16 @@ GPU_ID=0
 TASK=baseline
 
 if [[ "$TASK" == "baseline" ]]; then
-  CUDA_VISIBLE_DEVICES=$GPU_ID python run_st1 \
+  CUDA_VISIBLE_DEVICES=$GPU_ID python run_st1.py \
   --task_name cola \
   --train_file data/V2/train_subtask1.csv --do_train \
   --validation_file data/V2/dev_subtask1.csv --do_eval \
-  --test_file data/V2/dev_subtask1.csv --do_predict \
+  --test_file data/V2/test_subtask1_text.csv --do_predict \
   --model_name_or_path bert-base-cased \
   --output_dir outs/dev --overwrite_output_dir \
-  --per_device_train_batch_size 32 --per_device_eval_batch_size 32 --num_train_epochs 5 \
+  --per_device_train_batch_size 32 --per_device_eval_batch_size 32 --num_train_epochs 10 \
   --save_strategy epoch --evaluation_strategy epoch --logging_strategy epoch \
   --load_best_model_at_end True --metric_for_best_model eval_f1 --save_total_limit 2
-
-elif [[ "$TASK" == "test" ]]; then
-  CUDA_VISIBLE_DEVICES=$GPU_ID python run_st1 \
-  --test_file data/V2/dev_subtask1.csv --do_predict \
-  --model_name_or_path "path_to_model" \
 
 elif [[ "$TASK" == "other" ]]; then
   ##### TABLE 3 #####
@@ -127,3 +122,4 @@ elif [[ "$TASK" == "other" ]]; then
   --validation_file data/CTB_forCASE_rsampled.csv \
   --model_name_or_path outs/pdtb --output_dir outs/pdtb/ctb_r --do_eval \
   --overwrite_output_dir --per_device_eval_batch_size 32
+fi
