@@ -47,6 +47,10 @@ from transformers import (
 from transformers.trainer_utils import get_last_checkpoint
 from sklearn.metrics import precision_recall_fscore_support
 
+import wandb
+wandb.login()
+os.environ['WANDB_PROJECT']='CausalNewsCorpus'
+
 
 task_to_keys = {
     "cola": ("text", None),
@@ -469,6 +473,7 @@ def main():
 
     # Training
     if training_args.do_train:
+        logger.info(f'train samples: {len(train_dataset)}')
         checkpoint = None
         if training_args.resume_from_checkpoint is not None:
             checkpoint = training_args.resume_from_checkpoint
@@ -481,7 +486,7 @@ def main():
         )
         metrics["train_samples"] = min(max_train_samples, len(train_dataset))
 
-        trainer.save_model()  # Saves the tokenizer too for easy upload
+        trainer.save_model(os.path.join(training_args.output_dir, "best_model"))  # Saves the tokenizer too for easy upload
 
         trainer.log_metrics("train", metrics)
         trainer.save_metrics("train", metrics)
