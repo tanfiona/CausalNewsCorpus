@@ -28,7 +28,7 @@ CUDA_VISIBLE_DEVICES=7 \
 CUDA_VISIBLE_DEVICES=3 \
 /home/fiona/anaconda3/envs/py310/bin/python3 run_st2.py \
   --model_name_or_path albert-xxlarge-v2 \
-  --load_checkpoint_for_test "/home/fiona/CausalNewsCorpus/outs/baseline/epoch_3/pytorch_model.bin" \
+  --load_checkpoint_for_test "/home/fiona/CausalNewsCorpus/outs/baseline/epoch_5/pytorch_model.bin" \
   --output_dir "outs/baseline" \
   --per_device_test_batch_size 32 \
   --report_to wandb \
@@ -59,6 +59,19 @@ CUDA_VISIBLE_DEVICES=6 \
   --beam_search \
   --use_best_model
 
+# Test ONLY given a trained model
+CUDA_VISIBLE_DEVICES=4 \
+/home/fiona/anaconda3/envs/py310/bin/python3 run_st2.py \
+  --model_name_or_path albert-xxlarge-v2 \
+  --load_checkpoint_for_test "/home/fiona/CausalNewsCorpus/outs/baseline_BSS/epoch_4/pytorch_model.bin" \
+  --output_dir "outs/baseline_BSS" \
+  --per_device_test_batch_size 32 \
+  --report_to wandb \
+  --task_name ner \
+  --do_test \
+  --test_file "data/V2/test_subtask2_grouped.csv" \
+  --postprocessing_position_selector \
+  --beam_search
 
 ### 03. Baseline+BSS+SC
 # Train & Test
@@ -110,7 +123,7 @@ CUDA_VISIBLE_DEVICES=3 \
   --signal_model_and_tokenizer_path "outs/signal_cls" \
   --task_name ner \
   --do_test \
-  --test_file "data/V2/dev_subtask2_grouped.csv"
+  --test_file "data/V2/test_subtask2_grouped.csv"
 
 ### 04. Baseline+BSS+SC+DA
 
