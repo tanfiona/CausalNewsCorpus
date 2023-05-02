@@ -48,7 +48,6 @@ from transformers.trainer_utils import get_last_checkpoint
 from sklearn.metrics import precision_recall_fscore_support
 
 import wandb
-wandb.login()
 os.environ['WANDB_PROJECT']='CausalNewsCorpus'
 
 
@@ -138,6 +137,8 @@ class DataTrainingArguments:
     )
     test_file: Optional[str] = field(default=None, metadata={"help": "A csv or a json file containing the test data."})
 
+    is_regression: Optional[bool] = field(default=False, metadata={"help": "If the model to use with predictions in a regression model."})
+
     def __post_init__(self):
         if self.task_name is not None:
             self.task_name = self.task_name.lower()
@@ -205,6 +206,9 @@ def main():
     else:
         model_args, data_args, training_args = parser.parse_args_into_dataclasses()
 
+    if training_args.do_train:
+        wandb.login()
+
     # Setup logging
     logging.basicConfig(
         format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
@@ -259,25 +263,27 @@ def main():
     
     # Loading a dataset from your local files.
     # CSV/JSON training and evaluation files are needed.
-    data_files = {"train": data_args.train_file, "validation": data_args.validation_file}
+    data_files = {}
+    if training_args.do_train:
+        data_files = {"train": data_args.train_file, "validation": data_args.validation_file}
 
     # Get the test dataset: you can provide your own CSV/JSON test file (see below)
     # when you use `do_predict` without specifying a GLUE benchmark task.
     if training_args.do_predict:
         if data_args.test_file is not None:
-            train_extension = data_args.train_file.split(".")[-1]
-            test_extension = data_args.test_file.split(".")[-1]
-            assert (
-                test_extension == train_extension
-            ), "`test_file` should have the same extension (csv or json) as `train_file`."
+            # train_extension = data_args.train_file.split(".")[-1]
+            # test_extension = data_args.test_file.split(".")[-1]
+            # assert (
+            #     test_extension == train_extension
+            # ), "`test_file` should have the same extension (csv or json) as `train_file`."
             data_files["test"] = data_args.test_file
         else:
             raise ValueError("Need either a GLUE task or a test file for `do_predict`.")
 
     for key in data_files.keys():
         logger.info(f"load a local file for {key}: {data_files[key]}")
-    
-    if data_args.train_file.endswith(".csv"):
+
+    if (training_args.do_train and data_args.train_file.endswith(".csv")) or (training_args.do_predict and data_args.test_file.endswith(".csv")):
         # Loading a dataset from local csv files
         raw_datasets = load_dataset("csv", data_files=data_files, cache_dir=model_args.cache_dir, features=Features(ft))
     else:
@@ -289,28 +295,39 @@ def main():
 
     # Labels
     # Trying to have good defaults here, don't hesitate to tweak to your needs.
-    is_regression = raw_datasets["train"].features["label"].dtype in ["float32", "float64"]
-    if is_regression:
-        num_labels = 1
-    else:
-        # A useful fast method:
-        # https://huggingface.co/docs/datasets/package_reference/main_classes.html#datasets.Dataset.unique
-        label_list = raw_datasets["train"].unique("label")
-        label_list.sort()  # Let's sort it for determinism
-        num_labels = len(label_list)
+    label_list = None
+    is_regression = None
+    if training_args.do_train:
+        is_regression = raw_datasets["train"].features["label"].dtype in ["float32", "float64"]
+        if is_regression:
+            num_labels = 1
+        else:
+            # A useful fast method:
+            # https://huggingface.co/docs/datasets/package_reference/main_classes.html#datasets.Dataset.unique
+            label_list = raw_datasets["train"].unique("label")
+            label_list.sort()  # Let's sort it for determinism
+            num_labels = len(label_list)
+    elif training_args.do_predict:
+        is_regression = data_args.is_regression
 
     # Load pretrained model and tokenizer
     #
     # In distributed training, the .from_pretrained methods guarantee that only one local process can concurrently
     # download model & vocab.
-    config = AutoConfig.from_pretrained(
-        model_args.config_name if model_args.config_name else model_args.model_name_or_path,
-        num_labels=num_labels,
-        finetuning_task=data_args.task_name,
-        cache_dir=model_args.cache_dir,
-        revision=model_args.model_revision,
-        use_auth_token=True if model_args.use_auth_token else None,
-    )
+    if training_args.do_train:
+        config = AutoConfig.from_pretrained(
+            model_args.config_name if model_args.config_name else model_args.model_name_or_path,
+            num_labels=num_labels,
+            finetuning_task=data_args.task_name,
+            cache_dir=model_args.cache_dir,
+            revision=model_args.model_revision,
+            use_auth_token=True if model_args.use_auth_token else None,
+        )
+    else:
+        config = AutoConfig.from_pretrained(
+            model_args.config_name if model_args.config_name else model_args.model_name_or_path
+        )
+
     tokenizer = AutoTokenizer.from_pretrained(
         model_args.tokenizer_name if model_args.tokenizer_name else model_args.model_name_or_path,
         cache_dir=model_args.cache_dir,
@@ -348,32 +365,33 @@ def main():
         # We will pad later, dynamically at batch creation, to the max sequence length in each batch
         padding = False
 
-    # Some models have set the order of the labels to use, so let's make sure we do use it.
+    # # Some models have set the order of the labels to use, so let's make sure we do use it.
     label_to_id = None
-    if (
-        model.config.label2id != PretrainedConfig(num_labels=num_labels).label2id
-        and data_args.task_name is not None
-        and not is_regression
-    ):
-        # Some have all caps in their config, some don't.
-        label_name_to_id = {k.lower(): v for k, v in model.config.label2id.items()}
-        if list(sorted(label_name_to_id.keys())) == list(sorted(label_list)):
-            label_to_id = {i: int(label_name_to_id[label_list[i]]) for i in range(num_labels)}
-        else:
-            logger.warning(
-                "Your model seems to have been trained with labels, but they don't match the dataset: ",
-                f"model labels: {list(sorted(label_name_to_id.keys()))}, dataset labels: {list(sorted(label_list))}."
-                "\nIgnoring the model labels as a result.",
-            )
-    elif data_args.task_name is None and not is_regression:
-        label_to_id = {v: i for i, v in enumerate(label_list)}
+    if training_args.do_train:
+        if (
+            model.config.label2id != PretrainedConfig(num_labels=num_labels).label2id
+            and data_args.task_name is not None
+            and not is_regression
+        ):
+            # Some have all caps in their config, some don't.
+            label_name_to_id = {k.lower(): v for k, v in model.config.label2id.items()}
+            if list(sorted(label_name_to_id.keys())) == list(sorted(label_list)):
+                label_to_id = {i: int(label_name_to_id[label_list[i]]) for i in range(num_labels)}
+            else:
+                logger.warning(
+                    "Your model seems to have been trained with labels, but they don't match the dataset: ",
+                    f"model labels: {list(sorted(label_name_to_id.keys()))}, dataset labels: {list(sorted(label_list))}."
+                    "\nIgnoring the model labels as a result.",
+                )
+        elif data_args.task_name is None and not is_regression:
+            label_to_id = {v: i for i, v in enumerate(label_list)}
 
-    if label_to_id is not None:
-        model.config.label2id = label_to_id
-        model.config.id2label = {id: label for label, id in config.label2id.items()}
-    elif data_args.task_name is not None and not is_regression:
-        model.config.label2id = {l: i for i, l in enumerate(label_list)}
-        model.config.id2label = {id: label for label, id in config.label2id.items()}
+        if label_to_id is not None:
+            model.config.label2id = label_to_id
+            model.config.id2label = {id: label for label, id in config.label2id.items()}
+        elif data_args.task_name is not None and not is_regression:
+            model.config.label2id = {l: i for i, l in enumerate(label_list)}
+            model.config.id2label = {id: label for label, id in config.label2id.items()}
 
     if data_args.max_seq_length > tokenizer.model_max_length:
         logger.warning(
@@ -390,7 +408,8 @@ def main():
         result = tokenizer(*args, padding=padding, max_length=max_seq_length, truncation=True)
 
         # Map labels to IDs (not necessary for GLUE tasks)
-        if label_to_id is not None and "label" in examples:
+        # if label_to_id is not None and "label" in examples:
+        if training_args.do_train and label_to_id is not None and "label" in examples:
             result["label"] = [(label_to_id[l] if l != -1 else -1) for l in examples["label"]]
         return result
 
@@ -538,8 +557,13 @@ def main():
                     for index, item in enumerate(predictions):
                         if is_regression:
                             writer.write(f"{index}\t{item:3.3f}\n")
-                        else:
+                        # else:
+                        #     item = label_list[item]
+                        #     writer.write(f"{index}\t{item}\n")
+                        elif label_list is not None:
                             item = label_list[item]
+                            writer.write(f"{index}\t{item}\n")
+                        else:
                             writer.write(f"{index}\t{item}\n")
 
     kwargs = {"finetuned_from": model_args.model_name_or_path, "tasks": "text-classification"}
