@@ -20,7 +20,7 @@ Causality is a core cognitive concept and appears in many natural language proce
 
 We are hosting a shared task, known as "Event Causality Identification with Causal News Corpus". The task is part of the [6th Workshop on Challenges and Applications of Automated Extraction of Socio-political Events from Text (CASE 2023) @ RANLP](https://emw.ku.edu.tr/case-2023/). 
 
-<b> Participate here!!!</b>
+<b> Participate here!!!</b> (Please use "V2" data)
 * [2023 Codalab Competition Page](https://codalab.lisn.upsaclay.fr/competitions/11784)
 
 <br>
