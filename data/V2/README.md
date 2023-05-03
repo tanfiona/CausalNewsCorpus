@@ -1,15 +1,5 @@
 ## Dataset Description
 
-#### Subtask 1 
-
-Columns:
-* index [str] : example unique id
-* text [str] : example input text
-* label [int] : target causal label (1 for Causal, 0 for Not Causal)
-* agreement [float] : proportion of annotators supporting the vote
-* num_votes [int] : number of expert labels considered 
-* sample_set [str] : subset name
-
 #### Subtask 2
 Columns:
 * corpus [str] : corpus name
@@ -31,7 +21,7 @@ For Subtask 2, we recommend participants focus on the datasets with the extensio
 ## Shared Task
 The following files are relevant for the on-going shared task on Codalab.
 
-#### Evaluation Phase (01 May - 15 Jun 2023)
+#### Evaluation Phase
 
 ###### Subtask 1
 * Train: train_subtask1.csv
@@ -41,7 +31,7 @@ The following files are relevant for the on-going shared task on Codalab.
 * Train: train_subtask2.csv
 * Test: dev_subtask2_text.csv
 
-#### Testing Phase (15 Jun - 30 Jun, 2023)
+#### Testing Phase (15 - 30 Jun 2023)
 
 ###### Subtask 1
 * Train: train_subtask1.csv & dev_subtask1.csv

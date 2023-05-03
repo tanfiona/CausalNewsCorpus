@@ -30,7 +30,7 @@ We use [`seqeval`](https://huggingface.co/metrics/seqeval) evaluation metrics, c
 ## Testing the Script Offline
 The evaluation script can run offline using the following command.
 ```
-python evaluate.py $input $output
+python _evaluate.py $input $output
 ```
 
 The path to the input directory should be provided as the $input argument, and the path to the output directory should be provided as $output.

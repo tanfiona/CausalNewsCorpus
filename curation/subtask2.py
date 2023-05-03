@@ -13,8 +13,8 @@ from pandas import ExcelWriter
 import itertools
 from itertools import combinations
 from kAlpha import get_result
-# midfix = "s" 
-midfix = "test_s"
+midfix = "s" 
+# midfix = "test_s"
 
 
 def get_combinations(list1,list2):
@@ -101,6 +101,22 @@ def get_ref_df(save_folder=None):
         r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s26.csv",
         r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s27.csv",
         r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s28.csv",
+        # round 11,12
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s29.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s30.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s31.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s32.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s33.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s34.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s35.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s36.csv",
+        # round 13 (final)
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s37.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s38.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s39.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_s40.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_test_s03.csv",
+        r"D:\61 Challenges\2022_CASE_\Presentation\20220512 Meeting\manually_formatted\subtask2_test_s04.csv",
     ]
 
     ref_df = pd.read_csv(base_ref_path)
@@ -153,11 +169,12 @@ def remap_index(del_begin, del_end, begin, end, verbose=False):
     elif begin<del_begin and end<del_begin: ### (begin---end)---[del_begin---del_end]
         if verbose: print('Setting 2')
         pass
-    elif begin>=del_end and end>=del_end: ### [del_begin---(begin---del_end]---end)
+    elif begin>=del_begin and end>=del_end: ### [del_begin---(begin---del_end]---end)
         if verbose: print('Setting 3')
+        del_counts = del_end-del_begin
         begin=del_begin
         end-=del_counts
-    elif begin>=del_end and end<=del_end: ### [del_begin---(begin---end)---del_end]
+    elif begin>=del_begin and end<=del_end: ### [del_begin---(begin---end)---del_end]
         if verbose: print('Setting 4')
         del_counts = begin-del_begin
         begin-=del_counts
@@ -263,6 +280,29 @@ def get_s_e_t_list(s_head=[], e_head=[], s_tail=[], e_tail=[], s_sig=[], e_sig=[
     return sorted(zip(locs, tags))
 
 
+def get_del_spl_list(s_del=[], e_del=[], e_split=[]):
+    locs, tags = [], []
+    if isinstance(s_del,(np.ndarray,list)):
+        locs.extend(s_del)
+        tags.extend([f'<DELETE>' for i in range(len(s_del))])
+        locs.extend(e_del)
+        tags.extend([f'</DELETE>' for i in range(len(e_del))])
+    else:
+        locs.append(s_del)
+        tags.append('<DELETE>')
+        locs.append(e_del)
+        tags.append('</DELETE>')
+
+    if isinstance(e_split,(np.ndarray,list)):
+        locs.extend(e_split)
+        tags.extend([f'</SPLIT>' for i in range(len(e_split))])
+    else:
+        locs.append(e_split)
+        tags.append('</SPLIT>')
+
+    return sorted(zip(locs, tags))
+
+
 class Subtask2Annotations(object):
     def __init__(self, ref_df, root_ann_folder, folder_name, annotators, add_cleanedtext=True) -> None:
         # Option to include data cleaning layer or not
@@ -290,6 +330,8 @@ class Subtask2Annotations(object):
             'no_effects': [], # nonsense c/s->c/s relation
         }
         self.span2sentid = {}
+        self.list_of_dc_actions = []
+        self.sentid2sentences = {}
 
         # For agreement scores
         self.metrics = {}
@@ -484,6 +526,8 @@ class Subtask2Annotations(object):
             self.format_causality_annotation(ann_file, ann_name, constant=10000*i)
             self.span2sentid = self.get_span2sentid()
             self.format_into_relations(ann_file, constant=10000*i)
+            if self.add_cleanedtext:
+                self.clean_text()
         self.span2sentid = self.get_span2sentid()
         
         ##### Final Checks #####
@@ -513,8 +557,9 @@ class Subtask2Annotations(object):
         else:
             output_cols = ['Index', 'Cause', 'Effect', 'Signal', 'Annotator']
         for k,v in self.stored_relations.items():
+            # Index, E.g. 58774 --> 1
             row = [self.span2sentid[k]+1]
-
+            # Remaining Columns
             for c in output_cols[1:]:
                 if c=='Signal':
                     all_signals = [vv for kk,vv in v.items() if c in kk and 'loc' not in kk]
@@ -533,55 +578,62 @@ class Subtask2Annotations(object):
         cols = ['corpus','doc_id','sent_id','eg_id','index','text','text_w_pairs','seq_label','pair_label']
         data = []
         sentid_counter = defaultdict(int)
-
+        sentid_subsplits = {}
         for k,v in self.stored_relations.items():
 
             sentid = self.span2sentid[k] # 0 (Note we add 1 to all sentid later)
-            text = self.annotations[sentid]['retrieve_info']['text'] # TRS condemns arrests March 11 ...
-            
+            text = v['CleanedText'] # TRS condemns arrests March 11 ...
+            text_w_pairs = v['text_w_pairs']
             slice_df = self.ref_df[(self.ref_df['source']==source) & (self.ref_df['Index']==sentid+1)]
-            
-            ref_text = str(slice_df['text'].iloc[0]) # ADILABAD : TRS condemns arrests March 11 ...
-            unique_sentid = str(slice_df['index'].iloc[0]) # train_05_299
-
-            # assert(text.strip()==ref_text.strip())
-
-            num_eg_for_this_sentid = sentid_counter[unique_sentid]
-            identifiers = [corpus,unique_sentid,str(sentid+1),str(num_eg_for_this_sentid)]
+            sentid_global = str(slice_df['index'].iloc[0]) # train_05_299 _0
+            sentid_anns = str(sentid+1) # 4
+            if sentid_anns in sentid_subsplits:
+                if text in sentid_subsplits[sentid_anns]:
+                    subid = sentid_subsplits[sentid_anns][text]
+                else:
+                    subid = len(sentid_subsplits[sentid_anns])
+                    sentid_subsplits[sentid_anns][text] = subid
+            else:
+                subid = 0
+                sentid_subsplits[sentid_anns] = {text:subid}
+            sentid_anns=sentid_anns+'_'+str(subid)
+            num_eg_for_this_sentid = sentid_counter[sentid_anns]
+            identifiers = [corpus,sentid_global,sentid_anns,str(num_eg_for_this_sentid)]
             unique_index = '_'.join(identifiers)
-
-            text_w_pairs = text
-            added_t = 0
-            accounting = self.annotations[sentid]['retrieve_info']['begin']
-            sorted_s_e_t_list = get_s_e_t_list(
-                s_head=v['Cause_loc'][0], 
-                e_head=v['Cause_loc'][1], 
-                s_tail=v['Effect_loc'][0], 
-                e_tail=v['Effect_loc'][1],
-                s_sig=[vv[0] for kk,vv in v.items() if kk[:6]=='Signal' and kk[-3:]=='loc'],
-                e_sig=[vv[1] for kk,vv in v.items() if kk[:6]=='Signal' and kk[-3:]=='loc']
-            )
-            for loc,tag in sorted_s_e_t_list:
-                loc+=added_t-accounting
-                text_w_pairs = text_w_pairs[:loc]+tag+text_w_pairs[loc:]
-                added_t+=len(tag)
             seq_label = pair_label = 1
-
             data.append(
                 identifiers+[
                     unique_index,
-                    text.strip(),
-                    text_w_pairs.strip(),
+                    text,
+                    text_w_pairs,
                     seq_label,
                     pair_label
                 ]
             )
-            sentid_counter[unique_sentid]+=1
+            sentid_counter[sentid_anns]+=1
 
         data = pd.DataFrame(data, columns=cols)
         data['sent_id'] = data['sent_id'].astype(str)
         data['seq_label'] = data.groupby(['corpus','doc_id','sent_id'])['seq_label'].transform('max')
 
+        # Add substrings (sentences) without annotations as "Not Causal"
+        ref_df2 =  []
+        for sentid, sentences in self.sentid2sentences.items():
+            slice_df = self.ref_df[(self.ref_df['source']==source) & (self.ref_df['Index']==sentid+1)]
+            sentid_global = str(slice_df['index'].iloc[0]) # train_05_299 _0
+            for sent in sentences:
+                ref_df2.append([sentid_global, str(sentid+1), sent.strip()])
+        ref_df2 = pd.DataFrame(ref_df2, columns=['doc_id','sent_id','text'])
+        ref_df2 = ref_df2.merge(data[['doc_id','text','seq_label']].drop_duplicates(), how='left', on=['doc_id','text'])
+        not_causal_df = ref_df2[ref_df2['seq_label'].fillna(0)==0]
+        if len(not_causal_df)>0:
+            for i, row in not_causal_df.iterrows():
+                identifiers = [corpus,row['doc_id'],str(row['sent_id']),str(0)]
+                unique_index = '_'.join(identifiers)
+                data.loc[len(data)] = identifiers+[
+                    unique_index,
+                    row['text'].strip(),
+                    '',0,0]
         # Add unannotated examples as "Not Causal"
         not_causal_df = self.ref_df[(self.ref_df['source']==source) & (~self.ref_df['index'].isin(data['doc_id'].unique()))]
         if len(not_causal_df)>0:
@@ -590,7 +642,7 @@ class Subtask2Annotations(object):
                 unique_index = '_'.join(identifiers)
                 data.loc[len(data)] = identifiers+[
                     unique_index,
-                    row.text.strip(),
+                    row['text'].strip(),
                     '',0,0]
         
         return data
@@ -634,6 +686,75 @@ class Subtask2Annotations(object):
             for s in infos['spans_info'].keys():
                 span2sentid[s]=sentid
         return span2sentid
+
+
+    def clean_text(self):
+        # Convert DataCleaning Actions to SentID
+        current_sentid = 0 # 0-indexed
+        max_sentid = max(self.annotations.keys())
+        dc2sentid = {}
+        for i,dc_dict in enumerate(self.list_of_dc_actions):
+            
+            while current_sentid<max_sentid:
+                tmp_d = self.annotations[current_sentid]['retrieve_info']
+                sent_begin, sent_end = tmp_d['begin'],tmp_d['end']
+                if sent_end>=dc_dict['end']:
+                    break 
+                else:
+                    current_sentid+=1
+            dc2sentid[i]=current_sentid
+
+        sent2dcid = defaultdict(list)
+        for k,v in dc2sentid.items():
+            sent2dcid[v].append(k)
+        sent2dcid = dict(sent2dcid)
+
+        # Update CleanedText of each span example
+        for spanid, v in self.stored_relations.items():
+            sentid = self.span2sentid[spanid]
+            tmp_d = self.annotations[sentid]['retrieve_info']
+
+            text_w_pairs = self.annotations[sentid]['retrieve_info']['text']
+            added_t = 0
+            accounting = self.annotations[sentid]['retrieve_info']['begin']
+            sorted_s_e_t_list = get_s_e_t_list(
+                s_head=v['Cause_loc'][0], 
+                e_head=v['Cause_loc'][1], 
+                s_tail=v['Effect_loc'][0], 
+                e_tail=v['Effect_loc'][1],
+                s_sig=[vv[0] for kk,vv in v.items() if kk[:6]=='Signal' and kk[-3:]=='loc'],
+                e_sig=[vv[1] for kk,vv in v.items() if kk[:6]=='Signal' and kk[-3:]=='loc']
+            )
+            if sentid in sent2dcid:
+                s_del, e_del, e_split = [], [], []
+                for dcid in sent2dcid[sentid]:
+                    if self.list_of_dc_actions[dcid]['DataCleaning']=='Delete':
+                        pass
+                        # s_del.append(self.list_of_dc_actions[dcid]['begin'] if 'begin' in self.list_of_dc_actions[dcid] else 0)
+                        # e_del.append(self.list_of_dc_actions[dcid]['end'])
+                    else: #['DataCleaning']===='Split'
+                        e_split.append(self.list_of_dc_actions[dcid]['end'])
+                sorted_del_spl_list = get_del_spl_list(s_del, e_del, e_split)
+                sorted_tags_list=sorted_s_e_t_list+sorted_del_spl_list
+            else:
+                sorted_tags_list=sorted_s_e_t_list
+
+            for loc,tag in sorted(sorted_tags_list):
+                loc+=added_t-accounting
+                text_w_pairs = text_w_pairs[:loc]+tag+text_w_pairs[loc:]
+                added_t+=len(tag)
+
+            text_w_pairs = re.sub("<DELETE>.*?</DELETE>","",text_w_pairs.strip())
+            
+            # Store texts so that substrings (sentences) can be retrieved
+            if sentid not in self.sentid2sentences:
+                self.sentid2sentences[sentid] = [re.sub("</?.*?>","",s).strip() for s in text_w_pairs.split('</SPLIT>')]
+            
+            text_w_pairs = [substring.strip() for substring in text_w_pairs.split('</SPLIT>') if ('<ARG0>' in substring) and ('<ARG1>' in substring)]
+            assert(len(text_w_pairs)==1)
+            text_w_pairs = text_w_pairs[0]
+            self.stored_relations[spanid]['text_w_pairs'] = text_w_pairs
+            self.stored_relations[spanid]['CleanedText'] = re.sub("</?.*?>","",text_w_pairs)
 
 
     def format_into_relations(self, ann_file, constant=0):
@@ -747,10 +868,17 @@ class Subtask2Annotations(object):
                 }
             }
 
+        ##### Get DataCleaning Annotations #####
+        if self.add_cleanedtext:
+            layer = 'DataCleaning'
+            if layer in ann_file['_views']['_InitialView'].keys():
+                self.list_of_dc_actions = list(ann_file['_views']['_InitialView'][layer])
+        
         ##### Get Marked Spans #####
         layer = 'CauseEffectSignal'
         list_of_span_ids = ann_file['_views']['_InitialView'][layer]
         max_span_id = max([x for x in list_of_span_ids if isinstance(x, (int,float))])
+
         for span_id in list_of_span_ids:
             
             # corrupted for some
@@ -798,57 +926,6 @@ class Subtask2Annotations(object):
                 # initialise
                 raise ValueError('All sentences should be initialised at sent2locid creation step.')
 
-        if self.add_cleanedtext:
-            ##### Clean Text & Annotations #####
-            layer = 'DataCleaning'
-            if layer in ann_file['_views']['_InitialView'].keys():
-                list_of_dc_actions = ann_file['_views']['_InitialView'][layer]
-                list_of_dc_actions = [i for i in list_of_dc_actions if i[layer]=='Delete']
-            else:
-                list_of_dc_actions = []
-            
-            for dc_infos in list_of_dc_actions:
-
-                sents_needed = []
-                if 'begin' in dc_infos.keys():
-                    del_begin = dc_infos['begin']
-                    sents_needed.extend(find_sents_needed(sent2locid, del_begin, del_begin))
-                else:
-                    del_begin = None
-
-                if 'end' in dc_infos.keys():
-                    del_end = dc_infos['end']
-                    sents_needed.extend(find_sents_needed(sent2locid, del_end, del_end))
-                else:
-                    del_end = None
-
-                sents_needed = list(set(sents_needed))
-                if len(sents_needed)>1:
-                    raise ValueError('We should be annotating dc layer within sentences only!')
-                else:
-                    sentid = sents_needed[0]
-
-                begin = self.annotations[sentid]['retrieve_info']['begin']
-                end = self.annotations[sentid]['retrieve_info']['end']
-                text = self.annotations[sentid]['retrieve_info']['text']
-                if del_begin is None:
-                    del_begin = begin
-                if del_end is None:
-                    del_end = end
-                    
-                # reindex sentence
-                begin, end = remap_index(del_begin, del_end, begin, end)
-                text = text[:del_begin-begin]+text[del_end-begin:]
-                self.annotations[sentid]['retrieve_info']['begin'] = begin
-                self.annotations[sentid]['retrieve_info']['end'] = end
-                self.annotations[sentid]['retrieve_info']['text'] = text
-                
-                # reindex spans
-                for k,v in self.annotations[sentid]['spans_info'].items():
-                    begin, end = remap_index(del_begin, del_end, v['begin'], v['end'])
-                    self.annotations[sentid]['spans_info'][k]['begin'] = begin
-                    self.annotations[sentid]['spans_info'][k]['end'] = end
-
 
 def join_all_ces(ref_df, root_ann_folder, samples):
     output_df = pd.DataFrame()
@@ -888,22 +965,22 @@ if __name__ == "__main__":
         python subtask2.py
     """
     # Change per run: 
-    samples = [1,2] #list(range(1,21+1))+[23,24] #list(range(1,8+1)) 
-    root_ann_folder = r"D:\61 Challenges\2022_CASE_\WebAnno\reviewing_annotations\Subtask2\12. Round10\curation"
+    samples = list(range(1,40+1)) #list(range(1,4+1))
+    root_ann_folder = r"D:\61 Challenges\2022_CASE_\WebAnno\reviewing_annotations\Subtask2\15. Round13\curation"
     
     # Do not touch the remaining:
     ref_df = get_ref_df(root_ann_folder)
     passed = 0
     for sub in tqdm(samples):
-        st2a = Subtask2Annotations(
+        self = Subtask2Annotations(
             ref_df = ref_df,
             root_ann_folder = root_ann_folder, 
             folder_name = "subtask2_{0}{1:02d}.txt".format(midfix, sub),
             annotators = ['CURATION_USER'],
             add_cleanedtext = True
             )
-        st2a.parse()
-        passed+=st2a.prepare_report(sub)
+        self.parse()
+        passed+=self.prepare_report(sub)
     print(f'Proportion of passed subsamples: {passed/len(samples)}')
 
     join_all_ces(ref_df, root_ann_folder, samples)

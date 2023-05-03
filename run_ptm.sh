@@ -10,7 +10,7 @@ SAVE_DIR='./data/ctb_r_folds'
 for i in `seq 1 $K`
 do
     echo "$i"
-    sudo CUDA_VISIBLE_DEVICES=3 /home/fiona/anaconda3/envs/torchgeom/bin/python3 run_case.py \
+    sudo CUDA_VISIBLE_DEVICES=3 /home/fiona/anaconda3/envs/torchgeom/bin/python3 run_st1.py \
     --task_name cola --train_file $SAVE_DIR/train_fold$i.csv --do_train \
     --validation_file $SAVE_DIR/test_fold$i.csv --do_eval \
     --model_name_or_path outs/all \
@@ -25,7 +25,7 @@ SAVE_DIR='./data/pdtb_folds'
 for i in `seq 1 $K`
 do
     echo "$i"
-    sudo CUDA_VISIBLE_DEVICES=3 /home/fiona/anaconda3/envs/torchgeom/bin/python3 run_case.py \
+    sudo CUDA_VISIBLE_DEVICES=3 /home/fiona/anaconda3/envs/torchgeom/bin/python3 run_st1.py \
     --task_name cola --train_file $SAVE_DIR/train_fold$i.csv --do_train \
     --validation_file $SAVE_DIR/test_fold$i.csv --do_eval \
     --model_name_or_path outs/all \

@@ -3,14 +3,12 @@ import pandas as pd
 from tqdm import tqdm
 from subtask2 import Subtask2Annotations, get_ref_df
 midfix = "s" 
-# midfix = "test_s"
+midfix = "test_s"
 
 if __name__ == "__main__":
     # Change per run: 
-    samples = list(range(1,21+1))+[23,24] #[1,2] #list(range(1,8+1))
-    A_odd = ['ali','farhana']
-    B_even = ['tommaso','onur','tadashi']
-    root_ann_folder = r"D:\61 Challenges\2022_CASE_\WebAnno\reviewing_annotations\Subtask2\12. Round10\annotation"
+    samples = list(range(1,4+1))
+    root_ann_folder = r"D:\61 Challenges\2022_CASE_\WebAnno\reviewing_annotations\Subtask2\15. Round13\annotation"
     
     # Do not touch the remaining:
     ref_df = get_ref_df()
@@ -20,11 +18,14 @@ if __name__ == "__main__":
     for sub in tqdm(samples):
 
         # Parse annotations to CSV
+        folder_name = "subtask2_{0}{1:02d}.txt".format(midfix, sub)
+        annotators = [os.path.basename(f) for f in os.listdir(os.path.join(root_ann_folder,folder_name)) if str(f)[-5:]=='.json']
+        annotators = [os.path.splitext(a)[0] for a in annotators if (a!='admin.json')]
         st2a = Subtask2Annotations(
             ref_df = ref_df,
             root_ann_folder = root_ann_folder, 
-            folder_name = "subtask2_{0}{1:02d}.txt".format(midfix, sub),
-            annotators = A_odd if sub%2!=0 else B_even,
+            folder_name = folder_name,
+            annotators = annotators,
             add_cleanedtext = False
             )
         st2a.parse()

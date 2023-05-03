@@ -27,3 +27,4 @@ pdtb_mixed_resolved_forCASE_final_rsampled.csv
 test_subtask1.csv
 test_subtask2.csv
 test_subtask2_grouped.csv
+data/V2/*_wevents.csv

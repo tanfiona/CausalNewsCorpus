@@ -16,15 +16,20 @@ Causality is a core cognitive concept and appears in many natural language proce
 |:--:| 
 | *Annotated examples from Causal News Corpus. Causes are in pink, Effects in green and Signals in yellow. Note that both Cause and Effect spans must be present within one and the same sentence for us to mark it as <em>Causal</em>.* |
 
-### Shared Task
+# Shared Task
 
-We have hosted a shared task, also known as the CASE-2022 Shared Task 3: Event Causality Identification with Causal News Corpus. The task is part of the [5th Workshop on Challenges and Applications of Automated Extraction of Socio-political Events from Text (CASE 2022)](https://emw.ku.edu.tr/case-2022/). 
+We are hosting a shared task, known as "Event Causality Identification with Causal News Corpus". The task is part of the [6th Workshop on Challenges and Applications of Automated Extraction of Socio-political Events from Text (CASE 2023) @ RANLP](https://emw.ku.edu.tr/case-2023/). 
 
-* [Proceedings on ACL](https://aclanthology.org/volumes/2022.case-1/)
-* [Codalab Competition Page](https://codalab.lisn.upsaclay.fr/competitions/2299)
-* [Final Leaderboard](https://codalab.lisn.upsaclay.fr/competitions/2299#results)
+<b> Participate here!!!</b>
+* [2023 Codalab Competition Page](https://codalab.lisn.upsaclay.fr/competitions/11784)
 
-Keep a look out for our Shared Task in 2023!
+<br>
+
+This is the second iteration of this shared task, links to last year's documentation and competition page are as follows:
+* [Proceedings on ACL (@ EMNLP 2022)](https://aclanthology.org/volumes/2022.case-1/)
+* [2022 Codalab Competition Page](https://codalab.lisn.upsaclay.fr/competitions/2299)
+* [2022 Final Leaderboard](https://codalab.lisn.upsaclay.fr/competitions/2299#results)
+
 
 <br>
 
@@ -47,10 +52,10 @@ The following datasets were used in our experiments, but not released, due to co
 <b>Target column: `label`</b>
 
 ### Running BERT baseline:
-Given a `<train.csv>` and `<val.csv>` file with columns `index`,`text`,`label` (`label` values should be in 0,1 int format), use our [`run_case.py`](run_case.py) script to train, evaluate and predict using `--do_train`, `--do_eval` and `--do_predict` flags respectively.
+Given a `<train.csv>` and `<val.csv>` file with columns `index`,`text`,`label` (`label` values should be in 0,1 int format), use our [`run_st1.py`](run_st1.py) script to train, evaluate and predict using `--do_train`, `--do_eval` and `--do_predict` flags respectively.
 
 ```
-sudo python3 run_case.py \
+sudo python3 run_st1.py \
 --task_name cola --train_file <train.csv> --do_train \
 --validation_file <val.csv> --do_eval \
 --test_file <val.csv> --do_predict \
