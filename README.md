@@ -66,19 +66,16 @@ sudo python3 run_st1.py \
 --output_dir outs --overwrite_output_dir
 ```
 
-KFolds script is available in `kfolds.sh` which creates user-specified number of fold sets and runs the Train and Eval function over each fold. In our paper, we set K=5.
-
 Further experiments are also available in `run_st1.sh` for reference. Within which, we also conducted experiments with the two external corpus (CTB and PDTB V3.0). More details are described in our paper.
 
-This baseline corresponds to [Codalab submission](https://codalab.lisn.upsaclay.fr/competitions/2299#results) by "tanfiona". For LSTM baseline, submissions are by "hansih".
+KFolds script is available in `kfolds.sh` which creates user-specified number of fold sets and runs the Train and Eval function over each fold. In our paper, we set K=5.
+
+For V1: This baseline corresponds to [Codalab submission](https://codalab.lisn.upsaclay.fr/competitions/2299#results) by "tanfiona". For LSTM baseline, submissions are by "hansih".
 
 | # | User     | Date of Last Entry | Recall     | Precision  | F1         | Accuracy   | MCC        |
 |:-:|----------|--------------------|------------|------------|------------|------------|------------|
 | 1 | tanfiona | 03/23/22           | 0.8652 (1) | 0.8063 (1) | 0.8347 (1) | 0.8111 (1) | 0.6172 (1) |
 | 2 | hansih   | 03/13/22           | 0.7303 (2) | 0.7514 (2) | 0.7407 (2) | 0.7183 (2) | 0.4326 (2) |
-
-### Expected Output:
-The model and parameters will be saved in the specified `--output_dir`. Alongwhich, `all_results.json` will reflect the metrics of the run. The Huggingface trainer will also automatically generate a model and results summary `README.md` file in the specified output folder.
 
 <br>
 
@@ -100,17 +97,33 @@ To avoid revealing causal annotations for Subtask 1, we will be receiving span p
 
 During final testing phase, both train and dev examples can be used to train your model. The data format will be exactly the same, so you can first design your models to train and test on currently available train and dev sets.
 
-### Running Random baseline:
-For Cause-Effect Span Detection, we only implemented a random generator shown under [`random_st2.py`](random_st2.py) to obtain predictions. This baseline corresponds to [Codalab submission](https://codalab.lisn.upsaclay.fr/competitions/2299#results) by "tanfiona".
+### Running 1Cademy baseline:
+Given a `<train.csv>`, `<val.csv>` and `<test.csv>` files, use our [`run_st2.py`](run_st2.py) script to train+evaluate and predict using `--do_train` and `--do_test` flags respectively.
 
-| # | User     | Date of Last Entry | Recall     | Precision  | F1         | Accuracy  | MCC        |
-|:-:|----------|--------------------|------------|------------|------------|-----------|------------|
-| 1 | tanfiona | 06/08/22           | 0.0217     | 0.0217     | 0.0217     | 0.2084    | -          |
+```
+python run_st2.py \
+  --dropout 0.3 \
+  --learning_rate 2e-05 \
+  --model_name_or_path albert-xxlarge-v2 \
+  --num_train_epochs 10 \
+  --num_warmup_steps 200 \
+  --output_dir "outs/baseline" \
+  --per_device_train_batch_size 8 \
+  --per_device_eval_batch_size 8 \
+  --per_device_test_batch_size 8 \
+  --report_to wandb \
+  --task_name ner \
+  --do_train --do_test \
+  --train_file <train.csv> \
+  --validation_file <val.csv> \
+  --test_file <test.csv> \
+  --weight_decay 0.005 \
+  --use_best_model
+```
+Further experiments are also available in `run_st2.sh` for reference. Within which, we also generate augments, provided in the data folder.
+This baseline corresponds to [Codalab submission](https://codalab.lisn.upsaclay.fr/competitions/2299#results) by "tanfiona".
 
-For a better starting model, we recommend partipants to adapt the token classification baseline model from [Huggingface's `run_ner_no_trainer.py` script](https://github.com/huggingface/transformers/blob/master/examples/pytorch/token-classification/run_ner_no_trainer.py). 
-
-### Expected Output:
-The predicted output will be saved in a JSON file as `outs/submission_random_st2.json`. Alongwhich, the evaluation metrics will be printed in the console.
+For an alternate starting model, consider adapting the token classification baseline model from [Huggingface's `run_ner_no_trainer.py` script](https://github.com/huggingface/transformers/blob/master/examples/pytorch/token-classification/run_ner_no_trainer.py). 
 
 <br>
 
