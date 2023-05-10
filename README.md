@@ -36,20 +36,7 @@ This is the second iteration of this shared task, links to last year's documenta
 # Subtask 1: Causal Event Classification
 
 ### Data:
-Within the `data` folder, we provide the datasets:
-* `train_subtask1.csv`: Train set (n=2925) with gold labels.
-* `dev_subtask1_text.csv`: Development set (n=323) without gold labels.
-* `CTB_forCASE.csv`: Processed [CausalTimeBank](https://hlt-nlp.fbk.eu/technologies/causal-timebank) dataset.
-* `CTB_forCASE_rsampled.csv`: Processed CausalTimeBank dataset and sampled for balanced class labels.
-
-The following datasets have been released for the Test Phase according to the shared task timeline:
-* `dev_subtask1.csv`: Development set (n=323) with gold labels.
-* `test_subtask1_text.csv`: Test set (n=311) without gold labels.
-
-The following datasets were used in our experiments, but not released, due to copyright issues:
-* `pdtb_mixed_resolved_forCASE_final`: Processed [PDTB V3.0](https://catalog.ldc.upenn.edu/LDC2019T05) dataset.
-
-<b>Target column: `label`</b>
+Datasets are available under the `data` folder. For 2023 Shared Task, please use `V2`. <b>Target column: `label`</b>
 
 ### Running BERT baseline:
 Given a `<train.csv>` and `<val.csv>` file with columns `index`,`text`,`label` (`label` values should be in 0,1 int format), use our [`run_st1.py`](run_st1.py) script to train, evaluate and predict using `--do_train`, `--do_eval` and `--do_predict` flags respectively.
@@ -70,32 +57,26 @@ Further experiments are also available in `run_st1.sh` for reference. Within whi
 
 KFolds script is available in `kfolds.sh` which creates user-specified number of fold sets and runs the Train and Eval function over each fold. In our paper, we set K=5.
 
-For V1: This baseline corresponds to [Codalab submission](https://codalab.lisn.upsaclay.fr/competitions/2299#results) by "tanfiona". For LSTM baseline, submissions are by "hansih".
+For V2 dev: This baseline corresponds to [Codalab submission](https://codalab.lisn.upsaclay.fr/competitions/11784#results) by "tanfiona".
 
 | # | User     | Date of Last Entry | Recall     | Precision  | F1         | Accuracy   | MCC        |
 |:-:|----------|--------------------|------------|------------|------------|------------|------------|
-| 1 | tanfiona | 03/23/22           | 0.8652 (1) | 0.8063 (1) | 0.8347 (1) | 0.8111 (1) | 0.6172 (1) |
-| 2 | hansih   | 03/13/22           | 0.7303 (2) | 0.7514 (2) | 0.7407 (2) | 0.7183 (2) | 0.4326 (2) |
+| 1 | tanfiona | 05/03/23           | 0.8378     | 0.8470 	  | 0.8424    | 0.8294    	| 0.6566     |
+
+For V1 dev: This baseline corresponds to [Codalab submission](https://codalab.lisn.upsaclay.fr/competitions/2299#results) by "tanfiona". For LSTM baseline, submissions are by "hansih".
+
+| # | User     | Date of Last Entry | Recall     | Precision  | F1         | Accuracy   | MCC        |
+|:-:|----------|--------------------|------------|------------|------------|------------|------------|
+| 1 | tanfiona | 03/23/22           | 0.8652  | 0.8063 | 0.8347  | 0.8111  | 0.6172 |
+| 2 | hansih   | 03/13/22           | 0.7303  | 0.7514  | 0.7407  | 0.7183  | 0.4326 |
 
 <br>
 
 # Subtask 2: Cause-Effect-Signal Span Detection
 ### Data:
-Within the `data` folder, we provide the datasets:
-* `train_subtask2.csv`: Train set (160 sentences, 183 relations) with gold labels.
-* `train_subtask2_grouped.csv`: Train set (n=2925) with partial gold labels.
-* `dev_subtask2_text.csv`: Development set (n=323) without gold labels.
-
-The following datasets have been released for the Test Phase according to the shared task timeline:
-* `dev_subtask2.csv`: Development set (15 sentences, 18 relations) with gold labels.
-* `dev_subtask2_grouped.csv`: Development set (n=323) with partial gold labels.
-* `test_subtask2_text.csv`: Test set (n=311) without gold labels.
+Datasets are available under the `data` folder. For 2023 Shared Task, please use `V2`. <b>Target column: `causal_text_w_pairs`</b>
 
 To avoid revealing causal annotations for Subtask 1, we will be receiving span predictions on ALL sentences that tallies with the `_grouped` format. However, in evaluation, we only evaluate against the available annotated CAUSAL sentences. See [Subtask 2's evaluation folder](evaluation/subtask2) for more information.
-
-<b>Target column: `causal_text_w_pairs`</b>
-
-During final testing phase, both train and dev examples can be used to train your model. The data format will be exactly the same, so you can first design your models to train and test on currently available train and dev sets.
 
 ### Running 1Cademy baseline:
 Given a `<train.csv>`, `<val.csv>` and `<test.csv>` files, use our [`run_st2.py`](run_st2.py) script to train+evaluate and predict using `--do_train` and `--do_test` flags respectively.
@@ -122,6 +103,12 @@ python run_st2.py \
 ```
 Further experiments are also available in `run_st2.sh` for reference. Within which, we also generate augments, provided in the data folder.
 This baseline corresponds to [Codalab submission](https://codalab.lisn.upsaclay.fr/competitions/2299#results) by "tanfiona".
+
+For V2 dev: This baseline corresponds to [Codalab submission](https://codalab.lisn.upsaclay.fr/competitions/11784#results) by "tanfiona".
+
+| # | User     | Date of Last Entry | Recall     | Precision  | F1         |
+|:-:|----------|--------------------|------------|------------|------------|
+| 1 | tanfiona | 05/01/23           | 0.6632     | 0.5948 	  | 0.6271     |
 
 For an alternate starting model, consider adapting the token classification baseline model from [Huggingface's `run_ner_no_trainer.py` script](https://github.com/huggingface/transformers/blob/master/examples/pytorch/token-classification/run_ner_no_trainer.py). 
 
