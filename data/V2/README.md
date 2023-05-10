@@ -1,5 +1,31 @@
 ## Dataset Description
 
+#### Subtask 1 
+* `train_subtask1.csv`: Train set (n=3075) with gold labels.
+* `dev_subtask1.csv`: Development set (n=340) with gold labels.
+* `dev_subtask1_text.csv`: Development set (n=340) without gold labels.
+* `test_subtask1_text.csv`: Test set (n=352) without gold labels.
+
+<b>Target column: `label`</b>
+
+#### Subtask 2
+
+* `train_subtask2.csv`: Train set (1624 sentences, 2257 relations) with gold labels.
+* `train_subtask2_grouped.csv`: Train set (n=3075) with partial gold labels.
+* `dev_subtask2.csv`: Development set (185 sentences, 249 relations) with gold labels.
+* `dev_subtask2_grouped.csv`: Development set (n=340) with partial gold labels.
+* `dev_subtask2_text.csv`: Development set (n=340) without gold labels.
+* `test_subtask2_text.csv`: Test set (n=352) without gold labels.
+* `augmented_subtask2_X_train.csv`: Augmented data based on train set using `src/data_aug_st2.py` script.
+
+To avoid revealing causal annotations for Subtask 1, we will be receiving span predictions on ALL sentences that tallies with the `_grouped` format. However, in evaluation, we only evaluate against the available annotated CAUSAL sentences. See [Subtask 2's evaluation folder](evaluation/subtask2) for more information.
+
+<b>Target column: `causal_text_w_pairs`</b>
+
+During final testing phase, both train and dev examples can be used to train your model. The data format will be exactly the same, so you can first design your models to train and test on currently available train and dev sets.
+
+## Column Description
+
 #### Subtask 2
 Columns:
 * corpus [str] : corpus name
