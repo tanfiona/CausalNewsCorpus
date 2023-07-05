@@ -57,11 +57,11 @@ Further experiments are also available in `run_st1.sh` for reference. Within whi
 
 KFolds script is available in `kfolds.sh` which creates user-specified number of fold sets and runs the Train and Eval function over each fold. In our paper, we set K=5.
 
-For V2 dev: This baseline corresponds to [Codalab submission](https://codalab.lisn.upsaclay.fr/competitions/11784#results) by "tanfiona".
+For V2 dev: This baseline corresponds to [Codalab submission](https://codalab.lisn.upsaclay.fr/competitions/11784#results) by "tanfiona". This uses the `bert-base-cased` model.
 
 | # | User     | Date of Last Entry | Recall     | Precision  | F1         | Accuracy   | MCC        |
 |:-:|----------|--------------------|------------|------------|------------|------------|------------|
-| 1 | tanfiona | 05/03/23           | 0.8378     | 0.8470 	  | 0.8424    | 0.8294    	| 0.6566     |
+| 1 | tanfiona | 07/05/23           | 0.8865     | 0.8410 	  | 0.8632    | 0.8471    	| 0.6913     |
 
 For V1 dev: This baseline corresponds to [Codalab submission](https://codalab.lisn.upsaclay.fr/competitions/2299#results) by "tanfiona". For LSTM baseline, submissions are by "hansih".
 
