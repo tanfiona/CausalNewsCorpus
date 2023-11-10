@@ -1,7 +1,13 @@
 # Causal News Corpus
 <img align="left" height=200 src="imgs/CNC_Logo.PNG">
 
-This repository contains the datasets and models for the Causal News Corpus (CNC). Our dataset is published in the LREC paper titled ["The Causal News Corpus: Annotating Causal Relations in Event Sentences from News"](https://aclanthology.org/2022.lrec-1.246/) and featured in the ["Event Causality Identification with Causal News Corpus - Shared Task 3, CASE 2022"](https://aclanthology.org/2022.case-1.28/).
+This repository contains the datasets and models for the Causal News Corpus (CNC). Our dataset is published in the following works:
+* 2023 IJCNLP-AACL: "RECESS: Resource for Extracting Cause, Effect, and Signal Spans"
+* 2023 CASE @ RANLP: "Event Causality Identification with Causal News Corpus - Shared Task 3, CASE 2023"
+* 2022 LREC: ["The Causal News Corpus: Annotating Causal Relations in Event Sentences from News"](https://aclanthology.org/2022.lrec-1.246/)
+* 2022 CASE @ EMNLP: ["Event Causality Identification with Causal News Corpus - Shared Task 3, CASE 2022"](https://aclanthology.org/2022.case-1.28/).
+Please find citations at the bottom of this page.
+
 
 CNC works on two subtasks:
 
@@ -118,7 +124,26 @@ For an alternate starting model, consider adapting the token classification base
 # Cite Us
 If you used this repository or our corpus, please do cite us as follows:
 
-##### On Subtask 1:
+```
+@inproceedings{tan-etal-2023-recess,
+    title = "RECESS: Resource for Extracting Cause, Effect, and Signal Spans",
+    author = {Tan, Fiona Anting  and
+      Hettiarachchi, Hansi  and
+      H{\"u}rriyeto{\u{g}}lu, Ali  and
+      Oostdijk, Nelleke  and
+      Caselli, Tommaso  and
+      Nomoto, Tadashi  and
+      Uca, Onur  and
+      Liza, Farhana Ferdousi  and
+      Ng, See-Kiong},
+    booktitle = "Proceedings of the 3rd Conference of the Asia-Pacific Chapter of the Association for Computational Linguistics and the 13th International Joint Conference on Natural Language Processing (Volume 1: Long Papers)",
+    month = nov,
+    year = "2023",
+    publisher = "Association for Computational Linguistics",
+    abstract = "Causality expresses the relation between two arguments, one of which represents the cause and the other the effect (or consequence). Causal relations are fundamental to human decision making and reasoning, and extracting them from natural language texts is crucial for building effective natural language understanding models. However, the scarcity of annotated corpora for causal relations poses a challenge in the development of such tools. Thus, we created Resource for Extracting Cause, Effect, and Signal Spans (RECESS), a comprehensive corpus annotated for causality at different levels, including Cause, Effect, and Signal spans. The corpus contains 3,767 sentences, of which, 1,982 are causal sentences that contain a total of 2,754 causal relations. We report baseline experiments on two natural language tasks (Causal Sentence Classification, and Cause-Effect-Signal Span Detection), and establish initial benchmarks for future work. We conduct an in-depth analysis of the corpus and the properties of causal relations in text. RECESS is a valuable resource for developing and evaluating causal relation extraction models, benefiting researchers working on topics from information retrieval to natural language understanding and inference.",
+}
+```
+
 ```
 @inproceedings{tan-etal-2022-causal,
     title = "The Causal News Corpus: Annotating Causal Relations in Event Sentences from News",
@@ -143,7 +168,6 @@ If you used this repository or our corpus, please do cite us as follows:
 }
 ```
 
-##### On Both Subtasks:
 ```
 @inproceedings{tan-etal-2022-event,
     title = "Event Causality Identification with Causal News Corpus - Shared Task 3, {CASE} 2022",
