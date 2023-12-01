@@ -118,6 +118,7 @@ For V2 dev: This baseline corresponds to [Codalab submission](https://codalab.li
 | 1 | tanfiona | 05/01/23           | 0.6632     | 0.5948 	  | 0.6271     |
 
 For an alternate starting model, consider adapting the token classification baseline model from [Huggingface's `run_ner_no_trainer.py` script](https://github.com/huggingface/transformers/blob/master/examples/pytorch/token-classification/run_ner_no_trainer.py). 
+The best submission for this task so far is by [BoschAI in 2023](https://github.com/boschresearch/boschai-cnc-shared-task-ranlp2023), F1=72.79%. Please refer to their repository for their model.
 
 <br>
 
