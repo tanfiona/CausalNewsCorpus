@@ -2,7 +2,7 @@
 <img align="left" height=200 src="imgs/CNC_Logo.PNG">
 
 This repository contains the datasets and models for the Causal News Corpus (CNC). Our dataset is published in the following works:
-* 2023 IJCNLP-AACL: "RECESS: Resource for Extracting Cause, Effect, and Signal Spans"
+* 2023 IJCNLP-AACL: ["RECESS: Resource for Extracting Cause, Effect, and Signal Spans"](https://aclanthology.org/2023.ijcnlp-main.6/)
 * 2023 CASE @ RANLP: ["Event Causality Identification with Causal News Corpus - Shared Task 3, CASE 2023"](https://aclanthology.org/2023.case-1.19/)
 * 2022 LREC: ["The Causal News Corpus: Annotating Causal Relations in Event Sentences from News"](https://aclanthology.org/2022.lrec-1.246/)
 * 2022 CASE @ EMNLP: ["Event Causality Identification with Causal News Corpus - Shared Task 3, CASE 2022"](https://aclanthology.org/2022.case-1.28/).
@@ -126,17 +126,32 @@ The best submission for this task so far is by [BoschAI in 2023](https://github.
 If you used this repository or our corpus, please do cite us as follows:
 
 ```
-@InProceedings{tan-EtAl:2023:ijcnlp,
-    author         = {Tan, Fiona Anting  and  Hettiarachchi, Hansi  and  Hürriyetoğlu, Ali  and  Oostdijk, Nelleke  and  Caselli, Tommaso  and  Nomoto, Tadashi  and  Uca, Onur  and  Liza, Farhana Ferdousi  and  Ng, See-Kiong},
-    title          = {RECESS: Resource for Extracting Cause, Effect, and Signal Spans},
-    booktitle      = {Proceedings of the 13th International Joint Conference on Natural Language Processing and the 3rd Conference of the Asia-Pacific Chapter of the Association for Computational Linguistics},
-    month          = {November},
-    year           = {2023},
-    address        = {Nusa Dua, Bali},
-    publisher      = {Association for Computational Linguistics},
-    pages          = {66--82},
-    url            = {https://aclanthology.org/2023.ijcnlp-long.6}
-    abstract       = "Causality expresses the relation between two arguments, one of which represents the cause and the other the effect (or consequence). Causal relations are fundamental to human decision making and reasoning, and extracting them from natural language texts is crucial for building effective natural language understanding models. However, the scarcity of annotated corpora for causal relations poses a challenge in the development of such tools. Thus, we created Resource for Extracting Cause, Effect, and Signal Spans (RECESS), a comprehensive corpus annotated for causality at different levels, including Cause, Effect, and Signal spans. The corpus contains 3,767 sentences, of which, 1,982 are causal sentences that contain a total of 2,754 causal relations. We report baseline experiments on two natural language tasks (Causal Sentence Classification, and Cause-Effect-Signal Span Detection), and establish initial benchmarks for future work. We conduct an in-depth analysis of the corpus and the properties of causal relations in text. RECESS is a valuable resource for developing and evaluating causal relation extraction models, benefiting researchers working on topics from information retrieval to natural language understanding and inference.",
+@inproceedings{tan-etal-2023-recess,
+    title = "{RECESS}: Resource for Extracting Cause, Effect, and Signal Spans",
+    author = {Tan, Fiona Anting  and
+      Hettiarachchi, Hansi  and
+      H{\"u}rriyeto{\u{g}}lu, Ali  and
+      Oostdijk, Nelleke  and
+      Caselli, Tommaso  and
+      Nomoto, Tadashi  and
+      Uca, Onur  and
+      Liza, Farhana Ferdousi  and
+      Ng, See-Kiong},
+    editor = "Park, Jong C.  and
+      Arase, Yuki  and
+      Hu, Baotian  and
+      Lu, Wei  and
+      Wijaya, Derry  and
+      Purwarianti, Ayu  and
+      Krisnadhi, Adila Alfa",
+    booktitle = "Proceedings of the 13th International Joint Conference on Natural Language Processing and the 3rd Conference of the Asia-Pacific Chapter of the Association for Computational Linguistics (Volume 1: Long Papers)",
+    month = nov,
+    year = "2023",
+    address = "Nusa Dua, Bali",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2023.ijcnlp-main.6",
+    pages = "66--82",
+    abstract = "Causality expresses the relation between two arguments, one of which represents the cause and the other the effect (or consequence). Causal relations are fundamental to human decision making and reasoning, and extracting them from natural language texts is crucial for building effective natural language understanding models. However, the scarcity of annotated corpora for causal relations poses a challenge in the development of such tools. Thus, we created Resource for Extracting Cause, Effect, and Signal Spans (RECESS), a comprehensive corpus annotated for causality at different levels, including Cause, Effect, and Signal spans. The corpus contains 3,767 sentences, of which, 1,982 are causal sentences that contain a total of 2,754 causal relations. We report baseline experiments on two natural language tasks (Causal Sentence Classification, and Cause-Effect-Signal Span Detection), and establish initial benchmarks for future work. We conduct an in-depth analysis of the corpus and the properties of causal relations in text. RECESS is a valuable resource for developing and evaluating causal relation extraction models, benefiting researchers working on topics from information retrieval to natural language understanding and inference.",
 }
 ```
 
